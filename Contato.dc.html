@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./symbol.png">
+<link rel="apple-touch-icon" href="./symbol.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #1A2026; color: #EDEFF2; }
+  a { color: #DE694E; text-decoration: none; }
+  a:hover { color: #E8714F; }
+  ::selection { background: #DE694E; color: #151A1F; }
+  ::placeholder { color: #6E7681; }
+  input, textarea { font-family: 'Sora', sans-serif; }
+  input:focus, textarea:focus { outline: none; border-color: #DE694E !important; }
+  @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</helmet>
+
+<div style="font-family:'Sora',sans-serif;background:#1A2026;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column">
+  <div data-progress style="position:fixed;top:0;left:0;height:3px;width:100%;background:#DE694E;transform:scaleX(0);transform-origin:0 50%;z-index:950"></div>
+  <dc-import name="Nav" active="contato" hint-size="100%,90px"></dc-import>
+
+  <section style="position:relative;padding:170px clamp(20px,5vw,64px) 70px;background:radial-gradient(110% 80% at 80% 0%, #22303f 0%, #1A2026 60%);overflow:hidden;flex:1">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 70% 15%,#000,transparent 72%);-webkit-mask-image:radial-gradient(circle at 70% 15%,#000,transparent 72%)"></div>
+
+    <div style="position:relative;max-width:1160px;margin:0 auto">
+      <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:24px"><span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.kicker }}</div>
+      <h1 data-reveal="up" data-reveal-delay="70" style="font-size:clamp(34px,5.5vw,64px);line-height:1.04;font-weight:700;letter-spacing:-1.5px;margin:0 0 46px;max-width:16ch;color:#F4F6F8">{{ L.title }}</h1>
+
+      <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,56px);align-items:start" data-contact-grid>
+        <!-- FORM -->
+        <form onSubmit="{{ onSubmit }}" data-reveal="up" data-reveal-delay="120" style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" data-form-row>
+            <label style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8A9199">{{ L.fName }}</span>
+              <input value="{{ name }}" onInput="{{ setName }}" placeholder="{{ L.phName }}" style="background:#12171C;border:1px solid rgba(217,220,224,.14);border-radius:12px;padding:15px 16px;color:#EDEFF2;font-size:15px;transition:border-color .25s ease" />
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8A9199">{{ L.fPhone }}</span>
+              <input value="{{ phone }}" onInput="{{ setPhone }}" placeholder="{{ L.phPhone }}" style="background:#12171C;border:1px solid rgba(217,220,224,.14);border-radius:12px;padding:15px 16px;color:#EDEFF2;font-size:15px;transition:border-color .25s ease" />
+            </label>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8A9199">{{ L.fEmail }}</span>
+            <input value="{{ email }}" onInput="{{ setEmail }}" placeholder="{{ L.phEmail }}" style="background:#12171C;border:1px solid rgba(217,220,224,.14);border-radius:12px;padding:15px 16px;color:#EDEFF2;font-size:15px;transition:border-color .25s ease" />
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8A9199">{{ L.fMsg }}</span>
+            <textarea value="{{ msg }}" onInput="{{ setMsg }}" rows="5" placeholder="{{ L.phMsg }}" style="background:#12171C;border:1px solid rgba(217,220,224,.14);border-radius:12px;padding:15px 16px;color:#EDEFF2;font-size:15px;resize:vertical;transition:border-color .25s ease"></textarea>
+          </label>
+          <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#DE694E;color:#151A1F;font-weight:700;font-size:15px;padding:16px 28px;border:0;border-radius:999px;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;margin-top:4px" style-hover="transform:translateY(-3px);box-shadow:0 14px 34px rgba(222,105,78,.42)">{{ L.send }} <span style="font-family:'JetBrains Mono',monospace">→</span></button>
+          <div style="{{ okStyle }}">{{ L.ok }}</div>
+        </form>
+
+        <!-- INFO CARDS -->
+        <div style="display:flex;flex-direction:column;gap:16px" data-reveal="up" data-reveal-delay="200">
+          <a href="https://wa.me/553172075744" target="_blank" rel="noopener" style="display:block;background:#12171C;border:1px solid rgba(222,105,78,.3);border-radius:16px;padding:26px 26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.7);transform:translateY(-3px)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">WhatsApp · {{ L.direct }}</div>
+            <div style="font-size:24px;font-weight:700;color:#F4F6F8">+55 31 7207-5744</div>
+            <div style="font-size:13px;color:#8A9199;margin-top:6px">{{ L.waSub }}</div>
+          </a>
+          <a href="tel:+553172075744" style="display:block;background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-3px)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">{{ L.phoneLabel }}</div>
+            <div style="font-size:20px;font-weight:600;color:#EDEFF2">+55 31 7207-5744</div>
+          </a>
+          <a href="mailto:contato@prominconsultoria.com.br" style="display:block;background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-3px)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">E-mail</div>
+            <div style="font-size:15px;font-weight:500;color:#EDEFF2;word-break:break-all">contato@prominconsultoria.com.br</div>
+          </a>
+          <div style="background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">{{ L.locLabel }}</div>
+            <div style="font-size:15px;color:#C9CDD2;line-height:1.5">{{ L.locValue }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { name: '', phone: '', email: '', msg: '', sent: false };
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+
+  submit(e) {
+    e.preventDefault();
+    const { name, phone, email, msg } = this.state;
+    const lang = this.lang();
+    const head = lang === 'es' ? 'Hola ProMin, soy' : 'Olá ProMin, sou';
+    const parts = [
+      `${head} ${name || '—'}.`,
+      email ? `E-mail: ${email}` : '',
+      phone ? (lang === 'es' ? `Teléfono: ${phone}` : `Telefone: ${phone}`) : '',
+      msg ? `\n${msg}` : '',
+    ].filter(Boolean);
+    const text = encodeURIComponent(parts.join('\n'));
+    window.open(`https://wa.me/553172075744?text=${text}`, '_blank');
+    this.setState({ sent: true });
+  }
+
+  renderVals() {
+    const lang = this.lang();
+    const pt = {
+      kicker: 'Fale conosco', title: 'Vamos conversar sobre o seu projeto.',
+      fName: 'Nome', fPhone: 'Telefone', fEmail: 'E-mail', fMsg: 'Mensagem',
+      phName: 'Seu nome', phPhone: '(00) 00000-0000', phEmail: 'voce@empresa.com', phMsg: 'Conte-nos sobre a sua operação...',
+      send: 'Enviar pelo WhatsApp', ok: '✓ Abrimos o WhatsApp para você concluir o envio.',
+      direct: 'Resposta rápida', waSub: 'Fale direto com a nossa equipe.',
+      phoneLabel: 'Telefone', locLabel: 'Localização', locValue: 'Brasil — Atendimento nacional · Consultoria em mineração BR/PR',
+    };
+    const es = {
+      kicker: 'Contáctanos', title: 'Conversemos sobre tu proyecto.',
+      fName: 'Nombre', fPhone: 'Teléfono', fEmail: 'Correo', fMsg: 'Mensaje',
+      phName: 'Tu nombre', phPhone: '(00) 00000-0000', phEmail: 'tu@empresa.com', phMsg: 'Cuéntanos sobre tu operación...',
+      send: 'Enviar por WhatsApp', ok: '✓ Abrimos WhatsApp para que completes el envío.',
+      direct: 'Respuesta rápida', waSub: 'Habla directo con nuestro equipo.',
+      phoneLabel: 'Teléfono', locLabel: 'Ubicación', locValue: 'Brasil — Atención nacional · Consultoría en minería BR/PR',
+    };
+    const L = lang === 'es' ? es : pt;
+    return {
+      L,
+      name: this.state.name, phone: this.state.phone, email: this.state.email, msg: this.state.msg,
+      setName: (e) => this.setState({ name: e.target.value }),
+      setPhone: (e) => this.setState({ phone: e.target.value }),
+      setEmail: (e) => this.setState({ email: e.target.value }),
+      setMsg: (e) => this.setState({ msg: e.target.value }),
+      onSubmit: (e) => this.submit(e),
+      okStyle: `font-size:14px;color:#7FD19A;font-weight:500;transition:opacity .3s ease;opacity:${this.state.sent ? '1' : '0'};height:${this.state.sent ? 'auto' : '0'};overflow:hidden`,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

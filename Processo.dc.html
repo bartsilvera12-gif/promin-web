@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./symbol.png">
+<link rel="apple-touch-icon" href="./symbol.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #1A2026; color: #EDEFF2; }
+  a { color: #DE694E; text-decoration: none; }
+  a:hover { color: #E8714F; }
+  ::selection { background: #DE694E; color: #151A1F; }
+  @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</helmet>
+
+<div style="font-family:'Sora',sans-serif;background:#1A2026;overflow-x:hidden">
+  <div data-progress style="position:fixed;top:0;left:0;height:3px;width:100%;background:#DE694E;transform:scaleX(0);transform-origin:0 50%;z-index:950"></div>
+  <dc-import name="Nav" active="processo" hint-size="100%,90px"></dc-import>
+
+  <section style="position:relative;padding:170px clamp(20px,5vw,64px) 60px;background:radial-gradient(110% 80% at 80% 0%, #22303f 0%, #1A2026 60%);overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%);-webkit-mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%)"></div>
+    <div style="position:relative;max-width:1160px;margin:0 auto">
+      <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:26px"><span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.kicker }}</div>
+      <h1 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(34px,5.5vw,68px);line-height:1.04;font-weight:700;letter-spacing:-1.5px;margin:0 0 22px;max-width:16ch;color:#F4F6F8">{{ L.title }}</h1>
+      <p data-reveal="up" data-reveal-delay="150" style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#A9B0B8;font-weight:300;max-width:52ch;margin:0">{{ L.lede }}</p>
+    </div>
+  </section>
+
+  <!-- STEPPER -->
+  <section style="padding:clamp(30px,5vw,70px) clamp(20px,5vw,64px) clamp(60px,8vw,110px);max-width:1000px;margin:0 auto">
+    <div style="position:relative;padding-left:clamp(44px,6vw,72px)">
+      <div style="position:absolute;left:clamp(21px,3vw,35px);top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#DE694E, rgba(222,105,78,.15))"></div>
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+        <div data-reveal="up" data-reveal-delay="{{ s.delay }}" style="position:relative;padding:0 0 clamp(36px,5vw,58px)">
+          <div style="position:absolute;left:calc(-1 * clamp(44px,6vw,72px));top:0;width:clamp(44px,6vw,72px);display:flex;justify-content:center">
+            <span style="display:flex;align-items:center;justify-content:center;width:clamp(38px,5vw,52px);height:clamp(38px,5vw,52px);border-radius:50%;background:#12171C;border:2px solid #DE694E;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:clamp(13px,1.4vw,16px);color:#DE694E">{{ s.num }}</span>
+          </div>
+          <div style="background:#12171C;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:28px 30px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.4);transform:translateX(4px)">
+            <h3 style="font-size:clamp(20px,2.4vw,26px);font-weight:700;margin:0 0 10px;color:#F4F6F8">{{ s.title }}</h3>
+            <p style="font-size:15px;line-height:1.65;color:#8A9199;margin:0;max-width:56ch">{{ s.desc }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- RESULT STATEMENT -->
+  <section style="background:#12171C;padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px)">
+    <div style="max-width:900px;margin:0 auto;text-align:center">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.resKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(26px,4vw,46px);font-weight:700;letter-spacing:-1px;line-height:1.12;margin:0;color:#F4F6F8">{{ L.resTitle }}</h2>
+    </div>
+  </section>
+
+  <dc-import name="CtaBand" hint-size="100%,360px"></dc-import>
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+  renderVals() {
+    const lang = this.lang();
+    const pt = {
+      kicker: 'Como trabalhamos', title: 'Um processo claro, do desafio ao resultado.',
+      lede: 'Cada projeto segue um método estruturado que garante clareza, previsibilidade e excelência em cada etapa.',
+      steps: [
+        { title: 'Diagnóstico', desc: 'Entendemos a fundo a sua operação, seus desafios e seus objetivos — a base de toda solução eficaz.' },
+        { title: 'Estratégia', desc: 'Desenhamos um plano técnico sob medida, com visão estratégica e foco em eficiência.' },
+        { title: 'Execução', desc: 'Implementamos as soluções com precisão técnica, acompanhando cada detalhe da operação.' },
+        { title: 'Otimização', desc: 'Refinamos processos continuamente, ajustando para extrair o máximo de performance.' },
+        { title: 'Resultados', desc: 'Entregamos valor mensurável e sustentável — sempre com ética, qualidade e excelência.' },
+      ],
+      resKicker: 'O resultado',
+      resTitle: 'Estratégias de produção e logística que realmente resolvem.',
+    };
+    const es = {
+      kicker: 'Cómo trabajamos', title: 'Un proceso claro, del desafío al resultado.',
+      lede: 'Cada proyecto sigue un método estructurado que garantiza claridad, previsibilidad y excelencia en cada etapa.',
+      steps: [
+        { title: 'Diagnóstico', desc: 'Entendemos a fondo tu operación, sus desafíos y sus objetivos — la base de toda solución eficaz.' },
+        { title: 'Estrategia', desc: 'Diseñamos un plan técnico a medida, con visión estratégica y foco en la eficiencia.' },
+        { title: 'Ejecución', desc: 'Implementamos las soluciones con precisión técnica, acompañando cada detalle de la operación.' },
+        { title: 'Optimización', desc: 'Refinamos los procesos continuamente, ajustando para extraer el máximo desempeño.' },
+        { title: 'Resultados', desc: 'Entregamos valor medible y sostenible — siempre con ética, calidad y excelencia.' },
+      ],
+      resKicker: 'El resultado',
+      resTitle: 'Estrategias de producción y logística que realmente resuelven.',
+    };
+    const L = lang === 'es' ? es : pt;
+    return { L, steps: L.steps.map((s, i) => ({ ...s, num: '0' + (i + 1), delay: i * 80 })) };
+  }
+}
+
+</script>
+</body>
+</html>

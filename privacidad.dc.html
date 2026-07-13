@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<!--
+  ==========================================================================
+  POLÍTICA DE PRIVACIDAD — PLANTILLA ESTÁNDAR NEURA (ruta: /privacidad)
+  ==========================================================================
+  Reutilizable por cliente. Para adaptar a un nuevo proyecto, edita SOLO el
+  objeto `company` en el <script> de abajo (nombre, RUC/CNPJ, correo,
+  teléfono, dirección). El resto del texto se rellena automáticamente.
+
+  Marco legal:
+   - El RESPONSABLE del tratamiento de datos es siempre el CLIENTE (company).
+   - Neura figura únicamente como PROVEEDOR TECNOLÓGICO / desarrollador
+     (encargado técnico). Neura NO es responsable ni propietario de los datos.
+  ==========================================================================
+-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./symbol.png">
+<link rel="apple-touch-icon" href="./symbol.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #1A2026; color: #EDEFF2; }
+  a { color: #DE694E; text-decoration: none; }
+  a:hover { color: #E8714F; }
+  ::selection { background: #DE694E; color: #151A1F; }
+  @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</helmet>
+
+<div style="font-family:'Sora',sans-serif;background:#1A2026;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column">
+  <div data-progress style="position:fixed;top:0;left:0;height:3px;width:100%;background:#DE694E;transform:scaleX(0);transform-origin:0 50%;z-index:950"></div>
+  <dc-import name="Nav" active="" hint-size="100%,90px"></dc-import>
+
+  <section style="position:relative;padding:170px clamp(20px,5vw,64px) 80px;background:radial-gradient(110% 80% at 80% 0%, #22303f 0%, #1A2026 60%);overflow:hidden;flex:1">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 70% 12%,#000,transparent 72%);-webkit-mask-image:radial-gradient(circle at 70% 12%,#000,transparent 72%)"></div>
+
+    <div style="position:relative;max-width:860px;margin:0 auto">
+      <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:24px"><span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.kicker }}</div>
+      <h1 data-reveal="up" data-reveal-delay="70" style="font-size:clamp(34px,5.5vw,58px);line-height:1.05;font-weight:700;letter-spacing:-1.5px;margin:0 0 16px;color:#F4F6F8">{{ L.title }}</h1>
+      <p data-reveal="up" data-reveal-delay="110" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:#6E7681;margin:0 0 44px">{{ L.updated }}</p>
+
+      <p data-reveal="up" data-reveal-delay="140" style="font-size:17px;line-height:1.75;color:#C9CDD2;margin:0 0 40px">{{ L.intro }}</p>
+
+      <!-- RESPONSABLE DEL TRATAMIENTO (cliente) -->
+      <div data-reveal="up" style="margin:0 0 48px;padding:26px 30px;background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">{{ L.controllerLabel }}</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:15px;color:#C9CDD2;line-height:1.5">
+          <sc-for list="{{ controller }}" as="row" hint-placeholder-count="5">
+            <div><span style="color:#8A9199">{{ row.k }}:</span> <span style="color:#EDEFF2;font-weight:500">{{ row.v }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:38px">
+        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="8">
+          <div data-reveal="up">
+            <h2 style="display:flex;align-items:baseline;gap:14px;font-size:clamp(19px,2.4vw,24px);font-weight:700;letter-spacing:-.4px;color:#F4F6F8;margin:0 0 14px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#DE694E;flex:none">{{ s.n }}</span>{{ s.h }}
+            </h2>
+            <p style="font-size:15.5px;line-height:1.75;color:#A9B0B8;margin:0;max-width:66ch">{{ s.b }}</p>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- PROVEEDOR TECNOLÓGICO (Neura) -->
+      <div data-reveal="up" style="margin-top:48px;padding:24px 30px;background:rgba(18,23,28,.5);border-left:2px solid rgba(222,105,78,.5);border-radius:0 12px 12px 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8A9199;margin-bottom:10px">{{ L.providerLabel }}</div>
+        <p style="margin:0;font-size:14px;color:#8A9199;line-height:1.7">{{ L.providerBody }}</p>
+      </div>
+
+      <!-- CONTACTO -->
+      <div data-reveal="up" style="margin-top:28px;padding:28px 30px;background:#12171C;border:1px solid rgba(222,105,78,.28);border-radius:16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">{{ L.contactLabel }}</div>
+        <p style="margin:0 0 14px;font-size:15px;color:#C9CDD2;line-height:1.6">{{ L.contactBody }}</p>
+        <a href="{{ mailHref }}" style="font-size:16px;font-weight:600">{{ company.email }}</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+
+  renderVals() {
+    const lang = this.lang();
+
+    // =====================================================================
+    // DATOS DEL CLIENTE — reemplazar por proyecto (único bloque a editar)
+    // =====================================================================
+    const company = {
+      name: 'ProMin Consultoria',
+      taxId: '',   // RUC/CNPJ — vacío = fila oculta automáticamente
+      email: 'contato@prominconsultoria.com.br',
+      phone: '+55 31 7207-5744',
+      address: '', // Dirección — vacío = fila oculta automáticamente
+    };
+    const provider = { name: 'Neura', url: 'https://neura.com.py' };
+    // =====================================================================
+
+    const pt = {
+      kicker: 'Privacidade',
+      title: 'Política de Privacidade',
+      updated: 'Última atualização: julho de 2026',
+      intro: `Esta Política de Privacidade descreve como ${company.name} coleta, utiliza, armazena e protege os dados pessoais dos usuários deste site, em conformidade com a legislação de proteção de dados aplicável.`,
+      controllerLabel: 'Responsável pelo tratamento dos dados',
+      sections: [
+        { n: '01', h: 'Dados que coletamos', b: 'Coletamos apenas os dados que você fornece voluntariamente ao entrar em contato — como nome, e-mail, telefone e a mensagem enviada por meio dos formulários ou WhatsApp. Também podemos coletar dados de navegação de forma anônima para melhorar a experiência no site.' },
+        { n: '02', h: 'Como utilizamos os dados', b: `${company.name} utiliza as suas informações exclusivamente para responder às suas solicitações, apresentar propostas, prestar os seus serviços e manter comunicação sobre eles. Os dados não são utilizados para finalidades diferentes das informadas.` },
+        { n: '03', h: 'Compartilhamento', b: `${company.name} não vende, aluga nem compartilha os seus dados pessoais com terceiros, exceto quando necessário para cumprir obrigações legais ou mediante o seu consentimento expresso.` },
+        { n: '04', h: 'Cookies', b: 'Este site pode utilizar cookies e tecnologias semelhantes para lembrar preferências (como o idioma) e analisar o desempenho das páginas. Você pode desativar os cookies nas configurações do seu navegador a qualquer momento.' },
+        { n: '05', h: 'Armazenamento e segurança', b: 'Adotamos medidas técnicas e organizacionais adequadas para proteger os seus dados contra acesso não autorizado, perda ou uso indevido. As informações são mantidas apenas pelo tempo necessário para cumprir as finalidades desta Política.' },
+        { n: '06', h: 'Os seus direitos', b: `Você pode, a qualquer momento, solicitar o acesso, a correção, a portabilidade ou a exclusão dos seus dados pessoais, bem como revogar o consentimento concedido. Basta entrar em contato com ${company.name} pelos canais indicados abaixo.` },
+        { n: '07', h: 'Alterações desta Política', b: 'Esta Política pode ser atualizada periodicamente para refletir melhorias ou mudanças legais. Recomendamos que você a revise regularmente. A data da última atualização consta no topo desta página.' },
+      ],
+      providerLabel: 'Desenvolvimento e provedor tecnológico',
+      providerBody: `Este site foi desenvolvido por ${provider.name} (${provider.url}), que atua exclusivamente como provedor tecnológico e responsável técnico do desenvolvimento. ${provider.name} não é proprietária nem responsável pelos dados pessoais coletados através deste site — eles pertencem e são geridos por ${company.name}.`,
+      contactLabel: 'Contato do responsável',
+      contactBody: `Para exercer os seus direitos ou esclarecer dúvidas sobre esta Política, entre em contato com ${company.name}:`,
+    };
+
+    const es = {
+      kicker: 'Privacidad',
+      title: 'Política de Privacidad',
+      updated: 'Última actualización: julio de 2026',
+      intro: `Esta Política de Privacidad describe cómo ${company.name} recopila, utiliza, almacena y protege los datos personales de los usuarios de este sitio web, en conformidad con la legislación de protección de datos aplicable.`,
+      controllerLabel: 'Responsable del tratamiento de los datos',
+      sections: [
+        { n: '01', h: 'Datos que recopilamos', b: 'Recopilamos únicamente los datos que usted proporciona voluntariamente al contactarnos — como nombre, correo, teléfono y el mensaje enviado a través de los formularios o WhatsApp. También podemos recopilar datos de navegación de forma anónima para mejorar la experiencia en el sitio.' },
+        { n: '02', h: 'Cómo utilizamos los datos', b: `${company.name} utiliza su información exclusivamente para responder a sus solicitudes, presentar propuestas, prestar sus servicios y mantener comunicación sobre ellos. Los datos no se utilizan para finalidades distintas a las informadas.` },
+        { n: '03', h: 'Compartición', b: `${company.name} no vende, alquila ni comparte sus datos personales con terceros, salvo cuando sea necesario para cumplir obligaciones legales o mediante su consentimiento expreso.` },
+        { n: '04', h: 'Cookies', b: 'Este sitio puede utilizar cookies y tecnologías similares para recordar preferencias (como el idioma) y analizar el rendimiento de las páginas. Puede desactivar las cookies en la configuración de su navegador en cualquier momento.' },
+        { n: '05', h: 'Almacenamiento y seguridad', b: 'Adoptamos medidas técnicas y organizativas adecuadas para proteger sus datos contra el acceso no autorizado, la pérdida o el uso indebido. La información se conserva solo durante el tiempo necesario para cumplir las finalidades de esta Política.' },
+        { n: '06', h: 'Sus derechos', b: `Usted puede, en cualquier momento, solicitar el acceso, la corrección, la portabilidad o la eliminación de sus datos personales, así como revocar el consentimiento otorgado. Solo debe contactar a ${company.name} por los canales indicados abajo.` },
+        { n: '07', h: 'Cambios en esta Política', b: 'Esta Política puede actualizarse periódicamente para reflejar mejoras o cambios legales. Recomendamos revisarla con regularidad. La fecha de la última actualización figura al inicio de esta página.' },
+      ],
+      providerLabel: 'Desarrollo y proveedor tecnológico',
+      providerBody: `Este sitio web fue desarrollado por ${provider.name} (${provider.url}), que actúa exclusivamente como proveedor tecnológico y responsable técnico del desarrollo. ${provider.name} no es propietaria ni responsable de los datos personales recopilados a través de este sitio — estos pertenecen y son gestionados por ${company.name}.`,
+      contactLabel: 'Contacto del responsable',
+      contactBody: `Para ejercer sus derechos o resolver dudas sobre esta Política, contacte a ${company.name}:`,
+    };
+
+    const L = lang === 'es' ? es : pt;
+    // Lista del responsable: se omiten automaticamente los campos vacios.
+    const cLabels = lang === 'es'
+      ? { name: 'Empresa', taxId: 'RUC/CNPJ', email: 'Correo', phone: 'Teléfono', address: 'Dirección' }
+      : { name: 'Empresa', taxId: 'RUC/CNPJ', email: 'E-mail', phone: 'Telefone', address: 'Endereço' };
+    const controller = ['name', 'taxId', 'email', 'phone', 'address']
+      .filter(k => company[k] && String(company[k]).trim())
+      .map(k => ({ k: cLabels[k], v: company[k] }));
+    return { L, company, controller, sections: L.sections, mailHref: 'mailto:' + company.email };
+  }
+}
+
+</script>
+</body>
+</html>

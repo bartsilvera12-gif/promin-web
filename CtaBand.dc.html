@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</helmet>
+<section style="position:relative;padding:clamp(70px,10vw,130px) clamp(20px,5vw,64px);overflow:hidden;background:#12171C;font-family:'Sora',sans-serif">
+  <img src="aerial-right.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.16" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.72),rgba(18,23,28,.9))"></div>
+  <div style="position:relative;z-index:2;max-width:820px;margin:0 auto;text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.kicker }}</div>
+    <h2 style="font-size:clamp(28px,4.6vw,52px);font-weight:700;letter-spacing:-1px;line-height:1.08;margin:0 0 30px;color:#F4F6F8">{{ L.title }}</h2>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="Contato.dc.html" style="display:inline-flex;align-items:center;gap:10px;background:#DE694E;color:#151A1F;font-weight:700;font-size:15px;padding:16px 30px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);box-shadow:0 14px 36px rgba(222,105,78,.45)">{{ L.btn }} <span style="font-family:'JetBrains Mono',monospace">→</span></a>
+      <a href="tel:+553172075744" style="display:inline-flex;align-items:center;gap:10px;color:#EDEFF2;font-weight:600;font-size:15px;padding:16px 26px;border:1px solid rgba(217,220,224,.22);border-radius:999px;transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(222,105,78,.55);background:rgba(222,105,78,.08)">+55 31 7207-5744</a>
+    </div>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:360}}">
+class Component extends DCLogic {
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  renderVals() {
+    const pt = { kicker: 'Vamos conversar', title: 'Pronto para mineirar do jeito certo?', btn: 'Fale com a ProMin' };
+    const es = { kicker: 'Conversemos', title: '¿Listo para minar de la forma correcta?', btn: 'Habla con ProMin' };
+    return { L: this.lang() === 'es' ? es : pt };
+  }
+}
+
+</script>
+</body>
+</html>

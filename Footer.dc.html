@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@keyframes promin-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.promin-social { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(217,220,224,.16); color: #C9CDD2; transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease; }
+.promin-social:hover { color: #151A1F; background: #DE694E; border-color: #DE694E; transform: translateY(-3px); }
+.promin-social svg { width: 19px; height: 19px; display: block; }
+</style>
+</helmet>
+<footer style="background:#12171C;font-family:'Sora',sans-serif;color:#C9CDD2;position:relative;overflow:hidden">
+  <div style="height:56px;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid rgba(217,220,224,.07)">
+    <div style="display:flex;gap:16px;white-space:nowrap;animation:promin-marquee 22s linear infinite;padding-left:16px">
+      <sc-for list="{{ stripe }}" as="s" hint-placeholder-count="24">
+        <span style="display:inline-block;width:26px;height:16px;background:#DE694E;transform:skewX(-24deg);flex:none"></span>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(46px,7vw,80px) clamp(20px,5vw,64px) 34px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(30px,5vw,64px)" data-foot-grid>
+    <div>
+      <img src="logo-full.png" alt="ProMin" style="height:34px;margin-bottom:22px" />
+      <p style="font-size:19px;line-height:1.5;color:#EDEFF2;font-weight:300;max-width:30ch;margin:0 0 18px">{{ L.tagline }}</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:#6E7681;text-transform:uppercase;margin:0">{{ L.sub }}</p>
+    </div>
+
+    <div>
+      <h4 style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin:0 0 20px;font-weight:600">{{ L.navTitle }}</h4>
+      <div style="display:flex;flex-direction:column;gap:13px">
+        <sc-for list="{{ links }}" as="lk" hint-placeholder-count="7">
+          <a href="{{ lk.href }}" style="color:#C9CDD2;font-size:15px" style-hover="color:#DE694E">{{ lk.label }}</a>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <h4 style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin:0 0 20px;font-weight:600">{{ L.contactTitle }}</h4>
+      <div style="display:flex;flex-direction:column;gap:15px">
+        <a href="tel:+553172075744" style="color:#EDEFF2;font-size:20px;font-weight:600" style-hover="color:#DE694E">+55 31 7207-5744</a>
+        <a href="mailto:contato@prominconsultoria.com.br" style="color:#C9CDD2;font-size:14px" style-hover="color:#DE694E">contato@prominconsultoria.com.br</a>
+        <p style="margin:0;font-size:14px;color:#8A9199;line-height:1.5">{{ L.loc }}</p>
+        <a href="https://wa.me/553172075744" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;margin-top:6px;border:1px solid rgba(222,105,78,.5);color:#DE694E;font-weight:600;font-size:13px;padding:11px 18px;border-radius:999px;width:max-content;transition:background .25s ease,color .25s ease" style-hover="background:#DE694E;color:#151A1F">{{ L.whats }}</a>
+
+        <div style="margin-top:14px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#6E7681;margin-bottom:14px">{{ L.social }}</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="https://instagram.com/prominconsultoria" target="_blank" rel="noopener" class="promin-social" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://wa.me/553172075744" target="_blank" rel="noopener" class="promin-social" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.29-.15-1.71-.84-1.97-.94-.26-.1-.46-.15-.65.15-.19.29-.74.94-.91 1.13-.17.19-.34.22-.63.07-.29-.15-1.22-.45-2.32-1.43-.86-.76-1.44-1.7-1.61-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.65-1.57-.89-2.15-.23-.56-.47-.48-.65-.49l-.55-.01c-.19 0-.51.07-.77.36-.26.29-1.01.99-1.01 2.41s1.03 2.79 1.18 2.98c.15.19 2.03 3.1 4.92 4.35.69.3 1.22.48 1.64.61.69.22 1.31.19 1.81.12.55-.08 1.71-.7 1.95-1.37.24-.67.24-1.25.17-1.37-.07-.12-.26-.19-.55-.34zM12.04 21.5h-.01a9.44 9.44 0 0 1-4.6-1.26l-.33-.2-3.42.9.91-3.34-.21-.34a9.44 9.44 0 0 1-1.45-5.05c0-5.22 4.25-9.47 9.48-9.47a9.43 9.43 0 0 1 6.7 2.78 9.42 9.42 0 0 1 2.77 6.7c0 5.22-4.25 9.47-9.48 9.47zm8.06-17.53A11.36 11.36 0 0 0 12.04.5C5.8.5.72 5.58.72 11.82c0 2.08.54 4.11 1.58 5.9L.62 23.5l5.92-1.55a11.3 11.3 0 0 0 5.49 1.4h.01c6.24 0 11.32-5.08 11.32-11.32 0-3.03-1.18-5.87-3.32-8.01z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@prominconsultoria" target="_blank" rel="noopener" class="promin-social" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82a4.28 4.28 0 0 1-1.05-2.82h-3.06v12.9a2.6 2.6 0 0 1-2.6 2.5 2.6 2.6 0 0 1-2.6-2.6 2.6 2.6 0 0 1 3.34-2.5V7.2a5.66 5.66 0 0 0-.74-.05A5.68 5.68 0 0 0 4.2 12.83a5.68 5.68 0 0 0 9.7 4.02 5.68 5.68 0 0 0 1.66-4V9.01a7.32 7.32 0 0 0 4.28 1.37V7.32a4.28 4.28 0 0 1-3.24-1.5z"/></svg>
+            </a>
+            <a href="mailto:contato@prominconsultoria.com.br" class="promin-social" aria-label="E-mail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1240px;margin:0 auto;padding:22px clamp(20px,5vw,64px);border-top:1px solid rgba(217,220,224,.07);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;color:#6E7681">© 2024 ProMin Consultoria · {{ L.rights }} · {{ L.dev }} <span style="color:#DE694E">Neura</span></span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;color:#6E7681">CONSULTORIA EM MINERAÇÃO — BR/PR</span>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:420}}">
+class Component extends DCLogic {
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  renderVals() {
+    const lang = this.lang();
+    const dict = {
+      pt: {
+        tagline: 'Expertise e experiência para mineirar do jeito certo.',
+        sub: 'Soluções em mineração e pedreiras · +20 anos',
+        navTitle: 'Navegação', contactTitle: 'Contato',
+        loc: 'Brasil — Atendimento nacional', whats: 'WhatsApp', social: 'Redes sociais',
+        rights: 'Todos os direitos reservados',
+        dev: 'Desenvolvido por',
+        items: ['Início', 'Sobre', 'Serviços', 'Áreas de Atuação', 'Processo', 'Contato', 'Política de Privacidade'],
+      },
+      es: {
+        tagline: 'Experiencia y expertise para minar de la forma correcta.',
+        sub: 'Soluciones en minería y canteras · +20 años',
+        navTitle: 'Navegación', contactTitle: 'Contacto',
+        loc: 'Brasil — Atención nacional', whats: 'WhatsApp', social: 'Redes sociales',
+        rights: 'Todos los derechos reservados',
+        dev: 'Desarrollado por',
+        items: ['Inicio', 'Nosotros', 'Servicios', 'Áreas', 'Proceso', 'Contacto', 'Política de Privacidad'],
+      },
+    };
+    const L = dict[lang];
+    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Areas.dc.html', 'Processo.dc.html', 'Contato.dc.html', 'privacidad.dc.html'];
+    const links = L.items.map((label, i) => ({ label, href: hrefs[i] }));
+    return { L, links, stripe: Array.from({ length: 24 }) };
+  }
+}
+
+</script>
+</body>
+</html>

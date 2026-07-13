@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./symbol.png">
+<link rel="apple-touch-icon" href="./symbol.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #1A2026; color: #EDEFF2; }
+  a { color: #DE694E; text-decoration: none; }
+  a:hover { color: #E8714F; }
+  ::selection { background: #DE694E; color: #151A1F; }
+  @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</helmet>
+
+<div style="font-family:'Sora',sans-serif;background:#1A2026;overflow-x:hidden">
+  <div data-progress style="position:fixed;top:0;left:0;height:3px;width:100%;background:#DE694E;transform:scaleX(0);transform-origin:0 50%;z-index:950"></div>
+  <dc-import name="Nav" active="areas" hint-size="100%,90px"></dc-import>
+
+  <section style="position:relative;padding:170px clamp(20px,5vw,64px) 60px;background:radial-gradient(110% 80% at 80% 0%, #22303f 0%, #1A2026 60%);overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%);-webkit-mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%)"></div>
+    <div style="position:relative;max-width:1160px;margin:0 auto">
+      <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:26px"><span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.kicker }}</div>
+      <h1 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(34px,5.5vw,68px);line-height:1.04;font-weight:700;letter-spacing:-1.5px;margin:0 0 22px;max-width:16ch;color:#F4F6F8">{{ L.title }}</h1>
+      <p data-reveal="up" data-reveal-delay="150" style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#A9B0B8;font-weight:300;max-width:52ch;margin:0">{{ L.lede }}</p>
+    </div>
+  </section>
+
+  <!-- AREAS GRID -->
+  <section style="padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px) clamp(50px,7vw,90px);max-width:1200px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px" data-area-grid>
+      <sc-for list="{{ areas }}" as="a" hint-placeholder-count="4">
+        <div data-reveal="up" data-reveal-delay="{{ a.delay }}" style="position:relative;background:#12171C;border:1px solid rgba(217,220,224,.08);border-radius:18px;padding:40px 36px;overflow:hidden;transition:border-color .35s ease,transform .35s ease" style-hover="border-color:rgba(222,105,78,.45);transform:translateY(-5px)">
+          <div style="position:absolute;bottom:-30px;right:6px;font-family:'JetBrains Mono',monospace;font-size:120px;font-weight:600;color:rgba(222,105,78,.07);line-height:1;pointer-events:none">{{ a.num }}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#DE694E;margin-bottom:16px">{{ a.num }} — {{ a.tag }}</div>
+          <h3 style="font-size:clamp(22px,2.6vw,28px);font-weight:700;margin:0 0 14px;color:#F4F6F8;position:relative">{{ a.title }}</h3>
+          <p style="font-size:15px;line-height:1.65;color:#8A9199;margin:0 0 22px;position:relative;max-width:40ch">{{ a.desc }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;position:relative">
+            <sc-for list="{{ a.items }}" as="it" hint-placeholder-count="3">
+              <span style="font-size:12.5px;color:#C9CDD2;border:1px solid rgba(217,220,224,.14);border-radius:999px;padding:6px 14px">{{ it }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- MARKET BAND -->
+  <section style="position:relative;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);overflow:hidden;background:#12171C">
+    <img data-parallax="0.12" src="hero-machinery.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.22" />
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.7),rgba(18,23,28,.9))"></div>
+    <div style="position:relative;z-index:2;max-width:900px;margin:0 auto;text-align:center">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.mktKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(28px,4.4vw,50px);font-weight:700;letter-spacing:-1px;line-height:1.1;margin:0 0 22px;color:#F4F6F8">{{ L.mktTitle }}</h2>
+      <p data-reveal="up" data-reveal-delay="150" style="font-size:16.5px;line-height:1.7;color:#A9B0B8;margin:0 auto;max-width:60ch">{{ L.mktBody }}</p>
+    </div>
+  </section>
+
+  <dc-import name="CtaBand" hint-size="100%,360px"></dc-import>
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+  renderVals() {
+    const lang = this.lang();
+    const pt = {
+      kicker: 'Onde atuamos', title: 'Áreas de atuação da ProMin.',
+      lede: 'Atuamos em diferentes frentes do setor mineral, sempre com o mesmo compromisso técnico e a mesma busca por eficiência.',
+      areas: [
+        { tag: 'MINÉRIO', title: 'Minério de Ferro', desc: 'Consultoria para operações de extração e beneficiamento de minério de ferro — o coração da nossa expertise.', items: ['Extração', 'Beneficiamento', 'Logística'] },
+        { tag: 'PEDREIRAS', title: 'Pedreiras e Agregados', desc: 'Soluções para pedreiras e produção de agregados, com foco em produtividade e segurança operacional.', items: ['Britagem', 'Agregados', 'Produção'] },
+        { tag: 'CARVÃO', title: 'Carvão Mineral', desc: 'Suporte técnico em operações de carvão, otimizando a cadeia de extração à comercialização.', items: ['Extração', 'Estoque', 'Comercialização'] },
+        { tag: 'MINERAIS', title: 'Metais e Minerais Industriais', desc: 'Assessoria em diversos minerais e metais, identificando oportunidades e maximizando resultados.', items: ['Prospecção', 'Processo', 'Mercado'] },
+      ],
+      mktKicker: 'O mercado',
+      mktTitle: 'O mercado por trás dos campos de mineração.',
+      mktBody: 'Conhecemos as complexidades e as oportunidades do setor mineral. Essa visão de mercado nos permite orientar cada cliente na direção certa — com estratégia, técnica e resultados consistentes.',
+    };
+    const es = {
+      kicker: 'Dónde actuamos', title: 'Áreas de actuación de ProMin.',
+      lede: 'Actuamos en distintos frentes del sector minero, siempre con el mismo compromiso técnico y la misma búsqueda de eficiencia.',
+      areas: [
+        { tag: 'MINERAL', title: 'Mineral de Hierro', desc: 'Consultoría para operaciones de extracción y beneficio de mineral de hierro — el corazón de nuestra expertise.', items: ['Extracción', 'Beneficio', 'Logística'] },
+        { tag: 'CANTERAS', title: 'Canteras y Agregados', desc: 'Soluciones para canteras y producción de agregados, con foco en productividad y seguridad operacional.', items: ['Trituración', 'Agregados', 'Producción'] },
+        { tag: 'CARBÓN', title: 'Carbón Mineral', desc: 'Soporte técnico en operaciones de carbón, optimizando la cadena de la extracción a la comercialización.', items: ['Extracción', 'Almacenaje', 'Comercialización'] },
+        { tag: 'MINERALES', title: 'Metales y Minerales Industriales', desc: 'Asesoría en diversos minerales y metales, identificando oportunidades y maximizando resultados.', items: ['Prospección', 'Proceso', 'Mercado'] },
+      ],
+      mktKicker: 'El mercado',
+      mktTitle: 'El mercado detrás de los campos de minería.',
+      mktBody: 'Conocemos las complejidades y las oportunidades del sector minero. Esa visión de mercado nos permite orientar a cada cliente en la dirección correcta — con estrategia, técnica y resultados consistentes.',
+    };
+    const L = lang === 'es' ? es : pt;
+    return { L, areas: L.areas.map((a, i) => ({ ...a, num: '0' + (i + 1), delay: (i % 2) * 90 })) };
+  }
+}
+
+</script>
+</body>
+</html>

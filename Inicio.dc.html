@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./symbol.png">
+<link rel="apple-touch-icon" href="./symbol.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #1A2026; color: #EDEFF2; }
+  a { color: #DE694E; text-decoration: none; }
+  a:hover { color: #E8714F; }
+  ::selection { background: #DE694E; color: #151A1F; }
+  @keyframes promin-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes promin-drift { 0% { transform: translateY(0); } 50% { transform: translateY(-16px); } 100% { transform: translateY(0); } }
+  @keyframes promin-scroll-dot { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(20px); opacity: 0; } 100% { opacity: 0; } }
+  @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  @keyframes promin-float-card { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-14px) rotate(-.4deg); } }
+  @keyframes promin-kenburns { 0% { transform: scale(1) translate(0,0); } 100% { transform: scale(1.12) translate(-2%,-2%); } }
+  @keyframes promin-shine { 0% { transform: translateX(-120%) skewX(-18deg); } 60%,100% { transform: translateX(220%) skewX(-18deg); } }
+  .promin-hero-card { animation: promin-float-card 9s ease-in-out infinite; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .promin-hero-card:hover { animation-play-state: paused; transform: translateY(-14px) scale(1.02); }
+  .promin-hero-frame { transition: box-shadow .5s ease, border-color .5s ease; border: 1px solid rgba(222,105,78,.18); }
+  .promin-hero-card:hover .promin-hero-frame { box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(222,105,78,.5); }
+  .promin-hero-img { animation: promin-kenburns 18s ease-in-out infinite alternate; }
+  .promin-hero-shine { position: absolute; top: -20%; left: 0; width: 45%; height: 140%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent); pointer-events: none; animation: promin-shine 7s ease-in-out infinite; animation-delay: 2s; }
+  @keyframes promin-glow { 0%,100% { text-shadow: 0 0 12px rgba(222,105,78,.35), 0 0 30px rgba(222,105,78,.16); } 50% { text-shadow: 0 0 22px rgba(222,105,78,.7), 0 0 56px rgba(232,113,79,.42); } }
+  .promin-glow-word { color: #E8714F; animation: promin-glow 3.4s ease-in-out infinite; transition: text-shadow .3s ease, transform .3s ease; display: inline-block; }
+  .promin-glow-word:hover { animation-play-state: paused; text-shadow: 0 0 26px rgba(222,105,78,.85), 0 0 64px rgba(232,113,79,.55); transform: scale(1.03); }
+  @media (max-width: 720px) {
+    .promin-hero-content { text-align: center; margin: 0 auto; }
+    .promin-hero-content p { margin-left: auto; margin-right: auto; }
+    .promin-hero-btns { justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { .promin-hero-card, .promin-hero-img, .promin-hero-shine, .promin-glow-word { animation: none; transition: opacity .4s ease; transform: none; } }
+</style>
+</helmet>
+
+<div style="font-family:'Sora',sans-serif;background:#1A2026;overflow-x:hidden">
+  <div data-progress style="position:fixed;top:0;left:0;height:3px;width:100%;background:#DE694E;transform:scaleX(0);transform-origin:0 50%;z-index:950"></div>
+
+  <dc-import name="Nav" active="inicio" hint-size="100%,90px"></dc-import>
+
+  <!-- ===================== HERO ===================== -->
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#12171C">
+    <!-- background image (single, fixed) -->
+    <img src="hero-cover.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0" />
+    <!-- overlays -->
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(18,23,28,.93) 0%,rgba(18,23,28,.66) 40%,rgba(18,23,28,.30) 72%,rgba(18,23,28,.55) 100%)"></div>
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,23,28,.4) 0%,transparent 32%,rgba(18,23,28,.82) 100%)"></div>
+    <!-- faint grid -->
+    <div style="position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 25% 45%,#000 0%,transparent 75%);-webkit-mask-image:radial-gradient(circle at 25% 45%,#000 0%,transparent 75%)"></div>
+
+    <div style="position:relative;z-index:3;max-width:1240px;margin:0 auto;width:100%;padding:110px clamp(20px,5vw,64px) 130px">
+      <div class="promin-hero-content" style="max-width:840px">
+        <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:26px">
+          <span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.eyebrow }}
+        </div>
+        <h1 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(40px,7vw,86px);line-height:1.03;font-weight:700;letter-spacing:-2px;margin:0 0 26px;color:#F4F6F8;text-shadow:0 6px 44px rgba(0,0,0,.55)">{{ L.h1a }}<span class="promin-glow-word">{{ L.h1b }}</span>{{ L.h1c }}</h1>
+        <p data-reveal="up" data-reveal-delay="160" style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#C6CCD2;font-weight:300;max-width:52ch;margin:0 0 40px;text-shadow:0 2px 20px rgba(0,0,0,.5)">{{ L.lede }}</p>
+        <div data-reveal="up" data-reveal-delay="240" class="promin-hero-btns" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <a href="Contato.dc.html" style="display:inline-flex;align-items:center;gap:10px;background:#DE694E;color:#151A1F;font-weight:700;font-size:15px;padding:16px 28px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);box-shadow:0 14px 34px rgba(222,105,78,.42)">{{ L.cta1 }} <span style="font-family:'JetBrains Mono',monospace">→</span></a>
+          <a href="Servicos.dc.html" style="display:inline-flex;align-items:center;gap:10px;color:#EDEFF2;font-weight:600;font-size:15px;padding:16px 22px;border:1px solid rgba(237,239,242,.28);border-radius:999px;background:rgba(18,23,28,.35);transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(222,105,78,.6);background:rgba(222,105,78,.12)">{{ L.cta2 }}</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===================== KEYWORD MARQUEE ===================== -->
+  <div style="background:#DE694E;color:#151A1F;overflow:hidden;padding:15px 0;transform:rotate(-1.2deg);margin:-14px 0;position:relative;z-index:3">
+    <div style="display:flex;gap:34px;white-space:nowrap;animation:promin-marquee 30s linear infinite;width:max-content">
+      <sc-for list="{{ marquee }}" as="m" hint-placeholder-count="14">
+        <span style="display:inline-flex;align-items:center;gap:34px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;letter-spacing:1px;text-transform:uppercase">{{ m }}<span style="width:16px;height:12px;background:#151A1F;transform:skewX(-24deg);display:inline-block"></span></span>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ===================== INTRO ===================== -->
+  <section style="padding:clamp(70px,10vw,130px) clamp(20px,5vw,64px);max-width:1160px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,6vw,80px);align-items:start" data-intro-grid>
+      <div data-reveal="up" style="position:sticky;top:110px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E">// {{ L.introKicker }}</span>
+        <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:700;letter-spacing:-.8px;line-height:1.15;color:#F4F6F8;margin:18px 0 34px">{{ L.introTitle }}</h2>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <sc-for list="{{ stats }}" as="st" hint-placeholder-count="3">
+            <div style="display:flex;align-items:baseline;gap:16px;padding:16px 0;border-top:1px solid rgba(217,220,224,.1)">
+              <span style="font-size:clamp(30px,3.4vw,42px);font-weight:800;color:#DE694E;line-height:1;letter-spacing:-1px;flex:none;min-width:96px">{{ st.n }}</span>
+              <span style="font-size:14px;color:#A9B0B8;line-height:1.4">{{ st.l }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <p data-reveal="up" style="font-size:clamp(22px,2.6vw,30px);line-height:1.4;font-weight:300;color:#EDEFF2;margin:0 0 30px">{{ L.introLead }}</p>
+        <p data-reveal="up" data-reveal-delay="120" style="font-size:16px;line-height:1.7;color:#A9B0B8;margin:0 0 40px;max-width:56ch">{{ L.introBody }}</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" data-values-grid>
+          <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
+            <div data-reveal="up" data-reveal-delay="{{ v.delay }}" style="border-top:1px solid rgba(222,105,78,.4);padding-top:16px">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#DE694E;margin-bottom:8px">{{ v.num }}</div>
+              <div style="font-size:17px;font-weight:600;color:#EDEFF2;margin-bottom:6px">{{ v.title }}</div>
+              <div style="font-size:13px;color:#8A9199;line-height:1.5">{{ v.desc }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== INDEX (section links) ===================== -->
+  <section style="background:#12171C;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);position:relative">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:42px;flex-wrap:wrap;gap:16px" data-reveal="up">
+        <h2 style="font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0;color:#F4F6F8">{{ L.exploreTitle }}</h2>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:#6E7681">{{ L.exploreSub }}</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr .9fr;gap:48px;align-items:start" data-index-wrap>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ index }}" as="row" hint-placeholder-count="4">
+            <a href="{{ row.href }}" onMouseEnter="{{ row.enter }}" data-reveal="up" data-reveal-delay="{{ row.delay }}" style="display:flex;align-items:center;gap:20px;padding:26px 8px;border-bottom:1px solid rgba(217,220,224,.09);transition:padding-left .3s ease,background .3s ease;color:#EDEFF2" style-hover="padding-left:20px;background:linear-gradient(90deg,rgba(222,105,78,.08),transparent)">
+              <div style="flex:1">
+                <div style="font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.5px;line-height:1.1">{{ row.title }}</div>
+                <div style="font-size:14px;color:#8A9199;margin-top:4px">{{ row.desc }}</div>
+              </div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;flex:none;transition:transform .3s ease,color .3s ease" style-hover="transform:translateX(6px);color:#DE694E">→</span>
+            </a>
+          </sc-for>
+        </div>
+        <div data-index-preview style="position:sticky;top:110px;border-radius:18px;overflow:hidden;aspect-ratio:4/5;background:#0E1216">
+          <img src="face.jpg" alt="" ref="{{ ref0 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity .55s ease,transform .8s ease" />
+          <img src="tech-monitors.jpg" alt="" ref="{{ ref1 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease,transform .8s ease" />
+          <img src="aerial-right.jpg" alt="" ref="{{ ref2 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease,transform .8s ease" />
+          <img src="hero-machinery.jpg" alt="" ref="{{ ref3 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease,transform .8s ease" />
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.1),rgba(18,23,28,.55));pointer-events:none"></div>
+          <div style="position:absolute;left:18px;bottom:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(237,239,242,.85)">// ProMin</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA BAND ===================== -->
+  <section style="position:relative;padding:clamp(80px,11vw,150px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
+    <img data-parallax="0.14" src="aerial-right.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.28" />
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.7),rgba(18,23,28,.85))"></div>
+    <div style="position:relative;z-index:2;max-width:900px;margin:0 auto;text-align:center">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.ctaKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(30px,5vw,56px);font-weight:700;letter-spacing:-1px;line-height:1.08;margin:0 0 32px;color:#F4F6F8">{{ L.ctaTitle }}</h2>
+      <a href="Contato.dc.html" data-reveal="up" data-reveal-delay="180" style="display:inline-flex;align-items:center;gap:12px;background:#DE694E;color:#151A1F;font-weight:700;font-size:16px;padding:18px 34px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);box-shadow:0 16px 40px rgba(222,105,78,.45)">{{ L.ctaBtn }} <span style="font-family:'JetBrains Mono',monospace">→</span></a>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { hover: 0 };
+  imgRefs = [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
+
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+
+  componentDidMount() {
+    import('./site.js').then(m => m.initMotion()).catch(() => {});
+  }
+
+  setHover(i) {
+    this.imgRefs.forEach((r, idx) => {
+      if (!r.current) return;
+      r.current.style.opacity = idx === i ? '1' : '0';
+      r.current.style.transform = idx === i ? 'scale(1.04)' : 'scale(1)';
+    });
+  }
+
+  renderVals() {
+    const lang = this.lang();
+    const pt = {
+      eyebrow: 'Consultoria em Mineração — BR/PR',
+      h1a: 'Expertise para ', h1b: 'mineirar', h1c: ' do jeito certo.',
+      lede: 'Há mais de 20 anos entregando soluções técnicas de alta qualidade para operações de mineração e pedreiras — com visão estratégica, eficiência e compromisso.',
+      cta1: 'Conheça a ProMin', cta2: 'Nossos serviços',
+      imgTag: 'Operação · Vista aérea', chip: 'anos de expertise',
+      scroll: 'Role para explorar',
+      marquee: ['EXTRAÇÃO', 'LOGÍSTICA', 'MANUTENÇÃO', 'TECNOLOGIA', 'ESTRATÉGIA', 'EFICIÊNCIA', 'PEDREIRAS'],
+      introKicker: 'Sobre a ProMin',
+      introTitle: 'Referência em consultoria para mineração e pedreiras.',
+      stats: [
+        { n: '+20', l: 'anos de expertise no setor' },
+        { n: '04', l: 'áreas de atuação' },
+        { n: 'BR·PR', l: 'atuação com alcance nacional' },
+      ],
+      introLead: 'A ProMin é uma consultoria especializada em oferecer soluções personalizadas para o setor de mineração e pedreiras.',
+      introBody: 'Combinamos conhecimento técnico profundo, tradição e uma abordagem moderna para identificar as melhores oportunidades e impulsionar o sucesso dos nossos clientes — sempre com ética, qualidade e excelência no atendimento.',
+      values: [
+        { num: '01', title: 'Confiança', desc: 'Relações de parceria construídas com transparência.' },
+        { num: '02', title: 'Eficiência', desc: 'Processos que otimizam operações e maximizam resultados.' },
+        { num: '03', title: 'Excelência', desc: 'Cada projeto executado com respeito aos padrões do setor.' },
+      ],
+      exploreTitle: 'Explore a ProMin', exploreSub: '// 04 áreas',
+      index: [
+        { title: 'Sobre nós', desc: 'Quem somos e o que nos move', href: 'Sobre.dc.html' },
+        { title: 'Serviços', desc: 'O que fazemos pela sua operação', href: 'Servicos.dc.html' },
+        { title: 'Áreas de Atuação', desc: 'Onde a ProMin atua', href: 'Areas.dc.html' },
+        { title: 'Processo', desc: 'Como transformamos desafios em resultados', href: 'Processo.dc.html' },
+      ],
+      ctaKicker: 'Vamos conversar',
+      ctaTitle: 'Pronto para mineirar do jeito certo?',
+      ctaBtn: 'Fale com a ProMin',
+    };
+    const es = {
+      eyebrow: 'Consultoría en Minería — BR/PR',
+      h1a: 'Expertise para ', h1b: 'minar', h1c: ' de la forma correcta.',
+      lede: 'Desde hace más de 20 años entregando soluciones técnicas de alta calidad para operaciones de minería y canteras — con visión estratégica, eficiencia y compromiso.',
+      cta1: 'Conoce ProMin', cta2: 'Nuestros servicios',
+      imgTag: 'Operación · Vista aérea', chip: 'años de expertise',
+      scroll: 'Desplázate para explorar',
+      marquee: ['EXTRACCIÓN', 'LOGÍSTICA', 'MANTENIMIENTO', 'TECNOLOGÍA', 'ESTRATEGIA', 'EFICIENCIA', 'CANTERAS'],
+      introKicker: 'Sobre ProMin',
+      introTitle: 'Referencia en consultoría para minería y canteras.',
+      stats: [
+        { n: '+20', l: 'años de expertise en el sector' },
+        { n: '04', l: 'áreas de actuación' },
+        { n: 'BR·PR', l: 'actuación con alcance nacional' },
+      ],
+      introLead: 'ProMin es una consultoría especializada en ofrecer soluciones personalizadas para el sector de la minería y las canteras.',
+      introBody: 'Combinamos conocimiento técnico profundo, tradición y un enfoque moderno para identificar las mejores oportunidades e impulsar el éxito de nuestros clientes — siempre con ética, calidad y excelencia en la atención.',
+      values: [
+        { num: '01', title: 'Confianza', desc: 'Relaciones de colaboración construidas con transparencia.' },
+        { num: '02', title: 'Eficiencia', desc: 'Procesos que optimizan operaciones y maximizan resultados.' },
+        { num: '03', title: 'Excelencia', desc: 'Cada proyecto ejecutado respetando los estándares del sector.' },
+      ],
+      exploreTitle: 'Explora ProMin', exploreSub: '// 04 áreas',
+      index: [
+        { title: 'Nosotros', desc: 'Quiénes somos y qué nos mueve', href: 'Sobre.dc.html' },
+        { title: 'Servicios', desc: 'Lo que hacemos por tu operación', href: 'Servicos.dc.html' },
+        { title: 'Áreas de Actuación', desc: 'Dónde actúa ProMin', href: 'Areas.dc.html' },
+        { title: 'Proceso', desc: 'Cómo convertimos desafíos en resultados', href: 'Processo.dc.html' },
+      ],
+      ctaKicker: 'Conversemos',
+      ctaTitle: '¿Listo para minar de la forma correcta?',
+      ctaBtn: 'Habla con ProMin',
+    };
+    const L = lang === 'es' ? es : pt;
+    const imgs = ['face.jpg', 'tech-monitors.jpg', 'aerial-right.jpg', 'hero-machinery.jpg'];
+    const index = L.index.map((r, i) => ({
+      ...r, num: '0' + (i + 1), delay: i * 90,
+      enter: () => this.setHover(i),
+    }));
+    const values = L.values.map((v, i) => ({ ...v, delay: i * 100 }));
+    return {
+      L, ...L, values, index, marquee: [...L.marquee, ...L.marquee],
+      ref0: this.imgRefs[0], ref1: this.imgRefs[1], ref2: this.imgRefs[2], ref3: this.imgRefs[3],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

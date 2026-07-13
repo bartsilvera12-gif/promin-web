@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./symbol.png">
+<link rel="apple-touch-icon" href="./symbol.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #1A2026; color: #EDEFF2; }
+  a { color: #DE694E; text-decoration: none; }
+  a:hover { color: #E8714F; }
+  ::selection { background: #DE694E; color: #151A1F; }
+  @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</helmet>
+
+<div style="font-family:'Sora',sans-serif;background:#1A2026;overflow-x:hidden">
+  <div data-progress style="position:fixed;top:0;left:0;height:3px;width:100%;background:#DE694E;transform:scaleX(0);transform-origin:0 50%;z-index:950"></div>
+  <dc-import name="Nav" active="sobre" hint-size="100%,90px"></dc-import>
+
+  <!-- PAGE HERO -->
+  <section style="position:relative;padding:170px clamp(20px,5vw,64px) 70px;background:radial-gradient(110% 80% at 80% 0%, #22303f 0%, #1A2026 60%);overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%);-webkit-mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%)"></div>
+    <div style="position:relative;max-width:1160px;margin:0 auto">
+      <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:26px"><span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.kicker }}</div>
+      <h1 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(34px,5.5vw,68px);line-height:1.04;font-weight:700;letter-spacing:-1.5px;margin:0;max-width:18ch;color:#F4F6F8">{{ L.title }}</h1>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section style="padding:clamp(40px,7vw,90px) clamp(20px,5vw,64px);max-width:1160px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,64px);align-items:center" data-story-grid>
+      <div data-reveal="right" style="position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 26px 70px rgba(0,0,0,.45)">
+        <img data-parallax="0.08" src="face.jpg" alt="" style="position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover" />
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(18,23,28,.6))"></div>
+        <div style="position:absolute;left:20px;bottom:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(237,239,242,.9);text-transform:uppercase">{{ L.imgCap }}</div>
+      </div>
+      <div>
+        <p data-reveal="up" style="font-size:clamp(19px,2vw,24px);line-height:1.45;font-weight:400;color:#EDEFF2;margin:0 0 24px">{{ L.p1 }}</p>
+        <p data-reveal="up" data-reveal-delay="100" style="font-size:15.5px;line-height:1.7;color:#A9B0B8;margin:0 0 20px">{{ L.p2 }}</p>
+        <p data-reveal="up" data-reveal-delay="180" style="font-size:15.5px;line-height:1.7;color:#A9B0B8;margin:0">{{ L.p3 }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION / VISION / VALUES -->
+  <section style="background:#12171C;padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px)">
+    <div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px" data-mvv-grid>
+      <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
+        <div data-reveal="up" data-reveal-delay="{{ p.delay }}" style="background:#1A2026;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:34px 30px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.45);transform:translateY(-4px)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#DE694E;margin-bottom:18px">{{ p.tag }}</div>
+          <h3 style="font-size:23px;font-weight:700;margin:0 0 12px;color:#F4F6F8">{{ p.title }}</h3>
+          <p style="font-size:14.5px;line-height:1.65;color:#8A9199;margin:0">{{ p.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE STAT -->
+  <section style="position:relative;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);overflow:hidden">
+    <img data-parallax="0.12" src="hero-machinery.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.2" />
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.75),rgba(18,23,28,.9))"></div>
+    <div style="position:relative;z-index:2;max-width:1160px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:clamp(30px,6vw,80px);align-items:center" data-exp-grid>
+      <div data-reveal="scale" style="display:flex;align-items:baseline;gap:6px">
+        <span style="font-size:clamp(90px,15vw,180px);font-weight:800;color:#DE694E;line-height:.85" data-count="20">0</span>
+        <span style="font-size:clamp(50px,8vw,90px);font-weight:800;color:#DE694E;line-height:1">+</span>
+      </div>
+      <div data-reveal="up" data-reveal-delay="120">
+        <h2 style="font-size:clamp(24px,3vw,38px);font-weight:700;letter-spacing:-.5px;margin:0 0 14px;color:#F4F6F8">{{ L.expTitle }}</h2>
+        <p style="font-size:16px;line-height:1.65;color:#A9B0B8;margin:0;max-width:52ch">{{ L.expBody }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONALITY TRAITS -->
+  <section style="padding:clamp(60px,8vw,100px) clamp(20px,5vw,64px);max-width:1160px;margin:0 auto">
+    <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.traitsKicker }}</div>
+    <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(26px,3.6vw,42px);font-weight:700;letter-spacing:-1px;margin:0 0 36px;color:#F4F6F8;max-width:20ch">{{ L.traitsTitle }}</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:14px">
+      <sc-for list="{{ traits }}" as="t" hint-placeholder-count="6">
+        <span data-reveal="scale" data-reveal-delay="{{ t.delay }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(217,220,224,.16);border-radius:999px;padding:12px 22px;font-size:16px;font-weight:500;color:#EDEFF2;transition:background .3s ease,border-color .3s ease" style-hover="background:rgba(222,105,78,.12);border-color:rgba(222,105,78,.5)"><span style="width:7px;height:7px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span>{{ t.label }}</span>
+      </sc-for>
+    </div>
+  </section>
+
+  <dc-import name="CtaBand" hint-size="100%,360px"></dc-import>
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
+  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+  renderVals() {
+    const lang = this.lang();
+    const pt = {
+      kicker: 'Sobre a ProMin',
+      title: 'Feitos de quem conhece sobre o assunto.',
+      imgCap: '// Equipe técnica em campo',
+      p1: 'A ProMin Consultoria é uma empresa especializada em oferecer soluções personalizadas no setor de mineração e pedreiras.',
+      p2: 'Com 20 anos de experiência acumulada pelo seu fundador, a ProMin se posiciona como referência no mercado. Destaca-se pelo profundo conhecimento em processos de extração e comercialização de minerais, oferecendo consultoria especializada, assessoria de negócios e suporte técnico para projetos de mineração.',
+      p3: 'Com a meta de se tornar referência nacional, a ProMin investe constantemente em melhorias de seus processos e na expansão do seu portfólio de serviços — sempre comprometida com a ética, a qualidade e a excelência no atendimento.',
+      pillars: [
+        { tag: 'MISSÃO', title: 'Nossa Missão', desc: 'Entregar soluções técnicas que impulsionam o sucesso dos nossos clientes com excelência e responsabilidade.' },
+        { tag: 'VISÃO', title: 'Nossa Visão', desc: 'Tornar-se referência nacional em consultoria de mineração, reconhecida pela inovação e confiabilidade.' },
+        { tag: 'VALORES', title: 'Nossos Valores', desc: 'Ética, qualidade, eficiência e parceria em cada projeto — do primeiro contato ao resultado final.' },
+      ],
+      expTitle: 'Duas décadas construindo confiança.',
+      expBody: 'A expertise acumulada ao longo de mais de 20 anos nos permite entender a fundo as complexidades do setor e antecipar as necessidades de cada operação — com precisão técnica e visão estratégica.',
+      traitsKicker: 'Personalidade da marca',
+      traitsTitle: 'Uma marca forte, moderna e técnica.',
+      traits: ['Confiável', 'Moderna', 'Séria', 'Sofisticada', 'Digital', 'Técnica'],
+    };
+    const es = {
+      kicker: 'Sobre ProMin',
+      title: 'Hecha por quienes conocen del tema.',
+      imgCap: '// Equipo técnico en campo',
+      p1: 'ProMin Consultoría es una empresa especializada en ofrecer soluciones personalizadas para el sector de la minería y las canteras.',
+      p2: 'Con 20 años de experiencia acumulada por su fundador, ProMin se posiciona como referencia en el mercado. Se destaca por su profundo conocimiento en procesos de extracción y comercialización de minerales, ofreciendo consultoría especializada, asesoría de negocios y soporte técnico para proyectos de minería.',
+      p3: 'Con la meta de convertirse en referencia nacional, ProMin invierte constantemente en la mejora de sus procesos y en la expansión de su portafolio de servicios — siempre comprometida con la ética, la calidad y la excelencia en la atención.',
+      pillars: [
+        { tag: 'MISIÓN', title: 'Nuestra Misión', desc: 'Entregar soluciones técnicas que impulsan el éxito de nuestros clientes con excelencia y responsabilidad.' },
+        { tag: 'VISIÓN', title: 'Nuestra Visión', desc: 'Convertirnos en referencia nacional en consultoría minera, reconocida por la innovación y la confiabilidad.' },
+        { tag: 'VALORES', title: 'Nuestros Valores', desc: 'Ética, calidad, eficiencia y colaboración en cada proyecto — desde el primer contacto hasta el resultado final.' },
+      ],
+      expTitle: 'Dos décadas construyendo confianza.',
+      expBody: 'La experiencia acumulada a lo largo de más de 20 años nos permite entender a fondo las complejidades del sector y anticipar las necesidades de cada operación — con precisión técnica y visión estratégica.',
+      traitsKicker: 'Personalidad de la marca',
+      traitsTitle: 'Una marca fuerte, moderna y técnica.',
+      traits: ['Confiable', 'Moderna', 'Seria', 'Sofisticada', 'Digital', 'Técnica'],
+    };
+    const L = lang === 'es' ? es : pt;
+    return {
+      L,
+      pillars: L.pillars.map((p, i) => ({ ...p, delay: i * 100 })),
+      traits: L.traits.map((label, i) => ({ label, delay: i * 70 })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
