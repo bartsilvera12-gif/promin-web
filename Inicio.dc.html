@@ -44,7 +44,8 @@
   .promin-sec-card:hover img { transform: scale(1.06); }
   /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
   @media (max-width: 900px) {
-    [data-index-wrap] { grid-template-columns: 1fr !important; }
+    [data-index-wrap], [data-svc-grid] { grid-template-columns: 1fr !important; }
+    [data-proc-grid] { grid-template-columns: 1fr !important; }
     /* decorative hover-swap image: no purpose on touch, hide it */
     [data-index-preview] { display: none !important; }
     [data-intro-grid] { grid-template-columns: 1fr !important; }
@@ -121,6 +122,41 @@
             </div>
           </sc-for>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVIÇOS ===================== -->
+  <section style="background:#12171C;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.svcKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 12px;color:#F4F6F8">{{ L.svcTitle }}</h2>
+      <p data-reveal="up" data-reveal-delay="110" style="font-size:16px;line-height:1.65;color:#A9B0B8;margin:0 0 42px;max-width:60ch">{{ L.svcLede }}</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" data-svc-grid>
+        <sc-for list="{{ services }}" as="sv" hint-placeholder-count="6">
+          <div data-reveal="up" data-reveal-delay="{{ sv.delay }}" style="background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:30px 28px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.45);transform:translateY(-4px)">
+            <div style="width:42px;height:42px;border-radius:11px;background:rgba(222,105,78,.12);border:1px solid rgba(222,105,78,.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px"><span style="width:13px;height:13px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span></div>
+            <h3 style="font-size:19px;font-weight:600;color:#F4F6F8;margin:0 0 10px">{{ sv.title }}</h3>
+            <p style="font-size:14px;line-height:1.6;color:#8A9199;margin:0">{{ sv.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROCESSO ===================== -->
+  <section style="padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.procKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 46px;color:#F4F6F8;max-width:22ch">{{ L.procTitle }}</h2>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px" data-proc-grid>
+        <sc-for list="{{ procSteps }}" as="st" hint-placeholder-count="5">
+          <div data-reveal="up" data-reveal-delay="{{ st.delay }}" style="position:relative;padding-top:28px;border-top:2px solid rgba(222,105,78,.3)">
+            <span style="position:absolute;top:-8px;left:0;width:14px;height:14px;border-radius:50%;background:#DE694E;box-shadow:0 0 0 4px rgba(222,105,78,.15)"></span>
+            <h3 style="font-size:18px;font-weight:700;color:#F4F6F8;margin:0 0 8px;letter-spacing:-.3px">{{ st.title }}</h3>
+            <p style="font-size:13.5px;line-height:1.55;color:#8A9199;margin:0">{{ st.desc }}</p>
+          </div>
+        </sc-for>
       </div>
     </div>
   </section>
@@ -206,6 +242,24 @@ class Component extends DCLogic {
         { num: '02', title: 'Eficiência', desc: 'Processos que otimizam operações e maximizam resultados.' },
         { num: '03', title: 'Excelência', desc: 'Cada projeto executado com respeito aos padrões do setor.' },
       ],
+      svcKicker: 'O que fazemos', svcTitle: 'Serviços que geram resultados.',
+      svcLede: 'Soluções técnicas completas para cada etapa da sua operação de mineração e pedreiras — do diagnóstico à execução.',
+      services: [
+        { title: 'Consultoria Técnica', desc: 'Diagnóstico e orientação especializada para elevar a performance da operação.' },
+        { title: 'Produção & Logística', desc: 'Planejamento que resolve gargalos e otimiza o fluxo da operação.' },
+        { title: 'Gestão de Manutenção', desc: 'Disponibilidade de máquinas e equipamentos, com menos paradas.' },
+        { title: 'Extração & Comercialização', desc: 'Domínio dos processos de extração e do mercado de minerais.' },
+        { title: 'Assessoria de Negócios', desc: 'Suporte técnico e estratégico para projetos de mineração.' },
+        { title: 'Tecnologia & Performance', desc: 'Tecnologia especializada que coloca a operação um passo à frente.' },
+      ],
+      procKicker: 'Como trabalhamos', procTitle: 'Um processo claro, do desafio ao resultado.',
+      procSteps: [
+        { title: 'Diagnóstico', desc: 'Entendemos a fundo a operação, seus desafios e objetivos.' },
+        { title: 'Estratégia', desc: 'Um plano técnico sob medida, com foco em eficiência.' },
+        { title: 'Execução', desc: 'Implementação com precisão, acompanhando cada detalhe.' },
+        { title: 'Otimização', desc: 'Refino contínuo para extrair o máximo de performance.' },
+        { title: 'Resultados', desc: 'Valor mensurável e sustentável, com ética e qualidade.' },
+      ],
       exploreTitle: 'Explore a ProMin', exploreSub: '// 04 seções',
       sections: [
         { kicker: 'Quem somos', title: 'Sobre a ProMin', summary: 'Mais de 20 anos de expertise em mineração e pedreiras, com visão estratégica e compromisso técnico em cada projeto.', items: ['Missão', 'Visão', 'Valores'], href: 'Sobre.dc.html' },
@@ -239,6 +293,24 @@ class Component extends DCLogic {
         { num: '02', title: 'Eficiencia', desc: 'Procesos que optimizan operaciones y maximizan resultados.' },
         { num: '03', title: 'Excelencia', desc: 'Cada proyecto ejecutado respetando los estándares del sector.' },
       ],
+      svcKicker: 'Lo que hacemos', svcTitle: 'Servicios que generan resultados.',
+      svcLede: 'Soluciones técnicas completas para cada etapa de tu operación de minería y canteras — del diagnóstico a la ejecución.',
+      services: [
+        { title: 'Consultoría Técnica', desc: 'Diagnóstico y orientación especializada para elevar el desempeño de la operación.' },
+        { title: 'Producción & Logística', desc: 'Planificación que resuelve cuellos de botella y optimiza el flujo.' },
+        { title: 'Gestión de Mantenimiento', desc: 'Disponibilidad de máquinas y equipos, con menos paradas.' },
+        { title: 'Extracción & Comercialización', desc: 'Dominio de los procesos de extracción y del mercado de minerales.' },
+        { title: 'Asesoría de Negocios', desc: 'Soporte técnico y estratégico para proyectos de minería.' },
+        { title: 'Tecnología & Performance', desc: 'Tecnología especializada que pone la operación un paso adelante.' },
+      ],
+      procKicker: 'Cómo trabajamos', procTitle: 'Un proceso claro, del desafío al resultado.',
+      procSteps: [
+        { title: 'Diagnóstico', desc: 'Entendemos a fondo la operación, sus desafíos y objetivos.' },
+        { title: 'Estrategia', desc: 'Un plan técnico a medida, con foco en la eficiencia.' },
+        { title: 'Ejecución', desc: 'Implementación con precisión, acompañando cada detalle.' },
+        { title: 'Optimización', desc: 'Refinamiento continuo para extraer el máximo desempeño.' },
+        { title: 'Resultados', desc: 'Valor medible y sostenible, con ética y calidad.' },
+      ],
       exploreTitle: 'Explora ProMin', exploreSub: '// 04 secciones',
       sections: [
         { kicker: 'Quiénes somos', title: 'Sobre ProMin', summary: 'Más de 20 años de expertise en minería y canteras, con visión estratégica y compromiso técnico en cada proyecto.', items: ['Misión', 'Visión', 'Valores'], href: 'Sobre.dc.html' },
@@ -254,8 +326,10 @@ class Component extends DCLogic {
     const sectionImgs = ['face.jpg', 'tech-monitors.jpg', 'aerial-right.jpg', 'hero-machinery.jpg'];
     const sections = L.sections.map((s, i) => ({ ...s, img: sectionImgs[i], delay: i * 90 }));
     const values = L.values.map((v, i) => ({ ...v, delay: i * 100 }));
+    const services = L.services.map((s, i) => ({ ...s, delay: (i % 3) * 80 }));
+    const procSteps = L.procSteps.map((s, i) => ({ ...s, delay: i * 70 }));
     return {
-      L, ...L, values, sections, marquee: [...L.marquee, ...L.marquee],
+      L, ...L, values, sections, services, procSteps, marquee: [...L.marquee, ...L.marquee],
     };
   }
 }
