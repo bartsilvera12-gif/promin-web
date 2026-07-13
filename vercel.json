@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/Inicio.dc.html" },
+    { "source": "/privacidad", "destination": "/privacidad.dc.html" },
+    { "source": "/favicon.ico", "destination": "/symbol.png" }
+  ]
+}
