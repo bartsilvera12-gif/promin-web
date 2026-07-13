@@ -5,148 +5,171 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" href="./symbol.png">
-<title>ProMin · Panel Administrador</title>
+<title>ProMin · Panel admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#12171C; --panel:#1A2026; --panel2:#171D24; --line:rgba(217,220,224,.10);
-    --txt:#EDEFF2; --muted:#A9B0B8; --dim:#6E7681; --brand:#DE694E; --brand2:#E8714F; --ok:#7FD19A;
+    --bg:#F4F6F8; --card:#FFFFFF; --soft:#F8FAFC; --line:#E4E8EE; --line2:#EDF0F4;
+    --txt:#141B2D; --muted:#6B7280; --dim:#9AA3AF;
+    --brand:#DE694E; --brand-dark:#C9563C; --primary:#141B2D; --primary-h:#1E2740;
+    --ok:#149a63; --err:#c33;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
-  body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;font-size:15px}
+  body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
   a{color:var(--brand);text-decoration:none}
-  ::selection{background:var(--brand);color:#151A1F}
+  ::selection{background:var(--brand);color:#fff}
   .mono{font-family:'JetBrains Mono',monospace}
   button{font-family:inherit;cursor:pointer}
   input,textarea,select{font-family:inherit}
 
-  /* Layout */
-  .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-  .side{background:var(--panel);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto}
-  .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 20px}
-  .brand img{height:26px}
-  .brand small{color:var(--dim);font-size:10px;letter-spacing:2px;text-transform:uppercase}
-  .navbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;color:var(--muted);padding:11px 12px;border-radius:10px;font-size:14.5px;transition:background .2s,color .2s;margin-bottom:2px}
-  .navbtn:hover{background:rgba(255,255,255,.04);color:var(--txt)}
-  .navbtn.active{background:rgba(222,105,78,.12);color:var(--txt)}
-  .navbtn .ic{width:20px;text-align:center;color:var(--brand);font-size:15px}
-  .navsep{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);padding:16px 12px 8px}
+  /* ============ LOGIN ============ */
+  .login{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+  .login-card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 20px 60px rgba(20,27,45,.08);width:100%;max-width:410px;padding:44px 40px}
+  .login-logo{display:flex;justify-content:center;margin-bottom:22px}
+  .login-logo img{height:30px}
+  .login-card h1{text-align:center;font-size:27px;font-weight:800;letter-spacing:-.6px;margin:0 0 4px}
+  .login-card .brandline{text-align:center;color:var(--muted);font-size:14px;margin-bottom:30px}
+  .lbl{display:block;font-size:13px;font-weight:600;color:var(--txt);margin:0 0 8px}
+  .inp{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:var(--txt);font-size:14.5px;transition:border-color .18s,box-shadow .18s}
+  .inp::placeholder{color:var(--dim)}
+  .inp:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(222,105,78,.14)}
+  .login .field{margin-bottom:18px}
+  .btn-primary{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:15px;font-weight:600;transition:background .2s,transform .12s}
+  .btn-primary:hover{background:var(--primary-h)}
+  .btn-primary:active{transform:translateY(1px)}
+  .login .foot{text-align:center;color:var(--dim);font-size:12.5px;margin-top:20px;line-height:1.5}
+  .login .err{color:var(--err);font-size:13px;text-align:center;min-height:18px;margin-top:6px}
+
+  /* ============ APP SHELL ============ */
+  .app{display:none;grid-template-columns:248px 1fr;min-height:100vh}
+  .side{background:var(--card);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+  .side .logo{display:flex;align-items:center;gap:10px;padding:6px 10px 4px}
+  .side .logo img{height:24px}
+  .side .role{font-size:11px;color:var(--dim);padding:2px 10px 18px;letter-spacing:.3px}
+  .navsep{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);padding:16px 12px 8px;font-weight:600}
+  .navbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;color:var(--muted);padding:10px 12px;border-radius:10px;font-size:14px;font-weight:500;transition:background .16s,color .16s;margin-bottom:2px}
+  .navbtn:hover{background:var(--soft);color:var(--txt)}
+  .navbtn.active{background:rgba(222,105,78,.10);color:var(--brand-dark);font-weight:600}
+  .navbtn .ic{width:18px;text-align:center;font-size:15px;opacity:.9}
 
   .main{display:flex;flex-direction:column;min-width:0}
-  .topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 30px;background:rgba(18,23,28,.85);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);flex-wrap:wrap}
-  .topbar h1{font-size:19px;font-weight:700;margin:0}
-  .topbar .sub{font-size:12px;color:var(--dim);margin-top:2px}
+  .topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 30px;background:rgba(244,246,248,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .topbar h1{font-size:19px;font-weight:700;margin:0;letter-spacing:-.3px}
+  .topbar .sub{font-size:12.5px;color:var(--dim);margin-top:2px}
   .actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .content{padding:28px 30px 80px;max-width:1000px;width:100%}
+  .content{padding:26px 30px 90px;max-width:1000px;width:100%}
 
-  /* Language switch */
-  .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .lang button{background:none;border:0;color:var(--muted);padding:7px 14px;font-size:12px;font-weight:600}
-  .lang button.on{background:var(--brand);color:#151A1F}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+  .lang button{background:none;border:0;color:var(--muted);padding:7px 15px;font-size:12px;font-weight:600}
+  .lang button.on{background:var(--primary);color:#fff}
 
-  /* Buttons */
-  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);padding:9px 16px;border-radius:10px;font-size:13.5px;font-weight:600;transition:border-color .2s,background .2s,transform .15s}
-  .btn:hover{border-color:rgba(222,105,78,.5)}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--txt);padding:9px 15px;border-radius:10px;font-size:13.5px;font-weight:600;transition:border-color .18s,background .18s,transform .12s}
+  .btn:hover{background:var(--soft);border-color:#D4DAE2}
   .btn:active{transform:translateY(1px)}
-  .btn.primary{background:var(--brand);border-color:var(--brand);color:#151A1F}
-  .btn.primary:hover{background:var(--brand2)}
+  .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+  .btn.primary:hover{background:var(--primary-h)}
+  .btn.accent{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.accent:hover{background:var(--brand-dark)}
   .btn.ghost{background:none}
-  .btn.sm{padding:6px 11px;font-size:12px}
-  .btn.danger:hover{border-color:#e0654e;color:#f0a08c}
+  .btn.sm{padding:7px 12px;font-size:12.5px}
+  .btn.danger{color:#b0402c}
+  .btn.danger:hover{background:#fbeeea;border-color:#f0cabd}
 
-  /* Cards / forms */
   .grid{display:grid;gap:16px}
   .stats{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
-  .tile{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
-  .tile .k{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
-  .tile .v{font-size:38px;font-weight:800;color:var(--brand);line-height:1;margin-top:10px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .tile .k{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+  .tile .v{font-size:36px;font-weight:800;color:var(--txt);line-height:1;margin-top:12px;letter-spacing:-1px}
   .tile .d{font-size:13px;color:var(--muted);margin-top:8px}
+  .tile .v span{color:var(--brand)}
 
-  .card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:18px}
-  .card h3{margin:0 0 4px;font-size:17px;font-weight:700}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:18px}
+  .card h3{margin:0 0 4px;font-size:16px;font-weight:700}
   .card .hint{font-size:13px;color:var(--dim);margin:0 0 18px}
   .field{margin-bottom:16px}
   .field:last-child{margin-bottom:0}
-  .field label{display:block;font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-weight:600}
-  .field .flag{font-size:10px;color:var(--brand);margin-left:6px}
-  input[type=text],textarea,select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--txt);font-size:14.5px;transition:border-color .2s}
-  input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand)}
-  textarea{resize:vertical;min-height:80px;line-height:1.5}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.3px;color:var(--muted);margin-bottom:7px;font-weight:600}
+  .field .flag{font-size:10px;color:var(--brand);margin-left:6px;font-weight:700}
+  input[type=text],textarea,select{width:100%;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:11px 13px;color:var(--txt);font-size:14px;transition:border-color .18s,box-shadow .18s}
+  input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(222,105,78,.12);background:var(--card)}
+  textarea{resize:vertical;min-height:78px;line-height:1.5}
 
-  /* List items */
-  .item{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px;position:relative}
+  .item{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
   .item .ihead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-  .item .ihead .idx{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brand)}
-  .chips-input{display:flex;flex-wrap:wrap;gap:7px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;background:rgba(222,105,78,.12);border:1px solid rgba(222,105,78,.3);color:#EEDDD6;padding:4px 10px;border-radius:999px}
+  .item .ihead .idx{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brand);font-weight:600}
+  .chips-input{display:flex;flex-wrap:wrap;gap:7px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.28);color:var(--brand-dark);padding:4px 10px;border-radius:999px}
   .chip button{background:none;border:0;color:var(--brand);font-size:14px;line-height:1;padding:0}
   .chips-input input{flex:1;min-width:90px;background:none;border:0;color:var(--txt);padding:4px;font-size:13px}
-  .chips-input input:focus{outline:none}
+  .chips-input input:focus{outline:none;box-shadow:none}
 
-  /* Save bar */
-  .savebar{position:fixed;left:250px;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 30px;background:rgba(23,29,36,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);transform:translateY(120%);transition:transform .3s ease;z-index:20}
+  .savebar{position:fixed;left:248px;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 30px;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(20,27,45,.06);transform:translateY(130%);transition:transform .3s ease;z-index:20}
   .savebar.show{transform:translateY(0)}
   .savebar .msg{font-size:13px;color:var(--muted)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);display:inline-block;margin-right:8px}
 
-  .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-30px);background:#20272e;border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:10px;padding:12px 18px;font-size:13.5px;opacity:0;transition:opacity .3s,transform .3s;z-index:50;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-30px);background:var(--txt);color:#fff;border-radius:10px;padding:12px 20px;font-size:13.5px;opacity:0;transition:opacity .3s,transform .3s;z-index:50;box-shadow:0 14px 40px rgba(20,27,45,.25)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* Modal */
-  .overlay{position:fixed;inset:0;background:rgba(8,11,14,.7);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:24px;z-index:60}
+  .overlay{position:fixed;inset:0;background:rgba(20,27,45,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:24px;z-index:60}
   .overlay.show{display:flex}
-  .modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;max-width:560px;width:100%;padding:30px}
+  .modal{background:var(--card);border-radius:18px;max-width:560px;width:100%;padding:30px;box-shadow:0 30px 80px rgba(20,27,45,.25)}
   .modal h2{margin:0 0 8px;font-size:20px}
-  .modal p{color:var(--muted);line-height:1.6;font-size:14px}
-  .modal ol{color:var(--muted);line-height:1.7;font-size:14px;padding-left:20px}
-  .modal code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--brand)}
+  .modal p,.modal ol{color:var(--muted);line-height:1.6;font-size:14px}
+  .modal ol{padding-left:20px}
+  .modal code{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--brand-dark)}
 
-  /* Gate */
-  .gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100}
-  .gatebox{background:var(--panel2);border:1px solid var(--line);border-radius:18px;padding:40px;width:340px;text-align:center}
-  .gatebox img{height:30px;margin-bottom:20px}
-  .gatebox input{margin:16px 0;text-align:center;letter-spacing:3px}
-
+  .menutoggle{display:none}
   @media (max-width:820px){
     .app{grid-template-columns:1fr}
-    .side{position:fixed;left:0;top:0;bottom:0;z-index:40;transform:translateX(-100%);transition:transform .3s;width:250px}
+    .side{position:fixed;left:0;top:0;bottom:0;z-index:40;transform:translateX(-100%);transition:transform .3s;width:248px}
     .side.open{transform:translateX(0)}
     .savebar{left:0}
-    .row2{grid-template-columns:1fr}
     .menutoggle{display:inline-flex!important}
   }
-  .menutoggle{display:none}
 </style>
 </head>
 <body>
 
-<!-- ACCESS GATE (cosmético; no es seguridad real) -->
-<div class="gate" id="gate">
-  <div class="gatebox">
-    <img src="./logo-full.png" alt="ProMin">
-    <div class="mono" style="font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase">Panel Administrador</div>
-    <input type="password" id="gatepass" placeholder="Clave de acceso" onkeydown="if(event.key==='Enter')tryGate()">
-    <button class="btn primary" style="width:100%;justify-content:center" onclick="tryGate()">Entrar</button>
-    <div id="gateerr" style="color:#f0a08c;font-size:12px;margin-top:12px;height:14px"></div>
+<!-- ============ LOGIN ============ -->
+<div class="login" id="login">
+  <div class="login-card">
+    <div class="login-logo"><img src="./logo-full.png" alt="ProMin"></div>
+    <h1>Panel admin</h1>
+    <div class="brandline">ProMin Consultoria</div>
+    <div class="field">
+      <label class="lbl" for="email">Email</label>
+      <input class="inp" type="text" id="email" autocomplete="username" placeholder="tu@email.com" onkeydown="if(event.key==='Enter')document.getElementById('pass').focus()">
+    </div>
+    <div class="field">
+      <label class="lbl" for="pass">Contraseña</label>
+      <input class="inp" type="password" id="pass" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Ingresar
+    </button>
+    <div class="err" id="loginErr"></div>
+    <div class="foot" id="loginFoot">Acceso restringido al equipo de ProMin / Neura.</div>
   </div>
 </div>
 
-<div class="app" id="app" style="display:none">
+<!-- ============ APP ============ -->
+<div class="app" id="app">
   <aside class="side" id="side">
-    <div class="brand">
-      <img src="./logo-full.png" alt="ProMin">
-    </div>
-    <div class="mono navsep">Gestión</div>
+    <div class="logo"><img src="./logo-full.png" alt="ProMin"></div>
+    <div class="role" id="roleLine">Panel admin</div>
+    <div class="navsep">Gestión</div>
     <nav id="nav"></nav>
-    <div class="mono navsep">Acciones</div>
+    <div class="navsep">Acciones</div>
     <button class="navbtn" onclick="doExport()"><span class="ic">↧</span> Exportar JSON</button>
     <button class="navbtn" onclick="document.getElementById('importfile').click()"><span class="ic">↥</span> Importar JSON</button>
     <button class="navbtn" onclick="openPublish()"><span class="ic">◈</span> Cómo publicar</button>
     <button class="navbtn" onclick="doReset()"><span class="ic">⟲</span> Restaurar</button>
+    <button class="navbtn" onclick="logout()" style="color:#b0402c"><span class="ic">⏻</span> Cerrar sesión</button>
     <input type="file" id="importfile" accept="application/json" style="display:none" onchange="doImport(event)">
   </aside>
 
@@ -175,7 +198,7 @@
   <div class="msg"><span class="dot"></span><span id="saveMsg">Tienes cambios sin guardar.</span></div>
   <div style="display:flex;gap:10px">
     <button class="btn ghost sm" onclick="discardChanges()">Descartar</button>
-    <button class="btn primary sm" onclick="saveAll()">Guardar cambios</button>
+    <button class="btn accent sm" onclick="saveAll()">Guardar cambios</button>
   </div>
 </div>
 
@@ -186,18 +209,35 @@
     <h2>Cómo publicar los cambios</h2>
     <p>El panel guarda tus cambios en este navegador. Para que aparezcan en el sitio en vivo (<span class="mono">promin-web.vercel.app</span>) hay dos caminos:</p>
     <ol>
-      <li><b>Exportar</b> el contenido con <code>Exportar JSON</code> y enviárselo a tu desarrollador para aplicarlo.</li>
-      <li>Dejar el sitio <b>conectado al contenido</b>: pídele a tu desarrollador (Neura) que enlace las páginas a <code>content.json</code>. Así, cargas el JSON exportado al repo y se publica solo.</li>
+      <li><b>Exportar</b> el contenido con <code>Exportar JSON</code> y aplicarlo al sitio.</li>
+      <li>Conectar las páginas a <code>content.json</code> (lo puede dejar listo Neura): así, al subir el JSON exportado, el sitio se actualiza solo.</li>
     </ol>
-    <p style="margin-top:16px">Mientras tanto, todos tus cambios quedan guardados aquí y puedes exportarlos como respaldo cuando quieras.</p>
+    <p style="margin-top:14px">Para un panel con <b>login real y base de datos</b> (como una tienda con Supabase), hace falta conectar un backend — Neura puede montarlo.</p>
     <div style="text-align:right;margin-top:20px"><button class="btn primary" onclick="closePublish()">Entendido</button></div>
   </div>
 </div>
 
 <script>
+/* ============================ AUTH (cosmético — no es seguridad real) ============================ */
+const CREDS = { email: 'admin@prominconsultoria.com.br', pass: 'promin' };
+function doLogin(){
+  const em = document.getElementById('email').value.trim().toLowerCase();
+  const pw = document.getElementById('pass').value;
+  if(em===CREDS.email.toLowerCase() && pw===CREDS.pass){
+    sessionStorage.setItem('promin_admin_ok','1'); showApp();
+  } else {
+    document.getElementById('loginErr').textContent = 'Email o contraseña incorrectos.';
+  }
+}
+function logout(){ sessionStorage.removeItem('promin_admin_ok'); location.reload(); }
+function showApp(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='grid';
+  buildNav(); go('dashboard');
+}
+
 /* ============================ CONTENT MODEL ============================ */
 const STORE_KEY = 'promin_content_v1';
-
 const DEFAULT = {
   site: { brand:'ProMin', region:'BR/PR', phone:'+55 31 7207-5744', email:'contato@prominconsultoria.com.br', whatsapp:'553172075744' },
   hero: {
@@ -254,262 +294,153 @@ const DEFAULT = {
   _meta: { savedAt:null }
 };
 
-/* ============================ SCHEMA (UI) ============================ */
 const SCHEMA = [
   { id:'site', label:'Datos generales', icon:'◧', title:'Datos generales', sub:'Contacto y datos de la empresa', type:'object', fields:[
-    { key:'brand', label:'Marca', type:'text' },
-    { key:'region', label:'Región', type:'text' },
-    { key:'phone', label:'Teléfono', type:'text' },
-    { key:'email', label:'E-mail', type:'text' },
+    { key:'brand', label:'Marca', type:'text' }, { key:'region', label:'Región', type:'text' },
+    { key:'phone', label:'Teléfono', type:'text' }, { key:'email', label:'E-mail', type:'text' },
     { key:'whatsapp', label:'WhatsApp (solo números)', type:'text' },
   ]},
   { id:'hero', label:'Inicio (portada)', icon:'▤', title:'Inicio · Portada', sub:'Encabezado principal del home', type:'object', fields:[
-    { key:'eyebrow', label:'Rótulo superior', type:'text', i18n:true },
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'lede', label:'Subtítulo', type:'textarea', i18n:true },
-    { key:'cta1', label:'Botón principal', type:'text', i18n:true },
+    { key:'eyebrow', label:'Rótulo superior', type:'text', i18n:true }, { key:'title', label:'Título', type:'text', i18n:true },
+    { key:'lede', label:'Subtítulo', type:'textarea', i18n:true }, { key:'cta1', label:'Botón principal', type:'text', i18n:true },
     { key:'cta2', label:'Botón secundario', type:'text', i18n:true },
   ]},
   { id:'about', label:'Sobre / Nosotros', icon:'◈', title:'Sobre ProMin', sub:'Texto institucional', type:'object', fields:[
-    { key:'kicker', label:'Rótulo', type:'text', i18n:true },
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'lead', label:'Intro', type:'textarea', i18n:true },
-    { key:'body', label:'Cuerpo', type:'textarea', i18n:true },
+    { key:'kicker', label:'Rótulo', type:'text', i18n:true }, { key:'title', label:'Título', type:'text', i18n:true },
+    { key:'lead', label:'Intro', type:'textarea', i18n:true }, { key:'body', label:'Cuerpo', type:'textarea', i18n:true },
   ]},
-  { id:'stats', label:'Estadísticas', icon:'▦', title:'Estadísticas', sub:'Números destacados del home', type:'list', min:1, item:[
-    { key:'n', label:'Número', type:'text' },
-    { key:'l', label:'Etiqueta', type:'text', i18n:true },
+  { id:'stats', label:'Estadísticas', icon:'▦', title:'Estadísticas', sub:'Números destacados del home', type:'list', item:[
+    { key:'n', label:'Número', type:'text' }, { key:'l', label:'Etiqueta', type:'text', i18n:true },
   ]},
   { id:'values', label:'Valores', icon:'❖', title:'Valores', sub:'Pilares de la marca', type:'list', item:[
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'desc', label:'Descripción', type:'textarea', i18n:true },
+    { key:'title', label:'Título', type:'text', i18n:true }, { key:'desc', label:'Descripción', type:'textarea', i18n:true },
   ]},
   { id:'services', label:'Servicios', icon:'⚙', title:'Servicios', sub:'Lo que ofrece ProMin', type:'list', item:[
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'desc', label:'Descripción', type:'textarea', i18n:true },
+    { key:'title', label:'Título', type:'text', i18n:true }, { key:'desc', label:'Descripción', type:'textarea', i18n:true },
   ]},
   { id:'areas', label:'Áreas de actuación', icon:'⛰', title:'Áreas de actuación', sub:'Sectores donde actúa', type:'list', item:[
-    { key:'tag', label:'Etiqueta', type:'text', i18n:true },
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'desc', label:'Descripción', type:'textarea', i18n:true },
-    { key:'items', label:'Ítems (chips)', type:'chips', i18n:true },
+    { key:'tag', label:'Etiqueta', type:'text', i18n:true }, { key:'title', label:'Título', type:'text', i18n:true },
+    { key:'desc', label:'Descripción', type:'textarea', i18n:true }, { key:'items', label:'Ítems (chips)', type:'chips', i18n:true },
   ]},
   { id:'process', label:'Proceso', icon:'⟶', title:'Proceso', sub:'Pasos del método', type:'list', item:[
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'desc', label:'Descripción', type:'textarea', i18n:true },
+    { key:'title', label:'Título', type:'text', i18n:true }, { key:'desc', label:'Descripción', type:'textarea', i18n:true },
   ]},
   { id:'contact', label:'Contacto', icon:'✉', title:'Contacto', sub:'Página de contacto', type:'object', fields:[
-    { key:'title', label:'Título', type:'text', i18n:true },
-    { key:'loc', label:'Ubicación', type:'text', i18n:true },
+    { key:'title', label:'Título', type:'text', i18n:true }, { key:'loc', label:'Ubicación', type:'text', i18n:true },
   ]},
-  { id:'privacy', label:'Privacidad', icon:'🛡', title:'Política de Privacidad', sub:'Datos del responsable (cliente)', type:'object', fields:[
-    { key:'company_name', label:'Empresa', type:'text' },
-    { key:'tax_id', label:'RUC / CNPJ', type:'text' },
-    { key:'email', label:'E-mail', type:'text' },
-    { key:'phone', label:'Teléfono', type:'text' },
-    { key:'address', label:'Dirección', type:'text' },
-    { key:'updated', label:'Última actualización', type:'text' },
+  { id:'privacy', label:'Privacidad', icon:'⚖', title:'Política de Privacidad', sub:'Datos del responsable (cliente)', type:'object', fields:[
+    { key:'company_name', label:'Empresa', type:'text' }, { key:'tax_id', label:'RUC / CNPJ', type:'text' },
+    { key:'email', label:'E-mail', type:'text' }, { key:'phone', label:'Teléfono', type:'text' },
+    { key:'address', label:'Dirección', type:'text' }, { key:'updated', label:'Última actualización', type:'text' },
   ]},
 ];
 
-/* ============================ STATE ============================ */
-let data = load();
-let draft = clone(data);
-let lang = 'pt';
-let current = 'dashboard';
-let dirty = false;
-
+let data = load(), draft = clone(data), lang = 'pt', current = 'dashboard', dirty = false;
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
-function load(){
-  try{ const raw = localStorage.getItem(STORE_KEY); if(raw){ return Object.assign(clone(DEFAULT), JSON.parse(raw)); } }catch(e){}
-  return clone(DEFAULT);
-}
-function persist(){
-  draft._meta = draft._meta || {};
-  draft._meta.savedAt = new Date().toISOString();
-  data = clone(draft);
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){ alert('No se pudo guardar (almacenamiento lleno o bloqueado).'); }
-}
+function load(){ try{ const raw=localStorage.getItem(STORE_KEY); if(raw) return Object.assign(clone(DEFAULT),JSON.parse(raw)); }catch(e){} return clone(DEFAULT); }
+function persist(){ draft._meta=draft._meta||{}; draft._meta.savedAt=new Date().toISOString(); data=clone(draft); try{ localStorage.setItem(STORE_KEY,JSON.stringify(data)); }catch(e){ alert('No se pudo guardar.'); } }
 
-/* ============================ RENDER ============================ */
 function buildNav(){
-  const nav = document.getElementById('nav');
   let html = '<button class="navbtn" data-p="dashboard" onclick="go(\'dashboard\')"><span class="ic">▦</span> Dashboard</button>';
-  SCHEMA.forEach(s => {
-    html += `<button class="navbtn" data-p="${s.id}" onclick="go('${s.id}')"><span class="ic">${s.icon}</span> ${s.label}</button>`;
-  });
-  nav.innerHTML = html;
+  SCHEMA.forEach(s => html += `<button class="navbtn" data-p="${s.id}" onclick="go('${s.id}')"><span class="ic">${s.icon}</span> ${s.label}</button>`);
+  document.getElementById('nav').innerHTML = html;
 }
-function setActiveNav(){
-  document.querySelectorAll('.navbtn[data-p]').forEach(b => b.classList.toggle('active', b.getAttribute('data-p')===current));
-}
-function setLang(l){
-  lang = l;
-  document.querySelectorAll('#langSwitch button').forEach(b => b.classList.toggle('on', b.getAttribute('data-l')===l));
-  if(current!=='dashboard') go(current);
-}
+function setActiveNav(){ document.querySelectorAll('.navbtn[data-p]').forEach(b=>b.classList.toggle('active',b.getAttribute('data-p')===current)); }
+function setLang(l){ lang=l; document.querySelectorAll('#langSwitch button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===l)); if(current!=='dashboard') go(current); }
 function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function go(id){
-  current = id;
-  document.getElementById('side').classList.remove('open');
-  setActiveNav();
-  const c = document.getElementById('content');
+  current=id; document.getElementById('side').classList.remove('open'); setActiveNav();
+  const c=document.getElementById('content');
   if(id==='dashboard'){ renderDashboard(c); return; }
-  const s = SCHEMA.find(x=>x.id===id);
-  document.getElementById('pageTitle').textContent = s.title;
-  document.getElementById('pageSub').textContent = s.sub;
-  if(s.type==='object') renderObject(c, s);
-  else renderList(c, s);
+  const s=SCHEMA.find(x=>x.id===id);
+  document.getElementById('pageTitle').textContent=s.title;
+  document.getElementById('pageSub').textContent=s.sub;
+  s.type==='object' ? renderObject(c,s) : renderList(c,s);
   window.scrollTo(0,0);
 }
-
 function renderDashboard(c){
-  document.getElementById('pageTitle').textContent = 'Dashboard';
-  document.getElementById('pageSub').textContent = 'Resumen del contenido del sitio';
+  document.getElementById('pageTitle').textContent='Dashboard';
+  document.getElementById('pageSub').textContent='Resumen del contenido del sitio';
   const savedAt = data._meta && data._meta.savedAt ? new Date(data._meta.savedAt).toLocaleString('es') : 'Nunca';
-  const tiles = [
-    { k:'Servicios', v:data.services.length, d:'servicios publicados' },
-    { k:'Áreas', v:data.areas.length, d:'áreas de actuación' },
-    { k:'Proceso', v:data.process.length, d:'pasos del método' },
-    { k:'Valores', v:data.values.length, d:'pilares de marca' },
-    { k:'Idiomas', v:2, d:'PT · ES' },
+  const tiles=[
+    {k:'Servicios',v:data.services.length,d:'servicios publicados'},
+    {k:'Áreas',v:data.areas.length,d:'áreas de actuación'},
+    {k:'Proceso',v:data.process.length,d:'pasos del método'},
+    {k:'Valores',v:data.values.length,d:'pilares de marca'},
+    {k:'Idiomas',v:2,d:'PT · ES'},
   ];
-  let html = `<div class="grid stats" style="margin-bottom:22px">`;
-  tiles.forEach(t => html += `<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="d">${t.d}</div></div>`);
-  html += `</div>`;
-
-  html += `<div class="card"><h3>Acciones rápidas</h3><p class="hint">Empieza a editar cualquier sección o gestiona el contenido.</p>
+  let html=`<div class="grid stats" style="margin-bottom:22px">`;
+  tiles.forEach(t=>html+=`<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="d">${t.d}</div></div>`);
+  html+=`</div>`;
+  html+=`<div class="card"><h3>Acciones rápidas</h3><p class="hint">Empieza a editar cualquier sección o gestiona el contenido.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn primary" onclick="go('hero')">Editar portada</button>
+      <button class="btn accent" onclick="go('hero')">Editar portada</button>
       <button class="btn" onclick="go('services')">Editar servicios</button>
       <button class="btn" onclick="go('contact')">Editar contacto</button>
       <button class="btn ghost" onclick="doExport()">↧ Exportar respaldo</button>
     </div></div>`;
-
-  html += `<div class="card"><h3>Estado</h3>
+  html+=`<div class="card"><h3>Estado</h3>
     <div class="field" style="margin:0"><label>Último guardado</label><div class="mono" style="color:var(--muted);font-size:13px">${savedAt}</div></div>
-    <div class="field" style="margin-top:14px"><label>Sitio en vivo</label><a class="mono" style="font-size:13px" href="https://promin-web.vercel.app/" target="_blank">promin-web.vercel.app ↗</a></div>
-    </div>`;
-
-  html += `<div class="card" style="border-color:rgba(222,105,78,.28)"><h3>ℹ Cómo se guardan los cambios</h3>
-    <p class="hint" style="margin:0;line-height:1.6">Todo lo que edites se guarda en <b>este navegador</b>. Para publicarlo en el sitio en vivo, usa <b>Exportar JSON</b> y aplícalo al sitio (o pídele a Neura que conecte las páginas al contenido). Ver <a href="#" onclick="openPublish();return false">Cómo publicar</a>.</p></div>`;
-  c.innerHTML = html;
+    <div class="field" style="margin-top:14px"><label>Sitio en vivo</label><a class="mono" style="font-size:13px" href="https://promin-web.vercel.app/" target="_blank">promin-web.vercel.app ↗</a></div></div>`;
+  html+=`<div class="card" style="border-color:rgba(222,105,78,.3);background:#FCF3F0"><h3>ℹ Cómo se guardan los cambios</h3>
+    <p class="hint" style="margin:0;line-height:1.6;color:var(--muted)">Todo lo que edites se guarda en <b>este navegador</b>. Para publicarlo, usa <b>Exportar JSON</b> o pídele a Neura que conecte las páginas al contenido. Ver <a href="#" onclick="openPublish();return false">Cómo publicar</a>.</p></div>`;
+  c.innerHTML=html;
 }
-
-function inputFor(f, path, val){
-  const flag = f.i18n ? `<span class="flag mono">${lang.toUpperCase()}</span>` : '';
-  if(f.type==='textarea'){
-    return `<div class="field"><label>${f.label}${flag}</label><textarea data-path="${path}" oninput="onEdit(this)">${esc(val)}</textarea></div>`;
-  }
-  if(f.type==='chips'){
-    return `<div class="field"><label>${f.label}${flag}</label>${chipsFor(path, val||[])}</div>`;
-  }
+function inputFor(f,path,val){
+  const flag=f.i18n?`<span class="flag mono">${lang.toUpperCase()}</span>`:'';
+  if(f.type==='textarea') return `<div class="field"><label>${f.label}${flag}</label><textarea data-path="${path}" oninput="onEdit(this)">${esc(val)}</textarea></div>`;
+  if(f.type==='chips') return `<div class="field"><label>${f.label}${flag}</label>${chipsFor(path,val||[])}</div>`;
   return `<div class="field"><label>${f.label}${flag}</label><input type="text" data-path="${path}" value="${esc(val)}" oninput="onEdit(this)"></div>`;
 }
-function chipsFor(path, arr){
-  let html = `<div class="chips-input" data-chips="${path}">`;
-  arr.forEach((v,i)=> html += `<span class="chip">${esc(v)}<button onclick="removeChip('${path}',${i})">×</button></span>`);
-  html += `<input type="text" placeholder="Añadir y Enter" onkeydown="if(event.key==='Enter'){addChip('${path}',this.value);this.value='';event.preventDefault();}"></div>`;
+function chipsFor(path,arr){
+  let html=`<div class="chips-input" data-chips="${path}">`;
+  arr.forEach((v,i)=>html+=`<span class="chip">${esc(v)}<button onclick="removeChip('${path}',${i})">×</button></span>`);
+  html+=`<input type="text" placeholder="Añadir y Enter" onkeydown="if(event.key==='Enter'){addChip('${path}',this.value);this.value='';event.preventDefault();}"></div>`;
   return html;
 }
-function fieldKey(f){ return f.i18n ? f.key+'_'+lang : f.key; }
-
-function renderObject(c, s){
-  let html = `<div class="card"><h3>${s.title}</h3><p class="hint">${s.sub}</p>`;
-  s.fields.forEach(f => { const k = fieldKey(f); html += inputFor(f, s.id+'.'+k, draft[s.id][k]); });
-  html += `</div>`;
-  c.innerHTML = html;
+function fieldKey(f){ return f.i18n?f.key+'_'+lang:f.key; }
+function renderObject(c,s){
+  let html=`<div class="card"><h3>${s.title}</h3><p class="hint">${s.sub}</p>`;
+  s.fields.forEach(f=>{ const k=fieldKey(f); html+=inputFor(f,s.id+'.'+k,draft[s.id][k]); });
+  html+=`</div>`; c.innerHTML=html;
 }
-
-function renderList(c, s){
-  const arr = draft[s.id];
-  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <p class="hint" style="margin:0">${arr.length} elemento(s)</p>
-    <button class="btn primary sm" onclick="addItem('${s.id}')">+ Añadir</button></div>`;
-  arr.forEach((it, i) => {
-    html += `<div class="item"><div class="ihead"><span class="mono idx">#${String(i+1).padStart(2,'0')}</span>
-      <div style="display:flex;gap:6px">
-        <button class="btn ghost sm" onclick="moveItem('${s.id}',${i},-1)" ${i===0?'disabled style=opacity:.3':''}>↑</button>
-        <button class="btn ghost sm" onclick="moveItem('${s.id}',${i},1)" ${i===arr.length-1?'disabled style=opacity:.3':''}>↓</button>
-        <button class="btn ghost sm danger" onclick="delItem('${s.id}',${i})">Eliminar</button>
-      </div></div>`;
-    s.item.forEach(f => { const k = fieldKey(f); html += inputFor(f, `${s.id}.${i}.${k}`, it[k]); });
-    html += `</div>`;
+function renderList(c,s){
+  const arr=draft[s.id];
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><p class="hint" style="margin:0">${arr.length} elemento(s)</p><button class="btn accent sm" onclick="addItem('${s.id}')">+ Añadir</button></div>`;
+  arr.forEach((it,i)=>{
+    html+=`<div class="item"><div class="ihead"><span class="mono idx">#${String(i+1).padStart(2,'0')}</span><div style="display:flex;gap:6px">
+      <button class="btn ghost sm" onclick="moveItem('${s.id}',${i},-1)" ${i===0?'disabled style=opacity:.3':''}>↑</button>
+      <button class="btn ghost sm" onclick="moveItem('${s.id}',${i},1)" ${i===arr.length-1?'disabled style=opacity:.3':''}>↓</button>
+      <button class="btn ghost sm danger" onclick="delItem('${s.id}',${i})">Eliminar</button></div></div>`;
+    s.item.forEach(f=>{ const k=fieldKey(f); html+=inputFor(f,`${s.id}.${i}.${k}`,it[k]); });
+    html+=`</div>`;
   });
-  c.innerHTML = html;
+  c.innerHTML=html;
 }
-
-/* ============================ EDIT OPS ============================ */
-function setPath(path, value){
-  const parts = path.split('.');
-  let o = draft;
-  for(let i=0;i<parts.length-1;i++){ o = o[parts[i]]; }
-  o[parts[parts.length-1]] = value;
-  markDirty();
-}
-function getPath(path){
-  return path.split('.').reduce((o,k)=> o && o[k], draft);
-}
-function onEdit(el){ setPath(el.getAttribute('data-path'), el.value); }
-
-function addChip(path, val){ val=(val||'').trim(); if(!val) return; const a=getPath(path)||[]; a.push(val); setPath(path,a); refresh(); }
-function removeChip(path, i){ const a=getPath(path)||[]; a.splice(i,1); setPath(path,a); refresh(); }
-
-function emptyItem(s){
-  const o = {};
-  s.item.forEach(f => {
-    if(f.i18n){ if(f.type==='chips'){ o[f.key+'_pt']=[]; o[f.key+'_es']=[]; } else { o[f.key+'_pt']=''; o[f.key+'_es']=''; } }
-    else { o[f.key] = f.type==='chips' ? [] : ''; }
-  });
-  return o;
-}
+function setPath(path,value){ const p=path.split('.'); let o=draft; for(let i=0;i<p.length-1;i++)o=o[p[i]]; o[p[p.length-1]]=value; markDirty(); }
+function getPath(path){ return path.split('.').reduce((o,k)=>o&&o[k],draft); }
+function onEdit(el){ setPath(el.getAttribute('data-path'),el.value); }
+function addChip(path,val){ val=(val||'').trim(); if(!val)return; const a=getPath(path)||[]; a.push(val); setPath(path,a); refresh(); }
+function removeChip(path,i){ const a=getPath(path)||[]; a.splice(i,1); setPath(path,a); refresh(); }
+function emptyItem(s){ const o={}; s.item.forEach(f=>{ if(f.i18n){ if(f.type==='chips'){o[f.key+'_pt']=[];o[f.key+'_es']=[];} else {o[f.key+'_pt']='';o[f.key+'_es']='';} } else { o[f.key]=f.type==='chips'?[]:''; } }); return o; }
 function addItem(id){ const s=SCHEMA.find(x=>x.id===id); draft[id].push(emptyItem(s)); markDirty(); go(id); }
-function delItem(id,i){ if(!confirm('¿Eliminar este elemento?')) return; draft[id].splice(i,1); markDirty(); go(id); }
-function moveItem(id,i,dir){ const a=draft[id]; const j=i+dir; if(j<0||j>=a.length) return; [a[i],a[j]]=[a[j],a[i]]; markDirty(); go(id); }
-
+function delItem(id,i){ if(!confirm('¿Eliminar este elemento?'))return; draft[id].splice(i,1); markDirty(); go(id); }
+function moveItem(id,i,dir){ const a=draft[id],j=i+dir; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; markDirty(); go(id); }
 function refresh(){ if(current!=='dashboard') go(current); }
 function markDirty(){ dirty=true; document.getElementById('savebar').classList.add('show'); }
-
 function saveAll(){ persist(); dirty=false; document.getElementById('savebar').classList.remove('show'); toast('✓ Cambios guardados'); if(current==='dashboard') renderDashboard(document.getElementById('content')); }
 function discardChanges(){ draft=clone(data); dirty=false; document.getElementById('savebar').classList.remove('show'); go(current); toast('Cambios descartados'); }
-
-/* ============================ IMPORT / EXPORT / RESET ============================ */
-function doExport(){
-  const blob = new Blob([JSON.stringify(draft,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='content.json'; a.click();
-  URL.revokeObjectURL(url); toast('↧ content.json exportado');
-}
-function doImport(e){
-  const file = e.target.files[0]; if(!file) return;
-  const r = new FileReader();
-  r.onload = () => { try{ const obj=JSON.parse(r.result); draft=Object.assign(clone(DEFAULT),obj); persist(); dirty=false; document.getElementById('savebar').classList.remove('show'); go('dashboard'); toast('↥ Contenido importado'); }catch(err){ alert('Archivo inválido.'); } };
-  r.readAsText(file); e.target.value='';
-}
-function doReset(){ if(!confirm('¿Restaurar todo el contenido a los valores originales? Se perderán tus cambios guardados.')) return; draft=clone(DEFAULT); persist(); dirty=false; document.getElementById('savebar').classList.remove('show'); go('dashboard'); toast('⟲ Contenido restaurado'); }
-
+function doExport(){ const blob=new Blob([JSON.stringify(draft,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='content.json'; a.click(); URL.revokeObjectURL(url); toast('↧ content.json exportado'); }
+function doImport(e){ const file=e.target.files[0]; if(!file)return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(r.result); draft=Object.assign(clone(DEFAULT),obj); persist(); dirty=false; document.getElementById('savebar').classList.remove('show'); go('dashboard'); toast('↥ Contenido importado'); }catch(err){ alert('Archivo inválido.'); } }; r.readAsText(file); e.target.value=''; }
+function doReset(){ if(!confirm('¿Restaurar todo el contenido a los valores originales?'))return; draft=clone(DEFAULT); persist(); dirty=false; document.getElementById('savebar').classList.remove('show'); go('dashboard'); toast('⟲ Contenido restaurado'); }
 function openPublish(){ document.getElementById('publishModal').classList.add('show'); }
 function closePublish(){ document.getElementById('publishModal').classList.remove('show'); }
-
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
-
-/* ============================ GATE ============================ */
-const PASS = 'promin';   // clave por defecto (cámbiala en el código); NO es seguridad real
-function tryGate(){
-  const v = document.getElementById('gatepass').value;
-  if(v===PASS){ sessionStorage.setItem('promin_admin_ok','1'); showApp(); }
-  else { document.getElementById('gateerr').textContent='Clave incorrecta'; }
-}
-function showApp(){
-  document.getElementById('gate').style.display='none';
-  document.getElementById('app').style.display='grid';
-  buildNav(); go('dashboard');
-}
-window.addEventListener('beforeunload', (e)=>{ if(dirty){ e.preventDefault(); e.returnValue=''; } });
+window.addEventListener('beforeunload',(e)=>{ if(dirty){ e.preventDefault(); e.returnValue=''; } });
 
 if(sessionStorage.getItem('promin_admin_ok')==='1'){ showApp(); }
-else { document.getElementById('gatepass').focus(); }
+else { document.getElementById('email').focus(); }
 </script>
 </body>
 </html>
