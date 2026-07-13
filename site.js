@@ -18,8 +18,8 @@ function injectAdaptiveCSS() {
 @media (max-width: 640px){
   /* Stable full-screen hero height (no jump when the URL bar hides) */
   section[style*="100vh"]{ min-height: 100svh !important; }
-  /* Decorative preview image reads as a compact banner when stacked */
-  [data-index-preview]{ aspect-ratio: 16 / 10 !important; }
+  /* Decorative hover-swap preview image: no purpose on touch, hide it */
+  [data-index-preview]{ display: none !important; }
   /* Comfortable rhythm on small screens */
   [data-intro-grid]{ gap: 30px !important; }
   [data-intro-grid] [style*="96px"]{ min-width: 62px !important; }
@@ -29,10 +29,7 @@ function injectAdaptiveCSS() {
   /* Slightly larger social touch targets */
   .promin-social{ width: 46px; height: 46px; }
 }
-/* Small phones */
-@media (max-width: 400px){
-  [data-index-preview]{ aspect-ratio: 16 / 12 !important; }
-}`;
+`;
   const style = document.createElement('style');
   style.id = 'promin-adaptive';
   style.textContent = css;

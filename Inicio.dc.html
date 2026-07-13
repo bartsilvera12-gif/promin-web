@@ -40,6 +40,15 @@
     .promin-hero-content p { margin-left: auto; margin-right: auto; }
     .promin-hero-btns { justify-content: center; }
   }
+  /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
+  @media (max-width: 900px) {
+    [data-index-wrap] { grid-template-columns: 1fr !important; }
+    /* decorative hover-swap image: no purpose on touch, hide it */
+    [data-index-preview] { display: none !important; }
+    [data-intro-grid] { grid-template-columns: 1fr !important; }
+    [data-intro-grid] > * { position: static !important; top: auto !important; }
+    [data-values-grid] { grid-template-columns: 1fr !important; }
+  }
   @media (prefers-reduced-motion: reduce) { .promin-hero-card, .promin-hero-img, .promin-hero-shine, .promin-glow-word { animation: none; transition: opacity .4s ease; transform: none; } }
 </style>
 </helmet>
