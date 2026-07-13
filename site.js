@@ -115,8 +115,12 @@ export function initMotion(root) {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
+      // On phones/tablets parallax offsets can exceed the image's overflow
+      // margin and reveal the container background — disable it, images sit flush.
+      const mobile = window.innerWidth <= 900;
       const vh = window.innerHeight;
       paraEls.forEach((el) => {
+        if (mobile) { el.style.transform = 'none'; return; }
         const speed = parseFloat(el.getAttribute('data-parallax')) || 0.15;
         const r = el.getBoundingClientRect();
         const center = r.top + r.height / 2;
@@ -128,6 +132,7 @@ export function initMotion(root) {
   };
   if (paraEls.length) {
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
   }
 
