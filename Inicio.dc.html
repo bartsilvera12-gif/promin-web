@@ -40,6 +40,8 @@
     .promin-hero-content p { margin-left: auto; margin-right: auto; }
     .promin-hero-btns { justify-content: center; }
   }
+  .promin-sec-card img { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .promin-sec-card:hover img { transform: scale(1.06); }
   /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
   @media (max-width: 900px) {
     [data-index-wrap] { grid-template-columns: 1fr !important; }
@@ -133,17 +135,23 @@
 
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px" data-index-wrap>
         <sc-for list="{{ sections }}" as="s" hint-placeholder-count="4">
-          <a href="{{ s.href }}" data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;gap:15px;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:18px;padding:clamp(24px,3vw,34px);transition:border-color .3s ease,transform .3s ease,background .3s ease;color:#EDEFF2" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-4px);background:#1A2129">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E">// {{ s.kicker }}</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;transition:transform .3s ease,color .3s ease" style-hover="transform:translateX(5px);color:#DE694E">→</span>
+          <a href="{{ s.href }}" class="promin-sec-card" data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:18px;overflow:hidden;transition:border-color .3s ease,transform .3s ease;color:#EDEFF2" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-4px)">
+            <div style="position:relative;height:clamp(160px,20vw,200px);overflow:hidden">
+              <img src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover" />
+              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.12) 0%,rgba(23,29,36,.35) 55%,#171D24 100%)"></div>
+              <span style="position:absolute;left:16px;top:15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#EDEFF2;background:rgba(18,23,28,.5);padding:5px 11px;border-radius:999px;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)">// {{ s.kicker }}</span>
             </div>
-            <h3 style="font-size:clamp(21px,2.4vw,28px);font-weight:700;letter-spacing:-.5px;line-height:1.12;margin:0">{{ s.title }}</h3>
-            <p style="font-size:14.5px;color:#A9B0B8;line-height:1.6;margin:0;flex:1">{{ s.summary }}</p>
-            <div style="display:flex;flex-wrap:wrap;gap:8px">
-              <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="4">
-                <span style="font-size:12px;color:#C9CDD2;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.22);padding:5px 11px;border-radius:999px">{{ it }}</span>
-              </sc-for>
+            <div style="display:flex;flex-direction:column;gap:14px;padding:clamp(22px,3vw,30px)">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <h3 style="font-size:clamp(21px,2.4vw,28px);font-weight:700;letter-spacing:-.5px;line-height:1.12;margin:0">{{ s.title }}</h3>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;flex:none;transition:transform .3s ease,color .3s ease" style-hover="transform:translateX(5px);color:#DE694E">→</span>
+              </div>
+              <p style="font-size:14.5px;color:#A9B0B8;line-height:1.6;margin:0;flex:1">{{ s.summary }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="4">
+                  <span style="font-size:12px;color:#C9CDD2;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.22);padding:5px 11px;border-radius:999px">{{ it }}</span>
+                </sc-for>
+              </div>
             </div>
           </a>
         </sc-for>
@@ -243,7 +251,8 @@ class Component extends DCLogic {
       ctaBtn: 'Habla con ProMin',
     };
     const L = lang === 'es' ? es : pt;
-    const sections = L.sections.map((s, i) => ({ ...s, delay: i * 90 }));
+    const sectionImgs = ['face.jpg', 'tech-monitors.jpg', 'aerial-right.jpg', 'hero-machinery.jpg'];
+    const sections = L.sections.map((s, i) => ({ ...s, img: sectionImgs[i], delay: i * 90 }));
     const values = L.values.map((v, i) => ({ ...v, delay: i * 100 }));
     return {
       L, ...L, values, sections, marquee: [...L.marquee, ...L.marquee],
