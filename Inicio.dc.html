@@ -40,8 +40,35 @@
     .promin-hero-content p { margin-left: auto; margin-right: auto; }
     .promin-hero-btns { justify-content: center; }
   }
-  .promin-sec-card img { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-  .promin-sec-card:hover img { transform: scale(1.06); }
+  /* ── Explore section cards: layered hover effects ── */
+  .promin-sec-card { position: relative; transform-style: preserve-3d; transition: transform .2s cubic-bezier(.2,.7,.2,1), border-color .4s ease, box-shadow .45s ease, background .4s ease; will-change: transform; }
+  .promin-sec-card:hover { border-color: rgba(222,105,78,.55); background: #1A222B; box-shadow: 0 30px 66px rgba(0,0,0,.55), 0 0 44px -14px rgba(222,105,78,.55); }
+  /* cursor-following spotlight */
+  .promin-sec-card::before { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; background: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(222,105,78,.20), transparent 60%); opacity: 0; transition: opacity .35s ease; }
+  .promin-sec-card:hover::before { opacity: 1; }
+  /* image zoom + warm-up */
+  .promin-sec-card img { transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .5s ease; }
+  .promin-sec-card:hover img { transform: scale(1.08); filter: saturate(1.15) brightness(1.06); }
+  /* shine sweep across the image */
+  .promin-sec-media::after { content: ''; position: absolute; top: 0; left: 0; width: 55%; height: 100%; z-index: 2; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent); transform: translateX(-160%) skewX(-18deg); }
+  .promin-sec-card:hover .promin-sec-media::after { animation: promin-shine 1s ease-out; }
+  /* arrow reacts to the whole card */
+  .promin-sec-arrow { transition: transform .35s cubic-bezier(.2,.7,.2,1), color .35s ease; }
+  .promin-sec-card:hover .promin-sec-arrow { transform: translateX(7px); color: #DE694E; }
+  /* kicker badge lights up */
+  .promin-sec-kicker { transition: background .35s ease, color .35s ease; }
+  .promin-sec-card:hover .promin-sec-kicker { background: rgba(222,105,78,.9); color: #151A1F; }
+  /* title warms */
+  .promin-sec-title { transition: color .35s ease; }
+  .promin-sec-card:hover .promin-sec-title { color: #FFFFFF; }
+  /* item chips */
+  .promin-chip { transition: background .3s ease, border-color .3s ease; }
+  .promin-sec-card:hover .promin-chip { border-color: rgba(222,105,78,.4); background: rgba(222,105,78,.16); }
+  @media (prefers-reduced-motion: reduce) {
+    .promin-sec-card, .promin-sec-card img, .promin-sec-arrow { transition: border-color .3s ease, box-shadow .3s ease; }
+    .promin-sec-card:hover img { transform: none; }
+    .promin-sec-card:hover .promin-sec-media::after { animation: none; }
+  }
   /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
   @media (max-width: 900px) {
     [data-index-wrap], [data-svc-grid] { grid-template-columns: 1fr !important; }
@@ -171,21 +198,21 @@
 
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px" data-index-wrap>
         <sc-for list="{{ sections }}" as="s" hint-placeholder-count="4">
-          <a href="{{ s.href }}" class="promin-sec-card" data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:18px;overflow:hidden;transition:border-color .3s ease,transform .3s ease;color:#EDEFF2" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-4px)">
-            <div style="position:relative;height:clamp(160px,20vw,200px);overflow:hidden">
+          <a href="{{ s.href }}" class="promin-sec-card" data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:18px;overflow:hidden;color:#EDEFF2">
+            <div class="promin-sec-media" style="position:relative;height:clamp(160px,20vw,200px);overflow:hidden">
               <img src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover" />
               <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.12) 0%,rgba(23,29,36,.35) 55%,#171D24 100%)"></div>
-              <span style="position:absolute;left:16px;top:15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#EDEFF2;background:rgba(18,23,28,.5);padding:5px 11px;border-radius:999px;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)">// {{ s.kicker }}</span>
+              <span class="promin-sec-kicker" style="position:absolute;left:16px;top:15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#EDEFF2;background:rgba(18,23,28,.5);padding:5px 11px;border-radius:999px;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)">// {{ s.kicker }}</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:14px;padding:clamp(22px,3vw,30px)">
               <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-                <h3 style="font-size:clamp(21px,2.4vw,28px);font-weight:700;letter-spacing:-.5px;line-height:1.12;margin:0">{{ s.title }}</h3>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;flex:none;transition:transform .3s ease,color .3s ease" style-hover="transform:translateX(5px);color:#DE694E">→</span>
+                <h3 class="promin-sec-title" style="font-size:clamp(21px,2.4vw,28px);font-weight:700;letter-spacing:-.5px;line-height:1.12;margin:0">{{ s.title }}</h3>
+                <span class="promin-sec-arrow" style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;flex:none">→</span>
               </div>
               <p style="font-size:14.5px;color:#A9B0B8;line-height:1.6;margin:0;flex:1">{{ s.summary }}</p>
               <div style="display:flex;flex-wrap:wrap;gap:8px">
                 <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="4">
-                  <span style="font-size:12px;color:#C9CDD2;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.22);padding:5px 11px;border-radius:999px">{{ it }}</span>
+                  <span class="promin-chip" style="font-size:12px;color:#C9CDD2;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.22);padding:5px 11px;border-radius:999px">{{ it }}</span>
                 </sc-for>
               </div>
             </div>
@@ -216,6 +243,28 @@ class Component extends DCLogic {
 
   componentDidMount() {
     import('./site.js').then(m => m.initMotion()).catch(() => {});
+    this.initCardHover();
+  }
+
+  // Cursor-following hover for the "Explore" cards: a spotlight glow tracks the
+  // pointer (via --mx/--my) and the card tilts subtly in 3D toward the cursor.
+  initCardHover() {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('.promin-sec-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+        if (!reduce) {
+          const rx = (0.5 - py) * 6;
+          const ry = (px - 0.5) * 7;
+          card.style.transform = 'perspective(1000px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-8px)';
+        }
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
   }
 
   renderVals() {
