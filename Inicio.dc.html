@@ -131,26 +131,22 @@
         <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:#6E7681">{{ L.exploreSub }}</span>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr .9fr;gap:48px;align-items:start" data-index-wrap>
-        <div style="display:flex;flex-direction:column">
-          <sc-for list="{{ index }}" as="row" hint-placeholder-count="4">
-            <a href="{{ row.href }}" onMouseEnter="{{ row.enter }}" data-reveal="up" data-reveal-delay="{{ row.delay }}" style="display:flex;align-items:center;gap:20px;padding:26px 8px;border-bottom:1px solid rgba(217,220,224,.09);transition:padding-left .3s ease,background .3s ease;color:#EDEFF2" style-hover="padding-left:20px;background:linear-gradient(90deg,rgba(222,105,78,.08),transparent)">
-              <div style="flex:1">
-                <div style="font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.5px;line-height:1.1">{{ row.title }}</div>
-                <div style="font-size:14px;color:#8A9199;margin-top:4px">{{ row.desc }}</div>
-              </div>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;flex:none;transition:transform .3s ease,color .3s ease" style-hover="transform:translateX(6px);color:#DE694E">→</span>
-            </a>
-          </sc-for>
-        </div>
-        <div data-index-preview style="position:sticky;top:110px;border-radius:18px;overflow:hidden;aspect-ratio:4/5;background:#0E1216">
-          <img src="face.jpg" alt="" ref="{{ ref0 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity .55s ease,transform .8s ease" />
-          <img src="tech-monitors.jpg" alt="" ref="{{ ref1 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease,transform .8s ease" />
-          <img src="aerial-right.jpg" alt="" ref="{{ ref2 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease,transform .8s ease" />
-          <img src="hero-machinery.jpg" alt="" ref="{{ ref3 }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease,transform .8s ease" />
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.1),rgba(18,23,28,.55));pointer-events:none"></div>
-          <div style="position:absolute;left:18px;bottom:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(237,239,242,.85)">// ProMin</div>
-        </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px" data-index-wrap>
+        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="4">
+          <a href="{{ s.href }}" data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;gap:15px;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:18px;padding:clamp(24px,3vw,34px);transition:border-color .3s ease,transform .3s ease,background .3s ease;color:#EDEFF2" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-4px);background:#1A2129">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E">// {{ s.kicker }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;transition:transform .3s ease,color .3s ease" style-hover="transform:translateX(5px);color:#DE694E">→</span>
+            </div>
+            <h3 style="font-size:clamp(21px,2.4vw,28px);font-weight:700;letter-spacing:-.5px;line-height:1.12;margin:0">{{ s.title }}</h3>
+            <p style="font-size:14.5px;color:#A9B0B8;line-height:1.6;margin:0;flex:1">{{ s.summary }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="4">
+                <span style="font-size:12px;color:#C9CDD2;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.22);padding:5px 11px;border-radius:999px">{{ it }}</span>
+              </sc-for>
+            </div>
+          </a>
+        </sc-for>
       </div>
     </div>
   </section>
@@ -172,21 +168,10 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 class Component extends DCLogic {
-  state = { hover: 0 };
-  imgRefs = [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
-
   lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
 
   componentDidMount() {
     import('./site.js').then(m => m.initMotion()).catch(() => {});
-  }
-
-  setHover(i) {
-    this.imgRefs.forEach((r, idx) => {
-      if (!r.current) return;
-      r.current.style.opacity = idx === i ? '1' : '0';
-      r.current.style.transform = idx === i ? 'scale(1.04)' : 'scale(1)';
-    });
   }
 
   renderVals() {
@@ -213,12 +198,12 @@ class Component extends DCLogic {
         { num: '02', title: 'Eficiência', desc: 'Processos que otimizam operações e maximizam resultados.' },
         { num: '03', title: 'Excelência', desc: 'Cada projeto executado com respeito aos padrões do setor.' },
       ],
-      exploreTitle: 'Explore a ProMin', exploreSub: '// 04 áreas',
-      index: [
-        { title: 'Sobre nós', desc: 'Quem somos e o que nos move', href: 'Sobre.dc.html' },
-        { title: 'Serviços', desc: 'O que fazemos pela sua operação', href: 'Servicos.dc.html' },
-        { title: 'Áreas de Atuação', desc: 'Onde a ProMin atua', href: 'Areas.dc.html' },
-        { title: 'Processo', desc: 'Como transformamos desafios em resultados', href: 'Processo.dc.html' },
+      exploreTitle: 'Explore a ProMin', exploreSub: '// 04 seções',
+      sections: [
+        { kicker: 'Quem somos', title: 'Sobre a ProMin', summary: 'Mais de 20 anos de expertise em mineração e pedreiras, com visão estratégica e compromisso técnico em cada projeto.', items: ['Missão', 'Visão', 'Valores'], href: 'Sobre.dc.html' },
+        { kicker: 'O que fazemos', title: 'Serviços', summary: 'Soluções técnicas completas para cada etapa da sua operação — do diagnóstico à execução.', items: ['Consultoria Técnica', 'Produção & Logística', 'Manutenção', 'Comercialização'], href: 'Servicos.dc.html' },
+        { kicker: 'Onde atuamos', title: 'Áreas de Atuação', summary: 'Atuamos em diferentes frentes do setor mineral, sempre com o mesmo rigor técnico e busca por eficiência.', items: ['Minério de Ferro', 'Pedreiras', 'Carvão', 'Minerais Industriais'], href: 'Areas.dc.html' },
+        { kicker: 'Como trabalhamos', title: 'Processo', summary: 'Um método estruturado que garante clareza, previsibilidade e excelência em cada etapa.', items: ['Diagnóstico', 'Estratégia', 'Execução', 'Otimização', 'Resultados'], href: 'Processo.dc.html' },
       ],
       ctaKicker: 'Vamos conversar',
       ctaTitle: 'Pronto para mineirar do jeito certo?',
@@ -246,27 +231,22 @@ class Component extends DCLogic {
         { num: '02', title: 'Eficiencia', desc: 'Procesos que optimizan operaciones y maximizan resultados.' },
         { num: '03', title: 'Excelencia', desc: 'Cada proyecto ejecutado respetando los estándares del sector.' },
       ],
-      exploreTitle: 'Explora ProMin', exploreSub: '// 04 áreas',
-      index: [
-        { title: 'Nosotros', desc: 'Quiénes somos y qué nos mueve', href: 'Sobre.dc.html' },
-        { title: 'Servicios', desc: 'Lo que hacemos por tu operación', href: 'Servicos.dc.html' },
-        { title: 'Áreas de Actuación', desc: 'Dónde actúa ProMin', href: 'Areas.dc.html' },
-        { title: 'Proceso', desc: 'Cómo convertimos desafíos en resultados', href: 'Processo.dc.html' },
+      exploreTitle: 'Explora ProMin', exploreSub: '// 04 secciones',
+      sections: [
+        { kicker: 'Quiénes somos', title: 'Sobre ProMin', summary: 'Más de 20 años de expertise en minería y canteras, con visión estratégica y compromiso técnico en cada proyecto.', items: ['Misión', 'Visión', 'Valores'], href: 'Sobre.dc.html' },
+        { kicker: 'Lo que hacemos', title: 'Servicios', summary: 'Soluciones técnicas completas para cada etapa de tu operación — del diagnóstico a la ejecución.', items: ['Consultoría Técnica', 'Producción & Logística', 'Mantenimiento', 'Comercialización'], href: 'Servicos.dc.html' },
+        { kicker: 'Dónde actuamos', title: 'Áreas de Actuación', summary: 'Actuamos en distintos frentes del sector minero, siempre con el mismo rigor técnico y búsqueda de eficiencia.', items: ['Mineral de Hierro', 'Canteras', 'Carbón', 'Minerales Industriales'], href: 'Areas.dc.html' },
+        { kicker: 'Cómo trabajamos', title: 'Proceso', summary: 'Un método estructurado que garantiza claridad, previsibilidad y excelencia en cada etapa.', items: ['Diagnóstico', 'Estrategia', 'Ejecución', 'Optimización', 'Resultados'], href: 'Processo.dc.html' },
       ],
       ctaKicker: 'Conversemos',
       ctaTitle: '¿Listo para minar de la forma correcta?',
       ctaBtn: 'Habla con ProMin',
     };
     const L = lang === 'es' ? es : pt;
-    const imgs = ['face.jpg', 'tech-monitors.jpg', 'aerial-right.jpg', 'hero-machinery.jpg'];
-    const index = L.index.map((r, i) => ({
-      ...r, num: '0' + (i + 1), delay: i * 90,
-      enter: () => this.setHover(i),
-    }));
+    const sections = L.sections.map((s, i) => ({ ...s, delay: i * 90 }));
     const values = L.values.map((v, i) => ({ ...v, delay: i * 100 }));
     return {
-      L, ...L, values, index, marquee: [...L.marquee, ...L.marquee],
-      ref0: this.imgRefs[0], ref1: this.imgRefs[1], ref2: this.imgRefs[2], ref3: this.imgRefs[3],
+      L, ...L, values, sections, marquee: [...L.marquee, ...L.marquee],
     };
   }
 }
