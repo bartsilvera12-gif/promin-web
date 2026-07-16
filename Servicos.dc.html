@@ -20,6 +20,12 @@
   a:hover { color: #E8714F; }
   ::selection { background: #DE694E; color: #151A1F; }
   @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
+  @media (max-width: 900px) {
+    [data-story-grid], [data-mvv-grid], [data-exp-grid], [data-svc-grid],
+    [data-traits-grid], [data-contact-grid], [data-form-row], [data-tech-grid] { grid-template-columns: 1fr !important; }
+    [style*="sticky"] { position: static !important; top: auto !important; }
+  }
 </style>
 </helmet>
 

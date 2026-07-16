@@ -44,7 +44,8 @@ export function initMotion(root) {
   const GRID_SEL = ['[data-hero-grid]', '[data-story-grid]', '[data-svc-grid]',
     '[data-area-grid]', '[data-tech-grid]', '[data-contact-grid]', '[data-mvv-grid]',
     '[data-exp-grid]', '[data-intro-grid]', '[data-index-wrap]', '[data-foot-grid]',
-    '[data-values-grid]', '[data-form-row]'].join(',');
+    '[data-values-grid]', '[data-form-row]', '[data-traits-grid]', '[data-chal-grid]',
+    '[data-why-grid]', '[data-mv-grid]', '[data-proc-grid]'].join(',');
   const applyGrids = () => {
     const narrow = window.innerWidth <= 900;
     document.querySelectorAll(GRID_SEL).forEach((el) => {

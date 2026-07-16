@@ -20,6 +20,12 @@
   a:hover { color: #E8714F; }
   ::selection { background: #DE694E; color: #151A1F; }
   @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
+  @media (max-width: 900px) {
+    [data-story-grid], [data-mvv-grid], [data-exp-grid], [data-svc-grid],
+    [data-traits-grid], [data-contact-grid], [data-form-row], [data-tech-grid] { grid-template-columns: 1fr !important; }
+    [style*="sticky"] { position: static !important; top: auto !important; }
+  }
 </style>
 </helmet>
 
@@ -85,9 +91,14 @@
   <section style="padding:clamp(60px,8vw,100px) clamp(20px,5vw,64px);max-width:1160px;margin:0 auto">
     <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.traitsKicker }}</div>
     <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(26px,3.6vw,42px);font-weight:700;letter-spacing:-1px;margin:0 0 36px;color:#F4F6F8;max-width:20ch">{{ L.traitsTitle }}</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:14px">
-      <sc-for list="{{ traits }}" as="t" hint-placeholder-count="6">
-        <span data-reveal="scale" data-reveal-delay="{{ t.delay }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(217,220,224,.16);border-radius:999px;padding:12px 22px;font-size:16px;font-weight:500;color:#EDEFF2;transition:background .3s ease,border-color .3s ease" style-hover="background:rgba(222,105,78,.12);border-color:rgba(222,105,78,.5)"><span style="width:7px;height:7px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span>{{ t.label }}</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 40px" data-traits-grid>
+      <sc-for list="{{ traits }}" as="t" hint-placeholder-count="7">
+        <div data-reveal="up" data-reveal-delay="{{ t.delay }}" style="display:flex;align-items:flex-start;gap:14px;padding:15px 0;border-bottom:1px solid rgba(217,220,224,.08)">
+          <span style="flex:none;width:24px;height:24px;border-radius:50%;background:rgba(222,105,78,.16);border:1px solid rgba(222,105,78,.45);display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#DE694E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#EDEFF2">{{ t.label }}</span>
+        </div>
       </sc-for>
     </div>
   </section>
