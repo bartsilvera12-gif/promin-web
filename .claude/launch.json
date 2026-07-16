@@ -4,8 +4,9 @@
     {
       "name": "promin",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "http-server", "-p", "8124", "-c-1", "--silent"],
-      "port": 8124
+      "runtimeArgs": ["--yes", "http-server", "-c-1", "--silent"],
+      "port": 8124,
+      "autoPort": true
     }
   ]
 }

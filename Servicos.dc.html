@@ -39,15 +39,18 @@
   <!-- SERVICES GRID -->
   <section style="padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px) clamp(60px,8vw,110px);max-width:1200px;margin:0 auto">
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px" data-svc-grid>
-      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
-        <div data-reveal="up" data-reveal-delay="{{ s.delay }}" style="position:relative;background:#12171C;border:1px solid rgba(217,220,224,.08);border-radius:18px;padding:38px 34px;overflow:hidden;transition:border-color .35s ease,transform .35s ease" style-hover="border-color:rgba(222,105,78,.45);transform:translateY(-5px)">
-          <div style="position:absolute;top:-20px;right:14px;font-family:'JetBrains Mono',monospace;font-size:88px;font-weight:600;color:rgba(222,105,78,.08);line-height:1;pointer-events:none">{{ s.num }}</div>
-          <div style="display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;background:rgba(222,105,78,.12);margin-bottom:22px">
-            <span style="width:20px;height:14px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span>
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="10">
+        <div data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;background:#12171C;border:1px solid rgba(217,220,224,.08);border-radius:18px;padding:36px 32px;transition:border-color .35s ease,transform .35s ease" style-hover="border-color:rgba(222,105,78,.45);transform:translateY(-5px)">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;background:rgba(222,105,78,.12);border:1px solid rgba(222,105,78,.28);margin-bottom:22px;flex:none">
+            <span style="width:18px;height:13px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span>
           </div>
-          <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;color:#F4F6F8;position:relative">{{ s.title }}</h3>
-          <p style="font-size:14.5px;line-height:1.65;color:#8A9199;margin:0 0 18px;position:relative">{{ s.desc }}</p>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.5px;color:#DE694E">{{ s.tag }}</div>
+          <h3 style="font-size:21px;font-weight:700;margin:0 0 12px;color:#F4F6F8;letter-spacing:-.3px;line-height:1.25">{{ s.title }}</h3>
+          <p style="font-size:14.5px;line-height:1.65;color:#8A9199;margin:0 0 20px;flex:1">{{ s.desc }}</p>
+          <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid rgba(217,220,224,.08);padding-top:18px">
+            <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="4">
+              <span style="display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#C9CDD2;line-height:1.5"><span style="flex:none;width:6px;height:6px;background:#DE694E;transform:skewX(-24deg);display:inline-block;margin-top:6px"></span>{{ it }}</span>
+            </sc-for>
+          </div>
         </div>
       </sc-for>
     </div>
@@ -85,37 +88,45 @@ class Component extends DCLogic {
   renderVals() {
     const lang = this.lang();
     const pt = {
-      kicker: 'O que fazemos', title: 'Serviços que geram resultados.',
-      lede: 'Soluções técnicas completas para cada etapa da sua operação de mineração e pedreiras — do diagnóstico à execução.',
+      kicker: 'Nossos Serviços', title: 'Soluções técnicas para cada etapa da operação.',
+      lede: 'Do projeto da planta à manutenção, da otimização da produção à compra de equipamentos — atuamos onde o resultado é gerado.',
       services: [
-        { title: 'Consultoria Técnica', desc: 'Diagnóstico e orientação especializada para elevar a performance da sua operação com precisão técnica.', tag: 'Resultados' },
-        { title: 'Estratégia de Produção e Logística', desc: 'Planejamento de produção e logística que resolvem gargalos e otimizam o fluxo da operação.', tag: 'Eficiência' },
-        { title: 'Gestão de Manutenção', desc: 'Gestão da manutenção de máquinas e equipamentos para garantir disponibilidade e reduzir paradas.', tag: 'Disponibilidade' },
-        { title: 'Extração e Comercialização', desc: 'Conhecimento profundo em processos de extração e comercialização de minerais no mercado.', tag: 'Mercado' },
-        { title: 'Assessoria de Negócios', desc: 'Suporte técnico e assessoria de negócios para projetos de mineração, com foco em inovação.', tag: 'Estratégia' },
-        { title: 'Tecnologia e Performance', desc: 'Tecnologia especializada que gera performance e coloca a sua operação um passo à frente.', tag: 'Performance' },
+        { title: 'Projetos de Plantas de Britagem', desc: 'Projetamos plantas novas ou otimizamos instalações existentes, buscando o melhor equilíbrio entre investimento, capacidade produtiva e custo operacional.', items: ['Estudos de viabilidade', 'Layout da planta', 'Balanço de massas', 'Projetos executivos', 'Acompanhamento da implantação'] },
+        { title: 'Manutenção Preventiva', desc: 'Estruturamos programas de manutenção para reduzir falhas e aumentar a disponibilidade dos equipamentos.', items: ['Cadastro de ativos', 'Planos preventivos', 'Indicadores de manutenção', 'Redução de paradas inesperadas'] },
+        { title: 'Manutenção Preditiva', desc: 'Antecipamos falhas antes que elas interrompam a produção.', items: ['Análise de vibração, temperatura e pressão', 'Ensaios não destrutivos', 'Líquido penetrante', 'Raio X', 'Medição de dureza'] },
+        { title: 'Manutenção Corretiva', desc: 'Especialistas em equipamentos de britagem das principais marcas do mercado.', items: ['Diagnóstico técnico', 'Supervisão de reformas', 'Relatórios técnicos', 'Suporte em campo'] },
+        { title: 'Otimização de Produção', desc: 'Melhoramos o desempenho da planta através da análise do processo produtivo.', items: ['Identificação de gargalos', 'Aumento de capacidade', 'Redução de desgaste', 'Melhoria do fluxo de produção'] },
+        { title: 'Gestão de Custos e Estoques', desc: 'Reduzimos capital parado sem comprometer a disponibilidade da planta.', items: ['Estoque de segurança', 'Classificação de peças críticas', 'Gestão de fornecedores', 'Redução dos custos operacionais'] },
+        { title: 'Engenharia e Projetos', desc: 'Desenvolvemos soluções sob medida para fabricação e melhorias industriais.', items: ['Desenhos técnicos', 'Projetos mecânicos', 'Projetos de fabricação', 'Relatórios de engenharia'] },
+        { title: 'Treinamentos', desc: 'Capacitamos equipes para operar e manter equipamentos com maior eficiência.', items: ['Operadores', 'Mecânicos', 'Compradores técnicos', 'Equipes de manutenção'] },
+        { title: 'Consultoria em Compras', desc: 'Apoiamos decisões técnicas para aquisição de equipamentos, peças e serviços.', items: ['Especificação técnica', 'Avaliação de fornecedores', 'Análise de custo-benefício', 'Acompanhamento de fabricação'] },
+        { title: 'Reforma e Comercialização de Equipamentos', desc: 'Acompanhamos projetos de reforma e fornecimento de equipamentos novos e usados.', items: ['Reforma de britadores', 'Recuperação de componentes', 'Equipamentos novos', 'Equipamentos seminovos'] },
       ],
       techKicker: 'Tecnologia', techTitle: 'Tecnologia especializada que gera performance.',
       techBody: 'Unimos expertise de campo e ferramentas modernas para monitorar, analisar e otimizar cada processo — transformando dados em decisões que impulsionam resultados.',
       techPoints: ['Monitoramento e análise de processos', 'Decisões orientadas por dados', 'Melhoria contínua da operação'],
     };
     const es = {
-      kicker: 'Lo que hacemos', title: 'Servicios que generan resultados.',
-      lede: 'Soluciones técnicas completas para cada etapa de tu operación de minería y canteras — del diagnóstico a la ejecución.',
+      kicker: 'Nuestros Servicios', title: 'Soluciones técnicas para cada etapa de la operación.',
+      lede: 'Del diseño de la planta al mantenimiento, de la optimización de la producción a la compra de equipos — actuamos donde se genera el resultado.',
       services: [
-        { title: 'Consultoría Técnica', desc: 'Diagnóstico y orientación especializada para elevar el desempeño de tu operación con precisión técnica.', tag: 'Resultados' },
-        { title: 'Estrategia de Producción y Logística', desc: 'Planificación de producción y logística que resuelven cuellos de botella y optimizan el flujo.', tag: 'Eficiencia' },
-        { title: 'Gestión de Mantenimiento', desc: 'Gestión del mantenimiento de máquinas y equipos para garantizar disponibilidad y reducir paradas.', tag: 'Disponibilidad' },
-        { title: 'Extracción y Comercialización', desc: 'Conocimiento profundo en procesos de extracción y comercialización de minerales en el mercado.', tag: 'Mercado' },
-        { title: 'Asesoría de Negocios', desc: 'Soporte técnico y asesoría de negocios para proyectos de minería, con foco en la innovación.', tag: 'Estrategia' },
-        { title: 'Tecnología y Performance', desc: 'Tecnología especializada que genera performance y pone tu operación un paso adelante.', tag: 'Performance' },
+        { title: 'Diseño e Ingeniería de Plantas de Trituración', desc: 'Diseñamos nuevas plantas u optimizamos instalaciones existentes, buscando el mejor equilibrio entre inversión, capacidad de producción y costos operativos.', items: ['Estudios de viabilidad', 'Diseño del layout de la planta', 'Balance de masas', 'Ingeniería de detalle', 'Supervisión de la implementación'] },
+        { title: 'Mantenimiento Preventivo', desc: 'Implementamos programas de mantenimiento para reducir fallas y aumentar la disponibilidad de los equipos.', items: ['Registro de activos', 'Planes de mantenimiento preventivo', 'Indicadores de mantenimiento', 'Reducción de paradas no programadas'] },
+        { title: 'Mantenimiento Predictivo', desc: 'Detectamos fallas antes de que afecten la producción.', items: ['Análisis de vibraciones, temperatura y presión', 'Ensayos no destructivos', 'Líquidos penetrantes', 'Radiografía industrial', 'Verificación de dureza'] },
+        { title: 'Mantenimiento Correctivo', desc: 'Especialistas en equipos de trituración de las principales marcas del mercado.', items: ['Diagnóstico técnico', 'Supervisión de reparaciones', 'Informes técnicos', 'Asistencia técnica en campo'] },
+        { title: 'Optimización de la Producción', desc: 'Mejoramos el desempeño de la planta mediante el análisis integral del proceso productivo.', items: ['Identificación de cuellos de botella', 'Incremento de la capacidad de producción', 'Reducción del desgaste de componentes', 'Optimización del flujo de proceso'] },
+        { title: 'Gestión de Costos e Inventario de Repuestos', desc: 'Reducimos el capital inmovilizado sin comprometer la continuidad de la producción.', items: ['Inventario de seguridad', 'Clasificación de repuestos críticos', 'Gestión de proveedores', 'Reducción de costos operativos'] },
+        { title: 'Ingeniería y Desarrollo de Proyectos', desc: 'Desarrollamos soluciones técnicas personalizadas para fabricación y mejoras industriales.', items: ['Planos técnicos', 'Proyectos mecánicos', 'Ingeniería de fabricación', 'Informes técnicos'] },
+        { title: 'Capacitación Técnica', desc: 'Capacitamos a los equipos para operar y mantener los equipos con mayor eficiencia.', items: ['Operadores', 'Mecánicos', 'Compradores técnicos', 'Personal de mantenimiento'] },
+        { title: 'Consultoría en Compras', desc: 'Brindamos soporte técnico para la adquisición de equipos, repuestos y servicios.', items: ['Especificaciones técnicas', 'Evaluación de proveedores', 'Análisis costo-beneficio', 'Seguimiento de fabricación'] },
+        { title: 'Reparación y Comercialización de Equipos', desc: 'Acompañamos proyectos de reparación y suministro de equipos nuevos y usados.', items: ['Reparación de trituradoras', 'Recuperación de componentes', 'Equipos nuevos', 'Equipos usados'] },
       ],
       techKicker: 'Tecnología', techTitle: 'Tecnología especializada que genera performance.',
       techBody: 'Unimos experiencia de campo y herramientas modernas para monitorear, analizar y optimizar cada proceso — convirtiendo datos en decisiones que impulsan resultados.',
       techPoints: ['Monitoreo y análisis de procesos', 'Decisiones orientadas por datos', 'Mejora continua de la operación'],
     };
     const L = lang === 'es' ? es : pt;
-    return { L, services: L.services.map((s, i) => ({ ...s, num: '0' + (i + 1), delay: (i % 2) * 90 })), techPoints: L.techPoints };
+    return { L, services: L.services.map((s, i) => ({ ...s, delay: (i % 2) * 90 })), techPoints: L.techPoints };
   }
 }
 

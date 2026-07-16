@@ -64,18 +64,23 @@
 
         <!-- INFO CARDS -->
         <div style="display:flex;flex-direction:column;gap:16px" data-reveal="up" data-reveal-delay="200">
-          <a href="https://wa.me/553172075744" target="_blank" rel="noopener" style="display:block;background:#12171C;border:1px solid rgba(222,105,78,.3);border-radius:16px;padding:26px 26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.7);transform:translateY(-3px)">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">WhatsApp · {{ L.direct }}</div>
-            <div style="font-size:24px;font-weight:700;color:#F4F6F8">+55 31 7207-5744</div>
+          <div style="background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">{{ L.personLabel }}</div>
+            <div style="font-size:20px;font-weight:700;color:#F4F6F8">Samuel Ribeiro</div>
+          </div>
+          <a href="https://wa.me/5531972075744" target="_blank" rel="noopener" style="display:block;background:#12171C;border:1px solid rgba(222,105,78,.3);border-radius:16px;padding:26px 26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.7);transform:translateY(-3px)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">WhatsApp Brasil · {{ L.direct }}</div>
+            <div style="font-size:24px;font-weight:700;color:#F4F6F8">+55 31 97207-5744</div>
             <div style="font-size:13px;color:#8A9199;margin-top:6px">{{ L.waSub }}</div>
           </a>
-          <a href="tel:+553172075744" style="display:block;background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-3px)">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">{{ L.phoneLabel }}</div>
-            <div style="font-size:20px;font-weight:600;color:#EDEFF2">+55 31 7207-5744</div>
+          <a href="https://wa.me/595993632383" target="_blank" rel="noopener" style="display:block;background:#12171C;border:1px solid rgba(222,105,78,.3);border-radius:16px;padding:26px 26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.7);transform:translateY(-3px)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">WhatsApp Paraguay</div>
+            <div style="font-size:24px;font-weight:700;color:#F4F6F8">+595 993 632 383</div>
+            <div style="font-size:13px;color:#8A9199;margin-top:6px">{{ L.waSub }}</div>
           </a>
-          <a href="mailto:contato@prominconsultoria.com.br" style="display:block;background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-3px)">
+          <a href="mailto:Samuel@promin.com" style="display:block;background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.5);transform:translateY(-3px)">
             <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">E-mail</div>
-            <div style="font-size:15px;font-weight:500;color:#EDEFF2;word-break:break-all">contato@prominconsultoria.com.br</div>
+            <div style="font-size:15px;font-weight:500;color:#EDEFF2;word-break:break-all">Samuel@promin.com</div>
           </a>
           <div style="background:#12171C;border:1px solid rgba(217,220,224,.1);border-radius:16px;padding:26px">
             <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#DE694E;margin-bottom:12px">{{ L.locLabel }}</div>
@@ -108,7 +113,7 @@ class Component extends DCLogic {
       msg ? `\n${msg}` : '',
     ].filter(Boolean);
     const text = encodeURIComponent(parts.join('\n'));
-    window.open(`https://wa.me/553172075744?text=${text}`, '_blank');
+    window.open(`https://wa.me/5531972075744?text=${text}`, '_blank');
     this.setState({ sent: true });
   }
 
@@ -120,7 +125,7 @@ class Component extends DCLogic {
       phName: 'Seu nome', phPhone: '(00) 00000-0000', phEmail: 'voce@empresa.com', phMsg: 'Conte-nos sobre a sua operação...',
       send: 'Enviar pelo WhatsApp', ok: '✓ Abrimos o WhatsApp para você concluir o envio.',
       direct: 'Resposta rápida', waSub: 'Fale direto com a nossa equipe.',
-      phoneLabel: 'Telefone', locLabel: 'Localização', locValue: 'Brasil — Atendimento nacional · Consultoria em mineração BR/PR',
+      phoneLabel: 'Telefone', personLabel: 'Responsável', locLabel: 'Localização', locValue: 'Brasil · Paraguay — Consultoria técnica em britagem, mineração e agregados',
     };
     const es = {
       kicker: 'Contáctanos', title: 'Conversemos sobre tu proyecto.',
@@ -128,7 +133,7 @@ class Component extends DCLogic {
       phName: 'Tu nombre', phPhone: '(00) 00000-0000', phEmail: 'tu@empresa.com', phMsg: 'Cuéntanos sobre tu operación...',
       send: 'Enviar por WhatsApp', ok: '✓ Abrimos WhatsApp para que completes el envío.',
       direct: 'Respuesta rápida', waSub: 'Habla directo con nuestro equipo.',
-      phoneLabel: 'Teléfono', locLabel: 'Ubicación', locValue: 'Brasil — Atención nacional · Consultoría en minería BR/PR',
+      phoneLabel: 'Teléfono', personLabel: 'Responsable', locLabel: 'Ubicación', locValue: 'Brasil · Paraguay — Consultoría técnica en trituración, minería y agregados',
     };
     const L = lang === 'es' ? es : pt;
     return {

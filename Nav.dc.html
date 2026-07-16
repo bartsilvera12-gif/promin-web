@@ -99,12 +99,12 @@ class Component extends DCLogic {
   renderVals() {
     const lang = this.lang();
     const dict = {
-      pt: { cta: 'Fale conosco', items: ['Início', 'Sobre', 'Serviços', 'Áreas de Atuação', 'Processo', 'Contato'] },
-      es: { cta: 'Contáctanos', items: ['Inicio', 'Nosotros', 'Servicios', 'Áreas', 'Proceso', 'Contacto'] },
+      pt: { cta: 'Fale conosco', items: ['Início', 'Sobre', 'Serviços', 'Contato'] },
+      es: { cta: 'Contáctanos', items: ['Inicio', 'Nosotros', 'Servicios', 'Contacto'] },
     };
     const L = dict[lang];
-    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Areas.dc.html', 'Processo.dc.html', 'Contato.dc.html'];
-    const keys = ['inicio', 'sobre', 'servicos', 'areas', 'processo', 'contato'];
+    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Contato.dc.html'];
+    const keys = ['inicio', 'sobre', 'servicos', 'contato'];
     const active = this.props.active || 'inicio';
     const base = "font-family:'Sora',sans-serif;font-size:15px;font-weight:500;letter-spacing:.2px;color:#C9CDD2;transition:color .25s ease;display:inline-flex;align-items:center";
     const links = L.items.map((label, i) => ({

@@ -20,66 +20,26 @@
   a:hover { color: #E8714F; }
   ::selection { background: #DE694E; color: #151A1F; }
   @keyframes promin-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @keyframes promin-drift { 0% { transform: translateY(0); } 50% { transform: translateY(-16px); } 100% { transform: translateY(0); } }
-  @keyframes promin-scroll-dot { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(20px); opacity: 0; } 100% { opacity: 0; } }
   @keyframes promin-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
-  @keyframes promin-float-card { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-14px) rotate(-.4deg); } }
-  @keyframes promin-kenburns { 0% { transform: scale(1) translate(0,0); } 100% { transform: scale(1.12) translate(-2%,-2%); } }
-  @keyframes promin-shine { 0% { transform: translateX(-120%) skewX(-18deg); } 60%,100% { transform: translateX(220%) skewX(-18deg); } }
-  .promin-hero-card { animation: promin-float-card 9s ease-in-out infinite; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-  .promin-hero-card:hover { animation-play-state: paused; transform: translateY(-14px) scale(1.02); }
-  .promin-hero-frame { transition: box-shadow .5s ease, border-color .5s ease; border: 1px solid rgba(222,105,78,.18); }
-  .promin-hero-card:hover .promin-hero-frame { box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(222,105,78,.5); }
-  .promin-hero-img { animation: promin-kenburns 18s ease-in-out infinite alternate; }
-  .promin-hero-shine { position: absolute; top: -20%; left: 0; width: 45%; height: 140%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent); pointer-events: none; animation: promin-shine 7s ease-in-out infinite; animation-delay: 2s; }
   @keyframes promin-glow { 0%,100% { text-shadow: 0 0 12px rgba(222,105,78,.35), 0 0 30px rgba(222,105,78,.16); } 50% { text-shadow: 0 0 22px rgba(222,105,78,.7), 0 0 56px rgba(232,113,79,.42); } }
-  .promin-glow-word { color: #E8714F; animation: promin-glow 3.4s ease-in-out infinite; transition: text-shadow .3s ease, transform .3s ease; display: inline-block; }
-  .promin-glow-word:hover { animation-play-state: paused; text-shadow: 0 0 26px rgba(222,105,78,.85), 0 0 64px rgba(232,113,79,.55); transform: scale(1.03); }
+  .promin-glow-word { color: #E8714F; animation: promin-glow 3.4s ease-in-out infinite; display: inline-block; }
+  /* cards */
+  .promin-card { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+  .promin-card:hover { border-color: rgba(222,105,78,.5); transform: translateY(-4px); background: #1A2129; }
+  .promin-chal { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+  .promin-chal:hover { border-color: rgba(222,105,78,.45); transform: translateY(-3px); }
   @media (max-width: 720px) {
     .promin-hero-content { text-align: center; margin: 0 auto; }
     .promin-hero-content p { margin-left: auto; margin-right: auto; }
-    .promin-hero-btns { justify-content: center; }
+    .promin-hero-btns { justify-content: center; width: 100%; }
+    .promin-hero-btns > a { flex: 1 1 100%; justify-content: center; }
   }
-  /* ── Explore section cards: layered hover effects ── */
-  .promin-sec-card { position: relative; transform-style: preserve-3d; transition: transform .2s cubic-bezier(.2,.7,.2,1), border-color .4s ease, box-shadow .45s ease, background .4s ease; will-change: transform; }
-  .promin-sec-card:hover { border-color: rgba(222,105,78,.55); background: #1A222B; box-shadow: 0 30px 66px rgba(0,0,0,.55), 0 0 44px -14px rgba(222,105,78,.55); }
-  /* cursor-following spotlight */
-  .promin-sec-card::before { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; background: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(222,105,78,.20), transparent 60%); opacity: 0; transition: opacity .35s ease; }
-  .promin-sec-card:hover::before { opacity: 1; }
-  /* image zoom + warm-up */
-  .promin-sec-card img { transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .5s ease; }
-  .promin-sec-card:hover img { transform: scale(1.08); filter: saturate(1.15) brightness(1.06); }
-  /* shine sweep across the image */
-  .promin-sec-media::after { content: ''; position: absolute; top: 0; left: 0; width: 55%; height: 100%; z-index: 2; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent); transform: translateX(-160%) skewX(-18deg); }
-  .promin-sec-card:hover .promin-sec-media::after { animation: promin-shine 1s ease-out; }
-  /* arrow reacts to the whole card */
-  .promin-sec-arrow { transition: transform .35s cubic-bezier(.2,.7,.2,1), color .35s ease; }
-  .promin-sec-card:hover .promin-sec-arrow { transform: translateX(7px); color: #DE694E; }
-  /* kicker badge lights up */
-  .promin-sec-kicker { transition: background .35s ease, color .35s ease; }
-  .promin-sec-card:hover .promin-sec-kicker { background: rgba(222,105,78,.9); color: #151A1F; }
-  /* title warms */
-  .promin-sec-title { transition: color .35s ease; }
-  .promin-sec-card:hover .promin-sec-title { color: #FFFFFF; }
-  /* item chips */
-  .promin-chip { transition: background .3s ease, border-color .3s ease; }
-  .promin-sec-card:hover .promin-chip { border-color: rgba(222,105,78,.4); background: rgba(222,105,78,.16); }
-  @media (prefers-reduced-motion: reduce) {
-    .promin-sec-card, .promin-sec-card img, .promin-sec-arrow { transition: border-color .3s ease, box-shadow .3s ease; }
-    .promin-sec-card:hover img { transform: none; }
-    .promin-sec-card:hover .promin-sec-media::after { animation: none; }
-  }
-  /* --- Mobile layout (page-level, applies even if JS is slow to load) --- */
+  /* Mobile layout (page-level, applies even if JS is slow) */
   @media (max-width: 900px) {
-    [data-index-wrap], [data-svc-grid] { grid-template-columns: 1fr !important; }
-    [data-proc-grid] { grid-template-columns: 1fr !important; }
-    /* decorative hover-swap image: no purpose on touch, hide it */
-    [data-index-preview] { display: none !important; }
-    [data-intro-grid] { grid-template-columns: 1fr !important; }
-    [data-intro-grid] > * { position: static !important; top: auto !important; }
-    [data-values-grid] { grid-template-columns: 1fr !important; }
+    [data-svc-grid], [data-chal-grid], [data-story-grid], [data-why-grid], [data-mv-grid] { grid-template-columns: 1fr !important; }
+    [data-story-grid] > * { position: static !important; top: auto !important; }
   }
-  @media (prefers-reduced-motion: reduce) { .promin-hero-card, .promin-hero-img, .promin-hero-shine, .promin-glow-word { animation: none; transition: opacity .4s ease; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .promin-glow-word { animation: none; } }
 </style>
 </helmet>
 
@@ -88,33 +48,30 @@
 
   <dc-import name="Nav" active="inicio" hint-size="100%,90px"></dc-import>
 
-  <!-- ===================== HERO ===================== -->
+  <!-- ===================== 1 · HERO ===================== -->
   <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#12171C">
-    <!-- background image (single, fixed) -->
     <img src="hero-cover.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0" />
-    <!-- overlays -->
     <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(18,23,28,.93) 0%,rgba(18,23,28,.66) 40%,rgba(18,23,28,.30) 72%,rgba(18,23,28,.55) 100%)"></div>
     <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,23,28,.4) 0%,transparent 32%,rgba(18,23,28,.82) 100%)"></div>
-    <!-- faint grid -->
-    <div style="position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(217,220,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,220,224,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 25% 45%,#000 0%,transparent 75%);-webkit-mask-image:radial-gradient(circle at 25% 45%,#000 0%,transparent 75%)"></div>
 
-    <div style="position:relative;z-index:3;max-width:1240px;margin:0 auto;width:100%;padding:110px clamp(20px,5vw,64px) 130px">
-      <div class="promin-hero-content" style="max-width:840px">
+    <div style="position:relative;z-index:3;max-width:1240px;margin:0 auto;width:100%;padding:110px clamp(20px,5vw,64px) 120px">
+      <div class="promin-hero-content" style="max-width:900px">
         <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:26px">
           <span style="width:8px;height:8px;background:#DE694E;border-radius:50%;animation:promin-blink 2s infinite"></span>{{ L.eyebrow }}
         </div>
-        <h1 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(40px,7vw,86px);line-height:1.03;font-weight:700;letter-spacing:-2px;margin:0 0 26px;color:#F4F6F8;text-shadow:0 6px 44px rgba(0,0,0,.55)">{{ L.h1a }}<span class="promin-glow-word">{{ L.h1b }}</span>{{ L.h1c }}</h1>
-        <p data-reveal="up" data-reveal-delay="160" style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#C6CCD2;font-weight:300;max-width:52ch;margin:0 0 40px;text-shadow:0 2px 20px rgba(0,0,0,.5)">{{ L.lede }}</p>
-        <div data-reveal="up" data-reveal-delay="240" class="promin-hero-btns" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <h1 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(34px,5.6vw,68px);line-height:1.06;font-weight:700;letter-spacing:-1.8px;margin:0 0 26px;color:#F4F6F8;text-shadow:0 6px 44px rgba(0,0,0,.55)">{{ L.h1a }}<span class="promin-glow-word">{{ L.h1b }}</span>{{ L.h1c }}</h1>
+        <p data-reveal="up" data-reveal-delay="150" style="font-size:clamp(15.5px,1.5vw,18px);line-height:1.7;color:#C6CCD2;font-weight:300;max-width:60ch;margin:0 0 16px;text-shadow:0 2px 20px rgba(0,0,0,.5)">{{ L.lede1 }}</p>
+        <p data-reveal="up" data-reveal-delay="200" style="font-size:clamp(15.5px,1.5vw,18px);line-height:1.7;color:#A9B0B8;font-weight:300;max-width:60ch;margin:0 0 26px">{{ L.lede2 }}</p>
+        <div data-reveal="up" data-reveal-delay="240" style="display:inline-block;font-weight:700;font-size:clamp(15px,1.6vw,19px);color:#DE694E;border-left:3px solid #DE694E;padding-left:14px;margin-bottom:36px">{{ L.claim }}</div>
+        <div data-reveal="up" data-reveal-delay="290" class="promin-hero-btns" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
           <a href="Contato.dc.html" style="display:inline-flex;align-items:center;gap:10px;background:#DE694E;color:#151A1F;font-weight:700;font-size:15px;padding:16px 28px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);box-shadow:0 14px 34px rgba(222,105,78,.42)">{{ L.cta1 }} <span style="font-family:'JetBrains Mono',monospace">→</span></a>
           <a href="Servicos.dc.html" style="display:inline-flex;align-items:center;gap:10px;color:#EDEFF2;font-weight:600;font-size:15px;padding:16px 22px;border:1px solid rgba(237,239,242,.28);border-radius:999px;background:rgba(18,23,28,.35);transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(222,105,78,.6);background:rgba(222,105,78,.12)">{{ L.cta2 }}</a>
         </div>
       </div>
     </div>
-
   </section>
 
-  <!-- ===================== KEYWORD MARQUEE ===================== -->
+  <!-- ===================== MARQUEE ===================== -->
   <div style="background:#DE694E;color:#151A1F;overflow:hidden;padding:15px 0;position:relative;z-index:3">
     <div style="display:flex;gap:34px;white-space:nowrap;animation:promin-marquee 30s linear infinite;width:max-content">
       <sc-for list="{{ marquee }}" as="m" hint-placeholder-count="14">
@@ -123,113 +80,129 @@
     </div>
   </div>
 
-  <!-- ===================== INTRO ===================== -->
-  <section style="padding:clamp(70px,10vw,130px) clamp(20px,5vw,64px);max-width:1160px;margin:0 auto">
-    <div style="display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,6vw,80px);align-items:start" data-intro-grid>
-      <div data-reveal="up" style="position:sticky;top:110px">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E">// {{ L.introKicker }}</span>
-        <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:700;letter-spacing:-.8px;line-height:1.15;color:#F4F6F8;margin:18px 0 34px">{{ L.introTitle }}</h2>
-        <div style="display:flex;flex-direction:column;gap:0">
-          <sc-for list="{{ stats }}" as="st" hint-placeholder-count="3">
-            <div style="display:flex;align-items:baseline;gap:16px;padding:16px 0;border-top:1px solid rgba(217,220,224,.1)">
-              <span style="font-size:clamp(30px,3.4vw,42px);font-weight:800;color:#DE694E;line-height:1;letter-spacing:-1px;flex:none;min-width:96px">{{ st.n }}</span>
-              <span style="font-size:14px;color:#A9B0B8;line-height:1.4">{{ st.l }}</span>
-            </div>
-          </sc-for>
-        </div>
+  <!-- ===================== 2 · OS DESAFIOS QUE RESOLVEMOS ===================== -->
+  <section style="background:#12171C;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.chKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(27px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 42px;color:#F4F6F8;max-width:24ch">{{ L.chTitle }}</h2>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px" data-chal-grid>
+        <sc-for list="{{ challenges }}" as="ch" hint-placeholder-count="8">
+          <div class="promin-chal" data-reveal="up" data-reveal-delay="{{ ch.delay }}" style="display:flex;align-items:flex-start;gap:13px;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:14px;padding:22px 20px">
+            <span style="flex:none;width:22px;height:22px;border-radius:50%;background:rgba(222,105,78,.14);border:1px solid rgba(222,105,78,.4);color:#DE694E;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px">!</span>
+            <span style="font-size:14.5px;line-height:1.5;color:#C9CDD2">{{ ch.t }}</span>
+          </div>
+        </sc-for>
       </div>
-      <div>
-        <p data-reveal="up" style="font-size:clamp(22px,2.6vw,30px);line-height:1.4;font-weight:300;color:#EDEFF2;margin:0 0 30px">{{ L.introLead }}</p>
-        <p data-reveal="up" data-reveal-delay="120" style="font-size:16px;line-height:1.7;color:#A9B0B8;margin:0 0 40px;max-width:56ch">{{ L.introBody }}</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" data-values-grid>
-          <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
-            <div data-reveal="up" data-reveal-delay="{{ v.delay }}" style="border-top:1px solid rgba(222,105,78,.4);padding-top:16px">
-              <div style="font-size:17px;font-weight:600;color:#EDEFF2;margin-bottom:6px">{{ v.title }}</div>
-              <div style="font-size:13px;color:#8A9199;line-height:1.5">{{ v.desc }}</div>
-            </div>
-          </sc-for>
-        </div>
+      <div data-reveal="up" style="margin-top:36px;padding:24px 28px;background:rgba(222,105,78,.09);border-left:3px solid #DE694E;border-radius:0 14px 14px 0">
+        <p style="margin:0;font-size:clamp(15px,1.7vw,18px);line-height:1.6;color:#EDEFF2;font-weight:500">{{ L.chClose }}</p>
       </div>
     </div>
   </section>
 
-  <!-- ===================== SERVIÇOS ===================== -->
+  <!-- ===================== 3 · QUEM SOMOS ===================== -->
+  <section style="padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);max-width:1240px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,5vw,70px);align-items:center" data-story-grid>
+      <div data-reveal="right" style="position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 26px 70px rgba(0,0,0,.45)">
+        <img src="face.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(18,23,28,.72))"></div>
+        <div style="position:absolute;left:20px;bottom:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(237,239,242,.9);text-transform:uppercase">// ProMin</div>
+      </div>
+      <div>
+        <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.qsKicker }}</div>
+        <p data-reveal="up" data-reveal-delay="60" style="font-size:clamp(20px,2.4vw,27px);line-height:1.45;font-weight:400;color:#EDEFF2;margin:0 0 22px">{{ L.qs1 }}</p>
+        <p data-reveal="up" data-reveal-delay="120" style="font-size:15.5px;line-height:1.7;color:#A9B0B8;margin:0 0 22px;max-width:58ch">{{ L.qs2 }}</p>
+        <div data-reveal="up" data-reveal-delay="180" style="display:inline-block;font-weight:700;font-size:19px;color:#DE694E;border-left:3px solid #DE694E;padding-left:14px">{{ L.qs3 }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 4 · NOSSOS SERVIÇOS ===================== -->
   <section style="background:#12171C;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px)">
     <div style="max-width:1240px;margin:0 auto">
       <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.svcKicker }}</div>
-      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 12px;color:#F4F6F8">{{ L.svcTitle }}</h2>
-      <p data-reveal="up" data-reveal-delay="110" style="font-size:16px;line-height:1.65;color:#A9B0B8;margin:0 0 42px;max-width:60ch">{{ L.svcLede }}</p>
+      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(27px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 12px;color:#F4F6F8">{{ L.svcTitle }}</h2>
+      <p data-reveal="up" data-reveal-delay="110" style="font-size:16px;line-height:1.65;color:#A9B0B8;margin:0 0 42px;max-width:62ch">{{ L.svcLede }}</p>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" data-svc-grid>
-        <sc-for list="{{ services }}" as="sv" hint-placeholder-count="6">
-          <div data-reveal="up" data-reveal-delay="{{ sv.delay }}" style="background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:30px 28px;transition:border-color .3s ease,transform .3s ease" style-hover="border-color:rgba(222,105,78,.45);transform:translateY(-4px)">
-            <div style="width:42px;height:42px;border-radius:11px;background:rgba(222,105,78,.12);border:1px solid rgba(222,105,78,.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px"><span style="width:13px;height:13px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span></div>
-            <h3 style="font-size:19px;font-weight:600;color:#F4F6F8;margin:0 0 10px">{{ sv.title }}</h3>
-            <p style="font-size:14px;line-height:1.6;color:#8A9199;margin:0">{{ sv.desc }}</p>
+        <sc-for list="{{ services }}" as="sv" hint-placeholder-count="10">
+          <div class="promin-card" data-reveal="up" data-reveal-delay="{{ sv.delay }}" style="display:flex;flex-direction:column;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:28px 26px">
+            <div style="width:40px;height:40px;border-radius:11px;background:rgba(222,105,78,.12);border:1px solid rgba(222,105,78,.3);display:flex;align-items:center;justify-content:center;margin-bottom:18px;flex:none"><span style="width:12px;height:12px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span></div>
+            <h3 style="font-size:18px;font-weight:700;color:#F4F6F8;margin:0 0 10px;letter-spacing:-.3px;line-height:1.25">{{ sv.title }}</h3>
+            <p style="font-size:13.8px;line-height:1.6;color:#8A9199;margin:0 0 18px;flex:1">{{ sv.desc }}</p>
+            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(217,220,224,.08);padding-top:16px">
+              <sc-for list="{{ sv.items }}" as="it" hint-placeholder-count="4">
+                <span style="display:flex;align-items:flex-start;gap:9px;font-size:13px;color:#C9CDD2;line-height:1.45"><span style="flex:none;width:6px;height:6px;background:#DE694E;transform:skewX(-24deg);display:inline-block;margin-top:6px"></span>{{ it }}</span>
+              </sc-for>
+            </div>
           </div>
         </sc-for>
       </div>
     </div>
   </section>
 
-  <!-- ===================== PROCESSO ===================== -->
-  <section style="padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px)">
-    <div style="max-width:1240px;margin:0 auto">
-      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.procKicker }}</div>
-      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 46px;color:#F4F6F8;max-width:22ch">{{ L.procTitle }}</h2>
-      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px" data-proc-grid>
-        <sc-for list="{{ procSteps }}" as="st" hint-placeholder-count="5">
-          <div data-reveal="up" data-reveal-delay="{{ st.delay }}" style="position:relative;padding-top:28px;border-top:2px solid rgba(222,105,78,.3)">
-            <span style="position:absolute;top:-8px;left:0;width:14px;height:14px;border-radius:50%;background:#DE694E;box-shadow:0 0 0 4px rgba(222,105,78,.15)"></span>
-            <h3 style="font-size:18px;font-weight:700;color:#F4F6F8;margin:0 0 8px;letter-spacing:-.3px">{{ st.title }}</h3>
-            <p style="font-size:13.5px;line-height:1.55;color:#8A9199;margin:0">{{ st.desc }}</p>
+  <!-- ===================== 5 · POR QUE ESCOLHER A PROMIN ===================== -->
+  <section style="position:relative;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
+    <img data-parallax="0.12" src="tech-monitors.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.16" />
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.86),rgba(18,23,28,.94))"></div>
+    <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.whyKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(27px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 42px;color:#F4F6F8">{{ L.whyTitle }}</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 40px" data-why-grid>
+        <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="7">
+          <div data-reveal="up" data-reveal-delay="{{ r.delay }}" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid rgba(217,220,224,.08)">
+            <span style="flex:none;width:24px;height:24px;border-radius:50%;background:rgba(222,105,78,.16);border:1px solid rgba(222,105,78,.45);display:flex;align-items:center;justify-content:center;margin-top:1px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#DE694E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span style="font-size:15px;line-height:1.55;color:#EDEFF2">{{ r.t }}</span>
           </div>
         </sc-for>
       </div>
     </div>
   </section>
 
-  <!-- ===================== INDEX (section links) ===================== -->
-  <section style="background:#12171C;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);position:relative">
+  <!-- ===================== 6 · MISSÃO · VISÃO · VALORES ===================== -->
+  <section style="background:#12171C;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px)">
     <div style="max-width:1240px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:42px;flex-wrap:wrap;gap:16px" data-reveal="up">
-        <h2 style="font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0;color:#F4F6F8">{{ L.exploreTitle }}</h2>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:#6E7681">{{ L.exploreSub }}</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:44px" data-mv-grid>
+        <div class="promin-card" data-reveal="up" style="background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:34px 32px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#DE694E;margin-bottom:16px">// {{ L.missionTag }}</div>
+          <p style="font-size:clamp(17px,1.9vw,21px);line-height:1.5;color:#EDEFF2;margin:0;font-weight:400">{{ L.mission }}</p>
+        </div>
+        <div class="promin-card" data-reveal="up" data-reveal-delay="90" style="background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:16px;padding:34px 32px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#DE694E;margin-bottom:16px">// {{ L.visionTag }}</div>
+          <p style="font-size:clamp(17px,1.9vw,21px);line-height:1.5;color:#EDEFF2;margin:0;font-weight:400">{{ L.vision }}</p>
+        </div>
       </div>
-
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px" data-index-wrap>
-        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="4">
-          <a href="{{ s.href }}" class="promin-sec-card" data-reveal="up" data-reveal-delay="{{ s.delay }}" style="display:flex;flex-direction:column;background:#171D24;border:1px solid rgba(217,220,224,.08);border-radius:18px;overflow:hidden;color:#EDEFF2">
-            <div class="promin-sec-media" style="position:relative;height:clamp(160px,20vw,200px);overflow:hidden">
-              <img src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover" />
-              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,28,.12) 0%,rgba(23,29,36,.35) 55%,#171D24 100%)"></div>
-              <span class="promin-sec-kicker" style="position:absolute;left:16px;top:15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#EDEFF2;background:rgba(18,23,28,.5);padding:5px 11px;border-radius:999px;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)">// {{ s.kicker }}</span>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:14px;padding:clamp(22px,3vw,30px)">
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-                <h3 class="promin-sec-title" style="font-size:clamp(21px,2.4vw,28px);font-weight:700;letter-spacing:-.5px;line-height:1.12;margin:0">{{ s.title }}</h3>
-                <span class="promin-sec-arrow" style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E7681;flex:none">→</span>
-              </div>
-              <p style="font-size:14.5px;color:#A9B0B8;line-height:1.6;margin:0;flex:1">{{ s.summary }}</p>
-              <div style="display:flex;flex-wrap:wrap;gap:8px">
-                <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="4">
-                  <span class="promin-chip" style="font-size:12px;color:#C9CDD2;background:rgba(222,105,78,.10);border:1px solid rgba(222,105,78,.22);padding:5px 11px;border-radius:999px">{{ it }}</span>
-                </sc-for>
-              </div>
-            </div>
-          </a>
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.valuesTag }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <sc-for list="{{ values }}" as="v" hint-placeholder-count="6">
+          <span data-reveal="scale" data-reveal-delay="{{ v.delay }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(217,220,224,.16);border-radius:999px;padding:12px 22px;font-size:15px;font-weight:500;color:#EDEFF2;transition:background .3s ease,border-color .3s ease" style-hover="background:rgba(222,105,78,.12);border-color:rgba(222,105,78,.5)"><span style="width:7px;height:7px;background:#DE694E;transform:skewX(-24deg);display:inline-block"></span>{{ v.t }}</span>
         </sc-for>
       </div>
     </div>
   </section>
 
-  <!-- ===================== CTA BAND ===================== -->
-  <section style="position:relative;padding:clamp(80px,11vw,150px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
-    <img data-parallax="0.14" src="aerial-right.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.28" />
-    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.7),rgba(18,23,28,.85))"></div>
+  <!-- ===================== 7 · CONTATO ===================== -->
+  <section style="position:relative;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
+    <img data-parallax="0.14" src="aerial-right.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.24" />
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.78),rgba(18,23,28,.9))"></div>
     <div style="position:relative;z-index:2;max-width:900px;margin:0 auto;text-align:center">
       <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.ctaKicker }}</div>
-      <h2 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(30px,5vw,56px);font-weight:700;letter-spacing:-1px;line-height:1.08;margin:0 0 32px;color:#F4F6F8">{{ L.ctaTitle }}</h2>
-      <a href="Contato.dc.html" data-reveal="up" data-reveal-delay="180" style="display:inline-flex;align-items:center;gap:12px;background:#DE694E;color:#151A1F;font-weight:700;font-size:16px;padding:18px 34px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);box-shadow:0 16px 40px rgba(222,105,78,.45)">{{ L.ctaBtn }} <span style="font-family:'JetBrains Mono',monospace">→</span></a>
+      <h2 data-reveal="up" data-reveal-delay="80" style="font-size:clamp(28px,4.6vw,52px);font-weight:700;letter-spacing:-1px;line-height:1.1;margin:0 0 16px;color:#F4F6F8">{{ L.ctaTitle }}</h2>
+      <p data-reveal="up" data-reveal-delay="130" style="font-size:16px;color:#A9B0B8;margin:0 0 34px">{{ L.ctaName }}</p>
+      <div data-reveal="up" data-reveal-delay="180" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+        <a href="https://wa.me/5531972075744" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:#DE694E;color:#151A1F;font-weight:700;font-size:15px;padding:16px 26px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);box-shadow:0 16px 40px rgba(222,105,78,.45)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.95 1.37-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.61-2.89-1.25-4.77-4.16-4.92-4.35-.15-.19-1.18-1.56-1.18-2.98s.75-2.12 1.01-2.41c.26-.29.58-.36.77-.36l.55.01c.18.01.42-.07.65.49.24.58.82 2 .89 2.15.07.15.12.32.02.51-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.75 1.23 1.61 1.99 1.1.98 2.03 1.28 2.32 1.43.29.15.46.12.63-.07.17-.19.72-.84.91-1.13.19-.3.39-.25.65-.15.26.1 1.68.79 1.97.94.29.15.48.22.55.34.07.12.07.7-.17 1.37z"/></svg>
+          {{ L.waBR }}
+        </a>
+        <a href="https://wa.me/595993632383" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;color:#EDEFF2;font-weight:600;font-size:15px;padding:16px 24px;border:1px solid rgba(237,239,242,.28);border-radius:999px;background:rgba(18,23,28,.35);transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(222,105,78,.6);background:rgba(222,105,78,.12)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.95 1.37-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.61-2.89-1.25-4.77-4.16-4.92-4.35-.15-.19-1.18-1.56-1.18-2.98s.75-2.12 1.01-2.41c.26-.29.58-.36.77-.36l.55.01c.18.01.42-.07.65.49.24.58.82 2 .89 2.15.07.15.12.32.02.51-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.75 1.23 1.61 1.99 1.1.98 2.03 1.28 2.32 1.43.29.15.46.12.63-.07.17-.19.72-.84.91-1.13.19-.3.39-.25.65-.15.26.1 1.68.79 1.97.94.29.15.48.22.55.34.07.12.07.7-.17 1.37z"/></svg>
+          {{ L.waPY }}
+        </a>
+        <a href="mailto:Samuel@promin.com" style="display:inline-flex;align-items:center;gap:10px;color:#EDEFF2;font-weight:600;font-size:15px;padding:16px 24px;border:1px solid rgba(237,239,242,.28);border-radius:999px;background:rgba(18,23,28,.35);transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(222,105,78,.6);background:rgba(222,105,78,.12)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+          Samuel@promin.com
+        </a>
+      </div>
     </div>
   </section>
 
@@ -240,146 +213,155 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 class Component extends DCLogic {
   lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
-
-  componentDidMount() {
-    import('./site.js').then(m => m.initMotion()).catch(() => {});
-    this.initCardHover();
-  }
-
-  // Cursor-following hover for the "Explore" cards: a spotlight glow tracks the
-  // pointer (via --mx/--my) and the card tilts subtly in 3D toward the cursor.
-  initCardHover() {
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.querySelectorAll('.promin-sec-card').forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
-        card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
-        if (!reduce) {
-          const rx = (0.5 - py) * 6;
-          const ry = (px - 0.5) * 7;
-          card.style.transform = 'perspective(1000px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-8px)';
-        }
-      });
-      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-    });
-  }
+  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
 
   renderVals() {
     const lang = this.lang();
+
     const pt = {
-      eyebrow: 'Consultoria em Mineração — BR/PR',
-      h1a: 'Expertise para ', h1b: 'mineirar', h1c: ' do jeito certo.',
-      lede: 'Há mais de 20 anos entregando soluções técnicas de alta qualidade para operações de mineração e pedreiras — com visão estratégica, eficiência e compromisso.',
-      cta1: 'Conheça a ProMin', cta2: 'Nossos serviços',
-      imgTag: 'Operação · Vista aérea', chip: 'anos de expertise',
-      scroll: 'Role para explorar',
-      marquee: ['EXTRAÇÃO', 'LOGÍSTICA', 'MANUTENÇÃO', 'TECNOLOGIA', 'ESTRATÉGIA', 'EFICIÊNCIA', 'PEDREIRAS'],
-      introKicker: 'Sobre a ProMin',
-      introTitle: 'Referência em consultoria para mineração e pedreiras.',
-      stats: [
-        { n: '+20', l: 'anos de expertise no setor' },
-        { n: '04', l: 'áreas de atuação' },
-        { n: 'BR·PR', l: 'atuação com alcance nacional' },
+      eyebrow: 'Consultoria Técnica e Representação Comercial',
+      h1a: 'Transformamos desafios operacionais em ', h1b: 'mais produtividade', h1c: ' e menor custo.',
+      lede1: 'A ProMin é especializada em consultoria técnica para mineração, britagem e processamento de agregados. Atuamos para aumentar a disponibilidade dos equipamentos, reduzir custos de manutenção e elevar a produtividade das plantas.',
+      lede2: 'Com mais de 20 anos de experiência prática no setor, desenvolvemos soluções personalizadas que geram resultados mensuráveis e maior retorno sobre o investimento.',
+      claim: 'Mais disponibilidade. Mais produção. Menor custo operacional.',
+      cta1: 'Fale com a ProMin', cta2: 'Nossos serviços',
+      marquee: ['BRITAGEM', 'MINERAÇÃO', 'AGREGADOS', 'MANUTENÇÃO', 'DISPONIBILIDADE', 'PRODUTIVIDADE', 'ENGENHARIA'],
+
+      chKicker: 'Os desafios que resolvemos',
+      chTitle: 'Sua operação enfrenta algum destes problemas?',
+      challenges: [
+        'Paradas frequentes da planta.',
+        'Alto custo de manutenção corretiva.',
+        'Baixa produtividade.',
+        'Desgaste prematuro de peças.',
+        'Estoque de peças mal dimensionado.',
+        'Dificuldade para identificar a causa dos problemas operacionais.',
+        'Projetos de britagem com baixo desempenho.',
+        'Compras de equipamentos sem suporte técnico.',
       ],
-      introLead: 'A ProMin é uma consultoria especializada em oferecer soluções personalizadas para o setor de mineração e pedreiras.',
-      introBody: 'Combinamos conhecimento técnico profundo, tradição e uma abordagem moderna para identificar as melhores oportunidades e impulsionar o sucesso dos nossos clientes — sempre com ética, qualidade e excelência no atendimento.',
-      values: [
-        { num: '01', title: 'Confiança', desc: 'Relações de parceria construídas com transparência.' },
-        { num: '02', title: 'Eficiência', desc: 'Processos que otimizam operações e maximizam resultados.' },
-        { num: '03', title: 'Excelência', desc: 'Cada projeto executado com respeito aos padrões do setor.' },
-      ],
-      svcKicker: 'O que fazemos', svcTitle: 'Serviços que geram resultados.',
-      svcLede: 'Soluções técnicas completas para cada etapa da sua operação de mineração e pedreiras — do diagnóstico à execução.',
+      chClose: 'A ProMin identifica a causa do problema e implementa soluções que aumentam a confiabilidade e a rentabilidade da sua operação.',
+
+      qsKicker: 'Quem Somos',
+      qs1: 'A ProMin nasceu para auxiliar empresas de mineração e agregados a produzir mais, gastando menos.',
+      qs2: 'Nossa equipe combina experiência em engenharia, manutenção, britagem e gestão industrial para desenvolver soluções técnicas que aumentam a eficiência operacional e prolongam a vida útil dos equipamentos.',
+      qs3: 'Mais do que consultoria, entregamos resultados.',
+
+      svcKicker: 'Nossos Serviços',
+      svcTitle: 'Soluções técnicas para cada etapa da operação.',
+      svcLede: 'Do projeto da planta à manutenção, da otimização da produção à compra de equipamentos — atuamos onde o resultado é gerado.',
       services: [
-        { title: 'Consultoria Técnica', desc: 'Diagnóstico e orientação especializada para elevar a performance da operação.' },
-        { title: 'Produção & Logística', desc: 'Planejamento que resolve gargalos e otimiza o fluxo da operação.' },
-        { title: 'Gestão de Manutenção', desc: 'Disponibilidade de máquinas e equipamentos, com menos paradas.' },
-        { title: 'Extração & Comercialização', desc: 'Domínio dos processos de extração e do mercado de minerais.' },
-        { title: 'Assessoria de Negócios', desc: 'Suporte técnico e estratégico para projetos de mineração.' },
-        { title: 'Tecnologia & Performance', desc: 'Tecnologia especializada que coloca a operação um passo à frente.' },
+        { title: 'Projetos de Plantas de Britagem', desc: 'Projetamos plantas novas ou otimizamos instalações existentes, buscando o melhor equilíbrio entre investimento, capacidade produtiva e custo operacional.', items: ['Estudos de viabilidade', 'Layout da planta', 'Balanço de massas', 'Projetos executivos', 'Acompanhamento da implantação'] },
+        { title: 'Manutenção Preventiva', desc: 'Estruturamos programas de manutenção para reduzir falhas e aumentar a disponibilidade dos equipamentos.', items: ['Cadastro de ativos', 'Planos preventivos', 'Indicadores de manutenção', 'Redução de paradas inesperadas'] },
+        { title: 'Manutenção Preditiva', desc: 'Antecipamos falhas antes que elas interrompam a produção.', items: ['Análise de vibração, temperatura e pressão', 'Ensaios não destrutivos', 'Líquido penetrante', 'Raio X', 'Medição de dureza'] },
+        { title: 'Manutenção Corretiva', desc: 'Especialistas em equipamentos de britagem das principais marcas do mercado.', items: ['Diagnóstico técnico', 'Supervisão de reformas', 'Relatórios técnicos', 'Suporte em campo'] },
+        { title: 'Otimização de Produção', desc: 'Melhoramos o desempenho da planta através da análise do processo produtivo.', items: ['Identificação de gargalos', 'Aumento de capacidade', 'Redução de desgaste', 'Melhoria do fluxo de produção'] },
+        { title: 'Gestão de Custos e Estoques', desc: 'Reduzimos capital parado sem comprometer a disponibilidade da planta.', items: ['Estoque de segurança', 'Classificação de peças críticas', 'Gestão de fornecedores', 'Redução dos custos operacionais'] },
+        { title: 'Engenharia e Projetos', desc: 'Desenvolvemos soluções sob medida para fabricação e melhorias industriais.', items: ['Desenhos técnicos', 'Projetos mecânicos', 'Projetos de fabricação', 'Relatórios de engenharia'] },
+        { title: 'Treinamentos', desc: 'Capacitamos equipes para operar e manter equipamentos com maior eficiência.', items: ['Operadores', 'Mecânicos', 'Compradores técnicos', 'Equipes de manutenção'] },
+        { title: 'Consultoria em Compras', desc: 'Apoiamos decisões técnicas para aquisição de equipamentos, peças e serviços.', items: ['Especificação técnica', 'Avaliação de fornecedores', 'Análise de custo-benefício', 'Acompanhamento de fabricação'] },
+        { title: 'Reforma e Comercialização de Equipamentos', desc: 'Acompanhamos projetos de reforma e fornecimento de equipamentos novos e usados.', items: ['Reforma de britadores', 'Recuperação de componentes', 'Equipamentos novos', 'Equipamentos seminovos'] },
       ],
-      procKicker: 'Como trabalhamos', procTitle: 'Um processo claro, do desafio ao resultado.',
-      procSteps: [
-        { title: 'Diagnóstico', desc: 'Entendemos a fundo a operação, seus desafios e objetivos.' },
-        { title: 'Estratégia', desc: 'Um plano técnico sob medida, com foco em eficiência.' },
-        { title: 'Execução', desc: 'Implementação com precisão, acompanhando cada detalhe.' },
-        { title: 'Otimização', desc: 'Refino contínuo para extrair o máximo de performance.' },
-        { title: 'Resultados', desc: 'Valor mensurável e sustentável, com ética e qualidade.' },
+
+      whyKicker: 'Diferenciais',
+      whyTitle: 'Por que escolher a ProMin?',
+      reasons: [
+        'Mais de 20 anos de experiência no setor mineral.',
+        'Soluções práticas baseadas na realidade operacional.',
+        'Redução comprovada dos custos de manutenção.',
+        'Aumento da disponibilidade dos equipamentos.',
+        'Atendimento personalizado.',
+        'Independência na recomendação das melhores soluções.',
+        'Parcerias com fabricantes reconhecidos mundialmente.',
       ],
-      exploreTitle: 'Explore a ProMin', exploreSub: '// 04 seções',
-      sections: [
-        { kicker: 'Quem somos', title: 'Sobre a ProMin', summary: 'Mais de 20 anos de expertise em mineração e pedreiras, com visão estratégica e compromisso técnico em cada projeto.', items: ['Missão', 'Visão', 'Valores'], href: 'Sobre.dc.html' },
-        { kicker: 'O que fazemos', title: 'Serviços', summary: 'Soluções técnicas completas para cada etapa da sua operação — do diagnóstico à execução.', items: ['Consultoria Técnica', 'Produção & Logística', 'Manutenção', 'Comercialização'], href: 'Servicos.dc.html' },
-        { kicker: 'Onde atuamos', title: 'Áreas de Atuação', summary: 'Atuamos em diferentes frentes do setor mineral, sempre com o mesmo rigor técnico e busca por eficiência.', items: ['Minério de Ferro', 'Pedreiras', 'Carvão', 'Minerais Industriais'], href: 'Areas.dc.html' },
-        { kicker: 'Como trabalhamos', title: 'Processo', summary: 'Um método estruturado que garante clareza, previsibilidade e excelência em cada etapa.', items: ['Diagnóstico', 'Estratégia', 'Execução', 'Otimização', 'Resultados'], href: 'Processo.dc.html' },
-      ],
-      ctaKicker: 'Vamos conversar',
-      ctaTitle: 'Pronto para mineirar do jeito certo?',
-      ctaBtn: 'Fale com a ProMin',
+
+      missionTag: 'Missão',
+      mission: 'Ajudar nossos clientes a produzir mais, com maior segurança, confiabilidade e menor custo operacional.',
+      visionTag: 'Visão',
+      vision: 'Ser a consultoria técnica mais reconhecida da América Latina em soluções para britagem, mineração e processamento de agregados.',
+      valuesTag: 'Valores',
+      values: ['Excelência técnica', 'Ética', 'Compromisso com resultados', 'Inovação', 'Transparência', 'Foco no cliente'],
+
+      ctaKicker: 'Contato',
+      ctaTitle: 'Vamos conversar sobre a sua operação?',
+      ctaName: 'Samuel Ribeiro · ProMin Consultoria',
+      waBR: 'WhatsApp Brasil', waPY: 'WhatsApp Paraguay',
     };
+
     const es = {
-      eyebrow: 'Consultoría en Minería — BR/PR',
-      h1a: 'Expertise para ', h1b: 'minar', h1c: ' de la forma correcta.',
-      lede: 'Desde hace más de 20 años entregando soluciones técnicas de alta calidad para operaciones de minería y canteras — con visión estratégica, eficiencia y compromiso.',
-      cta1: 'Conoce ProMin', cta2: 'Nuestros servicios',
-      imgTag: 'Operación · Vista aérea', chip: 'años de expertise',
-      scroll: 'Desplázate para explorar',
-      marquee: ['EXTRACCIÓN', 'LOGÍSTICA', 'MANTENIMIENTO', 'TECNOLOGÍA', 'ESTRATEGIA', 'EFICIENCIA', 'CANTERAS'],
-      introKicker: 'Sobre ProMin',
-      introTitle: 'Referencia en consultoría para minería y canteras.',
-      stats: [
-        { n: '+20', l: 'años de expertise en el sector' },
-        { n: '04', l: 'áreas de actuación' },
-        { n: 'BR·PR', l: 'actuación con alcance nacional' },
+      eyebrow: 'Consultoría Técnica y Representación Comercial',
+      h1a: 'Transformamos los desafíos operativos en ', h1b: 'mayor productividad', h1c: ' y menores costos.',
+      lede1: 'ProMin es una empresa especializada en consultoría técnica para minería, trituración y procesamiento de agregados. Ayudamos a nuestros clientes a aumentar la disponibilidad de sus equipos, reducir los costos de mantenimiento y maximizar la productividad de sus plantas.',
+      lede2: 'Con más de 20 años de experiencia en el sector, desarrollamos soluciones personalizadas que generan resultados medibles y un mayor retorno sobre la inversión.',
+      claim: 'Mayor disponibilidad. Mayor producción. Menores costos operativos.',
+      cta1: 'Habla con ProMin', cta2: 'Nuestros servicios',
+      marquee: ['TRITURACIÓN', 'MINERÍA', 'AGREGADOS', 'MANTENIMIENTO', 'DISPONIBILIDAD', 'PRODUCTIVIDAD', 'INGENIERÍA'],
+
+      chKicker: 'Los desafíos que resolvemos',
+      chTitle: '¿Su operación enfrenta alguno de estos problemas?',
+      challenges: [
+        'Paradas frecuentes de la planta.',
+        'Altos costos de mantenimiento correctivo.',
+        'Baja productividad.',
+        'Desgaste prematuro de piezas.',
+        'Inventario de repuestos mal dimensionado.',
+        'Dificultad para identificar la causa de los problemas operativos.',
+        'Plantas de trituración con bajo rendimiento.',
+        'Compras de equipos sin respaldo técnico.',
       ],
-      introLead: 'ProMin es una consultoría especializada en ofrecer soluciones personalizadas para el sector de la minería y las canteras.',
-      introBody: 'Combinamos conocimiento técnico profundo, tradición y un enfoque moderno para identificar las mejores oportunidades e impulsar el éxito de nuestros clientes — siempre con ética, calidad y excelencia en la atención.',
-      values: [
-        { num: '01', title: 'Confianza', desc: 'Relaciones de colaboración construidas con transparencia.' },
-        { num: '02', title: 'Eficiencia', desc: 'Procesos que optimizan operaciones y maximizan resultados.' },
-        { num: '03', title: 'Excelencia', desc: 'Cada proyecto ejecutado respetando los estándares del sector.' },
-      ],
-      svcKicker: 'Lo que hacemos', svcTitle: 'Servicios que generan resultados.',
-      svcLede: 'Soluciones técnicas completas para cada etapa de tu operación de minería y canteras — del diagnóstico a la ejecución.',
+      chClose: 'ProMin identifica la causa del problema e implementa soluciones que aumentan la confiabilidad y la rentabilidad de su operación.',
+
+      qsKicker: 'Quiénes Somos',
+      qs1: 'ProMin nació con el propósito de ayudar a las empresas de minería y agregados a producir más, con menores costos y mayor eficiencia.',
+      qs2: 'Nuestro equipo combina experiencia en ingeniería, mantenimiento, trituración y gestión industrial para desarrollar soluciones técnicas que incrementan la eficiencia operativa y prolongan la vida útil de los equipos.',
+      qs3: 'Más que una consultoría, entregamos resultados.',
+
+      svcKicker: 'Nuestros Servicios',
+      svcTitle: 'Soluciones técnicas para cada etapa de la operación.',
+      svcLede: 'Del diseño de la planta al mantenimiento, de la optimización de la producción a la compra de equipos — actuamos donde se genera el resultado.',
       services: [
-        { title: 'Consultoría Técnica', desc: 'Diagnóstico y orientación especializada para elevar el desempeño de la operación.' },
-        { title: 'Producción & Logística', desc: 'Planificación que resuelve cuellos de botella y optimiza el flujo.' },
-        { title: 'Gestión de Mantenimiento', desc: 'Disponibilidad de máquinas y equipos, con menos paradas.' },
-        { title: 'Extracción & Comercialización', desc: 'Dominio de los procesos de extracción y del mercado de minerales.' },
-        { title: 'Asesoría de Negocios', desc: 'Soporte técnico y estratégico para proyectos de minería.' },
-        { title: 'Tecnología & Performance', desc: 'Tecnología especializada que pone la operación un paso adelante.' },
+        { title: 'Diseño e Ingeniería de Plantas de Trituración', desc: 'Diseñamos nuevas plantas u optimizamos instalaciones existentes, buscando el mejor equilibrio entre inversión, capacidad de producción y costos operativos.', items: ['Estudios de viabilidad', 'Diseño del layout de la planta', 'Balance de masas', 'Ingeniería de detalle', 'Supervisión de la implementación'] },
+        { title: 'Mantenimiento Preventivo', desc: 'Implementamos programas de mantenimiento para reducir fallas y aumentar la disponibilidad de los equipos.', items: ['Registro de activos', 'Planes de mantenimiento preventivo', 'Indicadores de mantenimiento', 'Reducción de paradas no programadas'] },
+        { title: 'Mantenimiento Predictivo', desc: 'Detectamos fallas antes de que afecten la producción.', items: ['Análisis de vibraciones, temperatura y presión', 'Ensayos no destructivos', 'Líquidos penetrantes', 'Radiografía industrial', 'Verificación de dureza'] },
+        { title: 'Mantenimiento Correctivo', desc: 'Especialistas en equipos de trituración de las principales marcas del mercado.', items: ['Diagnóstico técnico', 'Supervisión de reparaciones', 'Informes técnicos', 'Asistencia técnica en campo'] },
+        { title: 'Optimización de la Producción', desc: 'Mejoramos el desempeño de la planta mediante el análisis integral del proceso productivo.', items: ['Identificación de cuellos de botella', 'Incremento de la capacidad de producción', 'Reducción del desgaste de componentes', 'Optimización del flujo de proceso'] },
+        { title: 'Gestión de Costos e Inventario de Repuestos', desc: 'Reducimos el capital inmovilizado sin comprometer la continuidad de la producción.', items: ['Inventario de seguridad', 'Clasificación de repuestos críticos', 'Gestión de proveedores', 'Reducción de costos operativos'] },
+        { title: 'Ingeniería y Desarrollo de Proyectos', desc: 'Desarrollamos soluciones técnicas personalizadas para fabricación y mejoras industriales.', items: ['Planos técnicos', 'Proyectos mecánicos', 'Ingeniería de fabricación', 'Informes técnicos'] },
+        { title: 'Capacitación Técnica', desc: 'Capacitamos a los equipos para operar y mantener los equipos con mayor eficiencia.', items: ['Operadores', 'Mecánicos', 'Compradores técnicos', 'Personal de mantenimiento'] },
+        { title: 'Consultoría en Compras', desc: 'Brindamos soporte técnico para la adquisición de equipos, repuestos y servicios.', items: ['Especificaciones técnicas', 'Evaluación de proveedores', 'Análisis costo-beneficio', 'Seguimiento de fabricación'] },
+        { title: 'Reparación y Comercialización de Equipos', desc: 'Acompañamos proyectos de reparación y suministro de equipos nuevos y usados.', items: ['Reparación de trituradoras', 'Recuperación de componentes', 'Equipos nuevos', 'Equipos usados'] },
       ],
-      procKicker: 'Cómo trabajamos', procTitle: 'Un proceso claro, del desafío al resultado.',
-      procSteps: [
-        { title: 'Diagnóstico', desc: 'Entendemos a fondo la operación, sus desafíos y objetivos.' },
-        { title: 'Estrategia', desc: 'Un plan técnico a medida, con foco en la eficiencia.' },
-        { title: 'Ejecución', desc: 'Implementación con precisión, acompañando cada detalle.' },
-        { title: 'Optimización', desc: 'Refinamiento continuo para extraer el máximo desempeño.' },
-        { title: 'Resultados', desc: 'Valor medible y sostenible, con ética y calidad.' },
+
+      whyKicker: 'Diferenciales',
+      whyTitle: '¿Por qué elegir ProMin?',
+      reasons: [
+        'Más de 20 años de experiencia en la industria minera.',
+        'Soluciones prácticas basadas en la realidad operacional.',
+        'Reducción comprobada de los costos de mantenimiento.',
+        'Mayor disponibilidad y confiabilidad de los equipos.',
+        'Atención personalizada.',
+        'Recomendaciones técnicas independientes y orientadas al mejor resultado para el cliente.',
+        'Alianzas con fabricantes de reconocimiento internacional.',
       ],
-      exploreTitle: 'Explora ProMin', exploreSub: '// 04 secciones',
-      sections: [
-        { kicker: 'Quiénes somos', title: 'Sobre ProMin', summary: 'Más de 20 años de expertise en minería y canteras, con visión estratégica y compromiso técnico en cada proyecto.', items: ['Misión', 'Visión', 'Valores'], href: 'Sobre.dc.html' },
-        { kicker: 'Lo que hacemos', title: 'Servicios', summary: 'Soluciones técnicas completas para cada etapa de tu operación — del diagnóstico a la ejecución.', items: ['Consultoría Técnica', 'Producción & Logística', 'Mantenimiento', 'Comercialización'], href: 'Servicos.dc.html' },
-        { kicker: 'Dónde actuamos', title: 'Áreas de Actuación', summary: 'Actuamos en distintos frentes del sector minero, siempre con el mismo rigor técnico y búsqueda de eficiencia.', items: ['Mineral de Hierro', 'Canteras', 'Carbón', 'Minerales Industriales'], href: 'Areas.dc.html' },
-        { kicker: 'Cómo trabajamos', title: 'Proceso', summary: 'Un método estructurado que garantiza claridad, previsibilidad y excelencia en cada etapa.', items: ['Diagnóstico', 'Estrategia', 'Ejecución', 'Optimización', 'Resultados'], href: 'Processo.dc.html' },
-      ],
-      ctaKicker: 'Conversemos',
-      ctaTitle: '¿Listo para minar de la forma correcta?',
-      ctaBtn: 'Habla con ProMin',
+
+      missionTag: 'Misión',
+      mission: 'Ayudar a nuestros clientes a producir más, con mayor seguridad, confiabilidad y menores costos operativos.',
+      visionTag: 'Visión',
+      vision: 'Ser la consultora técnica de referencia en América Latina en soluciones para trituración, minería y procesamiento de agregados.',
+      valuesTag: 'Valores',
+      values: ['Excelencia técnica', 'Ética', 'Compromiso con los resultados', 'Innovación', 'Transparencia', 'Enfoque en el cliente'],
+
+      ctaKicker: 'Contacto',
+      ctaTitle: '¿Conversamos sobre su operación?',
+      ctaName: 'Samuel Ribeiro · ProMin Consultoría',
+      waBR: 'WhatsApp Brasil', waPY: 'WhatsApp Paraguay',
     };
+
     const L = lang === 'es' ? es : pt;
-    const sectionImgs = ['face.jpg', 'tech-monitors.jpg', 'aerial-right.jpg', 'hero-machinery.jpg'];
-    const sections = L.sections.map((s, i) => ({ ...s, img: sectionImgs[i], delay: i * 90 }));
-    const values = L.values.map((v, i) => ({ ...v, delay: i * 100 }));
+    const challenges = L.challenges.map((t, i) => ({ t, delay: (i % 4) * 70 }));
     const services = L.services.map((s, i) => ({ ...s, delay: (i % 3) * 80 }));
-    const procSteps = L.procSteps.map((s, i) => ({ ...s, delay: i * 70 }));
-    return {
-      L, ...L, values, sections, services, procSteps, marquee: [...L.marquee, ...L.marquee],
-    };
+    const reasons = L.reasons.map((t, i) => ({ t, delay: (i % 2) * 80 }));
+    const values = L.values.map((t, i) => ({ t, delay: i * 60 }));
+    return { L, ...L, challenges, services, reasons, values, marquee: [...L.marquee, ...L.marquee] };
   }
 }
 
