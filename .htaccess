@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# --- Rutas "limpias" (equivalente al vercel.json, pero para Apache/LiteSpeed/Hostinger) ---
+
+# Home: /  ->  Inicio.dc.html
+RewriteRule ^$ Inicio.dc.html [L]
+
+# Privacidad: /privacidad  y  /privacidad/  ->  privacidad.dc.html
+RewriteRule ^privacidad/?$ privacidad.dc.html [L]
+
+# Panel admin: /admin, /admin/, /admin/login, /admin/cualquier-subruta  ->  admin.html
+RewriteRule ^admin(/.*)?$ admin.html [L]
+
+# Favicon
+RewriteRule ^favicon\.ico$ symbol.png [L]
