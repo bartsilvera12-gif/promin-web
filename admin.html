@@ -425,7 +425,11 @@ const IMAGE_SLOTS = [
 function renderImages(c){
   c.innerHTML = `<div class="card" style="border-color:rgba(222,105,78,.3);background:#FCF3F0">
       <h3>▣ Imágenes del sitio</h3>
-      <p class="hint" style="margin:0;line-height:1.6;color:var(--muted)">Elegí una imagen nueva y se sube al servidor — el sitio en vivo la muestra en unos segundos. Formatos JPG, PNG o WEBP · máx. 8 MB. Si no ves el cambio al instante, recargá el sitio con <b>Ctrl + F5</b>.</p>
+      <p class="hint" style="margin:0 0 14px;line-height:1.6;color:var(--muted)">Acá <b>reemplazás</b> las imágenes fijas del sitio (portada, foto, fondos, logo). Elegí una nueva y se sube al servidor — el sitio en vivo la muestra en unos segundos. JPG, PNG o WEBP · máx. 8 MB. Si no ves el cambio al instante, recargá con <b>Ctrl + F5</b>.</p>
+      <div style="padding-top:12px;border-top:1px solid rgba(222,105,78,.25)">
+        <p class="hint" style="margin:0 0 10px;color:var(--muted)">¿Querés <b>subir una foto nueva</b> sin reemplazar ninguna de estas? Usá la Galería:</p>
+        <button class="btn primary" onclick="go('gallery')">▤ Ir a Galería · subir fotos nuevas</button>
+      </div>
     </div>
     <div class="grid imgrid" id="imgrid"></div>`;
   document.getElementById('imgrid').innerHTML = IMAGE_SLOTS.map(s => `
