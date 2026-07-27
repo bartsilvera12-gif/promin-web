@@ -41,6 +41,21 @@ function build_manifest($dir, $allowed) {
   return $map;
 }
 
+function build_gallery($dir) {
+  $gd = "$dir/gallery"; $items = [];
+  if (is_dir($gd)) {
+    foreach (glob("$gd/*.{jpg,jpeg,png,webp}", GLOB_BRACE) as $p) {
+      $items[] = ['id' => pathinfo($p, PATHINFO_FILENAME),
+                  'file' => 'gallery/' . basename($p) . '?v=' . filemtime($p),
+                  '_mt' => filemtime($p)];
+    }
+    usort($items, fn($a, $b) => $a['_mt'] - $b['_mt']);  // orden de subida
+    foreach ($items as &$it) unset($it['_mt']);
+  }
+  file_put_contents("$dir/gallery.json", json_encode(array_values($items)));
+  return array_values($items);
+}
+
 // --- Health check / estado (GET) -------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $exists = is_dir($DIR);
@@ -51,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     'writable' => $exists ? is_writable($DIR) : is_writable(__DIR__),
     'manifest' => $exists && file_exists("$DIR/manifest.json")
       ? json_decode(file_get_contents("$DIR/manifest.json"), true) : new stdClass(),
+    'gallery' => $exists ? build_gallery($DIR) : [],
   ]);
 }
 
@@ -59,26 +75,39 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') out(['ok' => false, 'error' => 'metho
 // --- Auth -------------------------------------------------------------------
 if (!hash_equals(PM_TOKEN, (string)($_POST['token'] ?? ''))) out(['ok' => false, 'error' => 'auth'], 403);
 
-// --- Slot -------------------------------------------------------------------
-$slot = (string)($_POST['slot'] ?? '');
-if (!in_array($slot, $ALLOWED, true)) out(['ok' => false, 'error' => 'slot'], 400);
+// --- Acción -----------------------------------------------------------------
+$action = (string)($_POST['action'] ?? 'slot');
+if (!is_dir($DIR) && !@mkdir($DIR, 0755, true)) out(['ok' => false, 'error' => 'mkdir'], 500);
 
-// --- Archivo ----------------------------------------------------------------
+// Eliminar una foto de la galería (no requiere archivo)
+if ($action === 'gallery-del') {
+  $id = preg_replace('/[^a-z0-9]/', '', (string)($_POST['id'] ?? ''));
+  if ($id === '') out(['ok' => false, 'error' => 'id'], 400);
+  foreach (['jpg','jpeg','png','webp'] as $e) @unlink("$DIR/gallery/$id.$e");
+  out(['ok' => true, 'gallery' => build_gallery($DIR)]);
+}
+
+// --- Validar archivo (reemplazo de slot y agregar a galería) ----------------
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) out(['ok' => false, 'error' => 'file'], 400);
 $f = $_FILES['image'];
 if ($f['size'] > MAX_BYTES) out(['ok' => false, 'error' => 'size'], 400);
-
 $info = @getimagesize($f['tmp_name']);
 if ($info === false || !isset($EXT_BY_MIME[$info['mime']])) out(['ok' => false, 'error' => 'type'], 400);
 $ext = $EXT_BY_MIME[$info['mime']];
 
-// --- Guardar ----------------------------------------------------------------
-if (!is_dir($DIR) && !@mkdir($DIR, 0755, true)) out(['ok' => false, 'error' => 'mkdir'], 500);
+// Agregar una foto nueva a la galería (nombre único generado por el server)
+if ($action === 'gallery-add') {
+  $gd = "$DIR/gallery";
+  if (!is_dir($gd) && !@mkdir($gd, 0755, true)) out(['ok' => false, 'error' => 'mkdir'], 500);
+  $id = uniqid('g');
+  if (!@move_uploaded_file($f['tmp_name'], "$gd/$id.$ext")) out(['ok' => false, 'error' => 'save'], 500);
+  out(['ok' => true, 'gallery' => build_gallery($DIR)]);
+}
 
-// borrar variantes previas del mismo slot (por si cambió de jpg->png, etc.)
+// --- Reemplazar una de las imágenes fijas (slot) ----------------------------
+$slot = (string)($_POST['slot'] ?? '');
+if (!in_array($slot, $ALLOWED, true)) out(['ok' => false, 'error' => 'slot'], 400);
 foreach (['jpg','jpeg','png','webp'] as $e) @unlink("$DIR/$slot.$e");
-
 if (!@move_uploaded_file($f['tmp_name'], "$DIR/$slot.$ext")) out(['ok' => false, 'error' => 'save'], 500);
-
 $map = build_manifest($DIR, $ALLOWED);
 out(['ok' => true, 'slot' => $slot, 'file' => $map[$slot]]);

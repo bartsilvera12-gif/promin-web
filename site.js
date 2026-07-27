@@ -56,10 +56,36 @@ export function initImages(root) {
     .catch(() => {});
 }
 
+// ---- Galería del Home (fotos agregadas desde el panel admin) -----------
+// La sección arranca oculta; si hay fotos en /uploads/site/gallery.json las
+// renderiza y la muestra, si no, la deja oculta.
+export function initGallery() {
+  const sec = document.querySelector('[data-gallery-section]');
+  const grid = document.querySelector('[data-gallery-grid]');
+  if (!sec || !grid) return;
+  const es = getLang() === 'es';
+  const tag = sec.querySelector('[data-gallery-tag]');
+  const title = sec.querySelector('[data-gallery-title]');
+  if (tag) tag.textContent = es ? 'Nuestros trabajos' : 'Nossos trabalhos';
+  if (title) title.textContent = es ? 'Galería' : 'Galeria';
+  fetch('/uploads/site/gallery.json', { cache: 'no-store' })
+    .then((r) => (r.ok ? r.json() : []))
+    .then((list) => {
+      if (!Array.isArray(list) || !list.length) { sec.style.display = 'none'; return; }
+      grid.innerHTML = list.map((it) =>
+        `<figure style="margin:0;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#1A2129;border:1px solid rgba(217,220,224,.12)">`
+        + `<img src="/uploads/site/${it.file}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" /></figure>`
+      ).join('');
+      sec.style.display = '';
+    })
+    .catch(() => { sec.style.display = 'none'; });
+}
+
 export function initMotion(root) {
   const scope = root || document;
   injectAdaptiveCSS();
   initImages(scope);
+  initGallery();
 
   // ---- Responsive grid collapse (inline-style DCs have no media queries) --
   const GRID_SEL = ['[data-hero-grid]', '[data-story-grid]', '[data-svc-grid]',
