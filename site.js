@@ -36,9 +36,30 @@ function injectAdaptiveCSS() {
   document.head.appendChild(style);
 }
 
+// ---- Imágenes gestionadas desde el panel admin -------------------------
+// Cada <img data-slot="..."> trae su imagen por defecto en el src. Si el
+// panel subió una versión (registrada en /uploads/site/manifest.json), la
+// reemplazamos. Si no hay manifest o falla el fetch, queda la imagen original.
+let __imgManifest = null;
+export function initImages(root) {
+  const apply = (map) => {
+    if (!map) return;
+    (root || document).querySelectorAll('[data-slot]').forEach((img) => {
+      const slot = img.getAttribute('data-slot');
+      if (map[slot]) img.src = '/uploads/site/' + map[slot];
+    });
+  };
+  if (__imgManifest) { apply(__imgManifest); return; }
+  fetch('/uploads/site/manifest.json', { cache: 'no-store' })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((map) => { __imgManifest = map || {}; apply(__imgManifest); })
+    .catch(() => {});
+}
+
 export function initMotion(root) {
   const scope = root || document;
   injectAdaptiveCSS();
+  initImages(scope);
 
   // ---- Responsive grid collapse (inline-style DCs have no media queries) --
   const GRID_SEL = ['[data-hero-grid]', '[data-story-grid]', '[data-svc-grid]',

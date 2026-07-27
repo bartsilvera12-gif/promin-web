@@ -50,7 +50,7 @@
 
   <!-- ===================== 1 · HERO ===================== -->
   <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#12171C">
-    <img src="hero-cover.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0" />
+    <img src="hero-cover.jpg" data-slot="hero-cover" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0" />
     <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(18,23,28,.93) 0%,rgba(18,23,28,.66) 40%,rgba(18,23,28,.30) 72%,rgba(18,23,28,.55) 100%)"></div>
     <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,23,28,.4) 0%,transparent 32%,rgba(18,23,28,.82) 100%)"></div>
 
@@ -103,7 +103,7 @@
   <section style="padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);max-width:1240px;margin:0 auto">
     <div style="display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,5vw,70px);align-items:center" data-story-grid>
       <div data-reveal="right" style="position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 26px 70px rgba(0,0,0,.45)">
-        <img src="face.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center" />
+        <img src="face.jpg" data-slot="face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center" />
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(18,23,28,.72))"></div>
         <div style="position:absolute;left:20px;bottom:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(237,239,242,.9);text-transform:uppercase">// ProMin</div>
       </div>
@@ -141,7 +141,7 @@
 
   <!-- ===================== 5 · POR QUE ESCOLHER A PROMIN ===================== -->
   <section style="position:relative;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
-    <img data-parallax="0.12" src="tech-monitors.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.16" />
+    <img data-parallax="0.12" src="tech-monitors.jpg" data-slot="tech-monitors" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.16" />
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.86),rgba(18,23,28,.94))"></div>
     <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto">
       <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.whyKicker }}</div>
@@ -183,7 +183,7 @@
 
   <!-- ===================== 7 · CONTATO ===================== -->
   <section style="position:relative;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
-    <img data-parallax="0.14" src="aerial-right.jpg" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.24" />
+    <img data-parallax="0.14" src="aerial-right.jpg" data-slot="aerial-right" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.24" />
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,32,38,.78),rgba(18,23,28,.9))"></div>
     <div style="position:relative;z-index:2;max-width:900px;margin:0 auto;text-align:center">
       <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:20px">// {{ L.ctaKicker }}</div>
