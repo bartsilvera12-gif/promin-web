@@ -59,6 +59,20 @@
   @media (max-width: 1100px) { .promin-gal-grid { columns: 3; } }
   @media (max-width: 768px) { .promin-gal-grid { columns: 2; } }
   @media (max-width: 520px) { .promin-gal-grid { columns: 1; } }
+  /* carrusel (4 por página) */
+  .promin-carousel { position: relative; }
+  .promin-carousel-vp { overflow: hidden; }
+  .promin-carousel-track { display: flex; gap: 14px; transition: transform .55s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+  .promin-carousel-track .promin-gal-item { flex: 0 0 calc((100% - 42px) / 4); margin: 0; aspect-ratio: 3 / 4; cursor: zoom-in; }
+  .promin-carousel-track .promin-gal-item img { height: 100%; object-fit: cover; }
+  .promin-carousel .cbtn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(237,239,242,.3); background: rgba(14,19,23,.62); color: #EDEFF2; font-size: 26px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); transition: background .2s, border-color .2s, color .2s; }
+  .promin-carousel .cbtn:hover { background: #DE694E; border-color: #DE694E; color: #151A1F; }
+  .promin-carousel .cprev { left: 10px; } .promin-carousel .cnext { right: 10px; }
+  .promin-carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+  .promin-carousel-dots button { width: 26px; height: 5px; border: 0; padding: 0; border-radius: 99px; background: rgba(217,220,224,.25); cursor: pointer; transition: background .3s, width .3s; }
+  .promin-carousel-dots button.on { background: #DE694E; width: 40px; }
+  @media (max-width: 900px) { .promin-carousel-track .promin-gal-item { flex-basis: calc((100% - 14px) / 2); } }
+  @media (max-width: 560px) { .promin-carousel-track .promin-gal-item { flex-basis: 100%; } }
   .promin-lb { position: fixed; inset: 0; z-index: 9999; background: rgba(9,12,15,.95); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 30px; }
   .promin-lb.open { display: flex; }
   .promin-lb img { max-width: 94vw; max-height: 84vh; object-fit: contain; border-radius: 8px; box-shadow: 0 30px 90px rgba(0,0,0,.6); }
@@ -177,7 +191,12 @@
       <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(27px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 12px;color:#F4F6F8">{{ L.galTitle }}</h2>
       <p data-reveal="up" data-reveal-delay="110" style="font-size:16px;line-height:1.65;color:#A9B0B8;margin:0 0 34px;max-width:64ch">{{ L.galLede }}</p>
       <div class="promin-gal-filters" data-gal-filters></div>
-      <div class="promin-gal-grid" data-gal-grid></div>
+      <div class="promin-carousel" data-gal-carousel>
+        <button class="cbtn cprev" data-gal-prev aria-label="Anterior">‹</button>
+        <div class="promin-carousel-vp"><div class="promin-carousel-track" data-gal-track></div></div>
+        <button class="cbtn cnext" data-gal-next aria-label="Siguiente">›</button>
+      </div>
+      <div class="promin-carousel-dots" data-gal-dots></div>
     </div>
   </section>
 
@@ -281,10 +300,12 @@ class Component extends DCLogic {
   initGallery() {
     const lang = this.lang();
     setTimeout(() => {
-      const grid = document.querySelector('[data-gal-grid]');
+      const track = document.querySelector('[data-gal-track]');
+      const carousel = document.querySelector('[data-gal-carousel]');
+      const dotsEl = document.querySelector('[data-gal-dots]');
       const filtersEl = document.querySelector('[data-gal-filters]');
       const lb = document.querySelector('[data-gal-lb]');
-      if (!grid || !filtersEl || this._galInit) return;
+      if (!track || !filtersEl || this._galInit) return;
       const hideSection = () => { const s = document.getElementById('servicios-en-accion'); if (s) s.style.display = 'none'; };
       fetch('servicios/gallery.json').then(r => r.json()).then(data => {
         const cats = (data.categories || []).filter(c => c.count > 0);
@@ -305,7 +326,11 @@ class Component extends DCLogic {
           filtersEl.appendChild(b);
         });
 
-        let current = [];
+        // Carrusel: 4 imágenes por página (2 en tablet, 1 en móvil), avanza de página en página
+        let current = [], page = 0;
+        const gap = 14;
+        const perPage = () => window.innerWidth <= 560 ? 1 : (window.innerWidth <= 900 ? 2 : 4);
+        const pageCount = () => Math.max(1, Math.ceil(current.length / perPage()));
         const listFor = (slug) => {
           if (slug !== 'all') return imgs.filter(im => im.cat === slug);
           // "Todos": selección equilibrada, hasta 4 por categoría, intercaladas
@@ -314,27 +339,43 @@ class Component extends DCLogic {
           for (let k = 0; k < 4; k++) cats.forEach(c => { if (per[c.slug][k]) out.push(per[c.slug][k]); });
           return out;
         };
+        const layout = () => {
+          const vp = carousel.querySelector('.promin-carousel-vp');
+          page = Math.min(page, pageCount() - 1);
+          track.style.transform = 'translateX(' + (-page * (vp.clientWidth + gap)) + 'px)';
+        };
+        const buildDots = () => {
+          const n = pageCount();
+          dotsEl.innerHTML = '';
+          for (let i = 0; i < n; i++) { const d = document.createElement('button'); d.className = i === page ? 'on' : ''; d.setAttribute('aria-label', 'Página ' + (i + 1)); d.addEventListener('click', () => go(i)); dotsEl.appendChild(d); }
+          dotsEl.style.display = n > 1 ? 'flex' : 'none';
+          carousel.querySelector('[data-gal-prev]').style.display = n > 1 ? 'flex' : 'none';
+          carousel.querySelector('[data-gal-next]').style.display = n > 1 ? 'flex' : 'none';
+        };
+        const go = (p) => { const n = pageCount(); page = (p + n) % n; layout(); Array.from(dotsEl.children).forEach((d, i) => d.classList.toggle('on', i === page)); };
         const render = (slug) => {
-          current = listFor(slug);
-          grid.classList.add('fade');
-          setTimeout(() => {
-            grid.innerHTML = '';
-            current.forEach((im, idx) => {
-              const b = document.createElement('button'); b.type = 'button'; b.className = 'promin-gal-item';
-              const img = document.createElement('img');
-              img.src = im.base + '-480.webp';
-              img.srcset = im.base + '-480.webp 480w, ' + im.base + '-900.webp 900w';
-              img.sizes = '(max-width:520px) 100vw, (max-width:768px) 50vw, (max-width:1100px) 33vw, 25vw';
-              img.width = im.w; img.height = im.h; img.loading = 'lazy'; img.decoding = 'async'; img.alt = alt(im);
-              const cap = document.createElement('span'); cap.className = 'cap'; cap.textContent = label(im.cat);
-              b.appendChild(img); b.appendChild(cap);
-              b.addEventListener('click', () => openLB(idx));
-              grid.appendChild(b);
-            });
-            grid.classList.remove('fade');
-          }, 200);
+          current = listFor(slug); page = 0;
+          track.innerHTML = '';
+          current.forEach((im, idx) => {
+            const b = document.createElement('button'); b.type = 'button'; b.className = 'promin-gal-item';
+            const img = document.createElement('img');
+            img.src = im.base + '-480.webp';
+            img.srcset = im.base + '-480.webp 480w, ' + im.base + '-900.webp 900w';
+            img.sizes = '(max-width:560px) 100vw, (max-width:900px) 50vw, 25vw';
+            img.width = im.w; img.height = im.h; img.loading = 'lazy'; img.decoding = 'async'; img.alt = alt(im);
+            const cap = document.createElement('span'); cap.className = 'cap'; cap.textContent = label(im.cat);
+            b.appendChild(img); b.appendChild(cap);
+            b.addEventListener('click', () => openLB(idx));
+            track.appendChild(b);
+          });
+          buildDots(); layout();
         };
         const setFilter = (slug, btn) => { filtersEl.querySelectorAll('.promin-gal-fbtn').forEach(x => x.classList.remove('on')); btn.classList.add('on'); render(slug); };
+
+        // Controles (manual: flechas + puntos)
+        carousel.querySelector('[data-gal-prev]').addEventListener('click', () => go(page - 1));
+        carousel.querySelector('[data-gal-next]').addEventListener('click', () => go(page + 1));
+        let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildDots(); layout(); }, 150); });
 
         // Lightbox
         let lbi = 0;
