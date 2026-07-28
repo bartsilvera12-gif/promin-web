@@ -110,9 +110,15 @@ class Component extends DCLogic {
       const lb = document.querySelector('[data-gal-lb]');
       const emptyEl = document.querySelector('[data-gal-empty]');
       if (!wrap || this._galInit) return;
-      fetch('servicios/gallery.json').then(r => r.json()).then(data => {
-        const cats = (data.categories || []).filter(c => c.count > 0);
-        const imgs = data.images || [];
+      Promise.all([
+        fetch('servicios/gallery.json').then(r => r.json()).catch(() => ({ categories: [], images: [] })),
+        fetch('uploads/gallery/manifest.json?v=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+      ]).then(([base, admin]) => {
+        const catMeta = {}; (base.categories || []).forEach(c => catMeta[c.slug] = { es: c.es, pt: c.pt });
+        const imgs = [];
+        (base.images || []).forEach(im => imgs.push({ cat: im.cat, w: im.w, h: im.h, g480: im.base + '-480.webp', g900: im.base + '-900.webp', full: im.base + '-1600.webp', srcset: im.base + '-480.webp 480w, ' + im.base + '-900.webp 900w', altEs: im.altEs, altPt: im.altPt }));
+        if (admin && admin.images) admin.images.forEach(im => { const m = catMeta[im.cat] || {}; imgs.push({ cat: im.cat, w: im.w, h: im.h, g480: im.src, g900: im.src, full: im.src, srcset: '', altEs: m.es || im.cat, altPt: m.pt || im.cat }); });
+        const cats = (base.categories || []).map(c => ({ slug: c.slug, es: c.es, pt: c.pt, count: imgs.filter(i => i.cat === c.slug).length })).filter(c => c.count > 0);
         if (!cats.length || !imgs.length) { if (emptyEl) emptyEl.style.display = 'block'; return; }
         this._galInit = true;
         const label = (slug) => { const c = cats.find(x => x.slug === slug); return c ? (lang === 'es' ? c.es : c.pt) : slug; };
@@ -121,7 +127,7 @@ class Component extends DCLogic {
         // Lightbox
         let current = [], lbi = 0;
         const lbImg = lb.querySelector('img'), lbPos = lb.querySelector('[data-lb-pos]'), lbCat = lb.querySelector('[data-lb-cat]');
-        const showLB = () => { const im = current[lbi]; lbImg.src = im.base + '-1600.webp'; lbImg.alt = alt(im); lbPos.textContent = (lbi + 1) + ' / ' + current.length; lbCat.textContent = label(im.cat); };
+        const showLB = () => { const im = current[lbi]; lbImg.src = im.full; lbImg.alt = alt(im); lbPos.textContent = (lbi + 1) + ' / ' + current.length; lbCat.textContent = label(im.cat); };
         const openLB = (list, i) => { current = list; lbi = i; showLB(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
         const closeLB = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
         const nav = (d) => { lbi = (lbi + d + current.length) % current.length; showLB(); };
@@ -148,8 +154,8 @@ class Component extends DCLogic {
           list.forEach((im, idx) => {
             const b = document.createElement('button'); b.type = 'button'; b.className = 'promin-gal-item';
             const img = document.createElement('img');
-            img.src = im.base + '-480.webp';
-            img.srcset = im.base + '-480.webp 480w, ' + im.base + '-900.webp 900w';
+            img.src = im.g480;
+            if (im.srcset) img.srcset = im.srcset;
             img.sizes = '(max-width:520px) 100vw, (max-width:768px) 50vw, (max-width:1100px) 33vw, 25vw';
             img.width = im.w; img.height = im.h; img.loading = 'lazy'; img.decoding = 'async'; img.alt = alt(im);
             b.appendChild(img);

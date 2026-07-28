@@ -12,3 +12,4 @@ Thumbs.db
 # Imágenes subidas desde el panel admin (las escribe upload.php en el server;
 # no deben ser versionadas ni pisadas por el deploy de GitHub)
 /uploads/site/
+/uploads/gallery/

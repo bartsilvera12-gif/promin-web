@@ -374,7 +374,7 @@ function go(id){
   }
   if(id==='gallery'){
     document.getElementById('pageTitle').textContent='Galería';
-    document.getElementById('pageSub').textContent='Agregá o quitá fotos del Home';
+    document.getElementById('pageSub').textContent='Agregá o quitá fotos por servicio';
     renderGallery(c); window.scrollTo(0,0); return;
   }
   const s=SCHEMA.find(x=>x.id===id);
@@ -474,53 +474,69 @@ function imgUpload(slot,file){
     }
   }).catch(()=>{ card.classList.remove('up'); st.className='st err'; st.textContent='No se pudo conectar con upload.php (¿ya está en el servidor?).'; });
 }
-/* ============================ GALERÍA (fotos del Home) ============================ */
+/* ============================ GALERÍA DE SERVICIOS (por categoría) ============================ */
+const GAL_CATS = [
+  { slug:'capacitacion-tecnica',        name:'Capacitación Técnica' },
+  { slug:'consultoria-compras',         name:'Consultoría en Compras' },
+  { slug:'diseno-plantas-trituracion',  name:'Diseño de Plantas de Trituración' },
+  { slug:'gestion-costos-inventario',   name:'Gestión de Costos e Inventario' },
+  { slug:'mantenimiento-correctivo',    name:'Mantenimiento Correctivo' },
+  { slug:'mantenimiento-preventivo',    name:'Mantenimiento Preventivo' },
+  { slug:'reparacion-comercializacion', name:'Reparación y Comercialización de Equipos' },
+];
+function galCatName(slug){ const c=GAL_CATS.find(x=>x.slug===slug); return c?c.name:slug; }
 function renderGallery(c){
   c.innerHTML = `<div class="card" style="border-color:rgba(222,105,78,.3);background:#FCF3F0">
-      <h3>▤ Galería del Home</h3>
-      <p class="hint" style="margin:0 0 14px;line-height:1.6;color:var(--muted)">Agregá las fotos que quieras — aparecen en la sección <b>Galería</b> del inicio. Si no hay ninguna, esa sección no se muestra. JPG, PNG o WEBP · máx. 8 MB cada una.</p>
-      <button class="btn accent" onclick="galAdd()">+ Agregar fotos</button>
-      <span id="galStatus" class="hint" style="margin-left:12px"></span>
+      <h3>▤ Galería de servicios</h3>
+      <p class="hint" style="margin:0 0 14px;line-height:1.6;color:var(--muted)">Elegí el <b>servicio</b> y agregá tus fotos. Aparecen en la sección <b>Galería</b> del inicio y en la página <b>Galería</b>, junto a las fotos base. Se redimensionan y optimizan solas. JPG, PNG o WEBP · máx. 8 MB.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <select id="galCat" style="max-width:340px">${GAL_CATS.map(x=>`<option value="${x.slug}">${x.name}</option>`).join('')}</select>
+        <button class="btn accent" onclick="galAdd()">+ Agregar fotos</button>
+        <span id="galStatus" class="hint"></span>
+      </div>
     </div>
-    <div class="grid imgrid" id="galgrid"><p class="hint">Cargando…</p></div>`;
+    <div id="galgrid"><p class="hint">Cargando…</p></div>`;
   galLoad();
 }
 function galLoad(){
   fetch(UPLOAD_URL,{cache:'no-store'}).then(r=>r.json())
-    .then(res=>galRender(res&&res.gallery?res.gallery:[]))
+    .then(res=>galRender(res&&res.svcgallery?res.svcgallery:{categories:[],images:[]}))
     .catch(()=>{ document.getElementById('galgrid').innerHTML='<p class="hint" style="color:var(--err)">No se pudo conectar con upload.php (¿ya está en el servidor?).</p>'; });
 }
-function galRender(list){
+function galRender(data){
   const g=document.getElementById('galgrid'); if(!g) return;
-  if(!list.length){ g.innerHTML='<p class="hint">Todavía no agregaste fotos. Usá “+ Agregar fotos”.</p>'; return; }
-  g.innerHTML=list.map(it=>`
-    <div class="imgcard">
-      <div class="thumb" style="background-image:url('/uploads/site/${it.file}')"></div>
-      <div class="body" style="display:flex;justify-content:flex-end">
-        <button class="btn ghost sm danger" onclick="galDel('${it.id}')">Eliminar</button>
-      </div>
-    </div>`).join('');
+  const imgs=(data&&data.images)||[];
+  if(!imgs.length){ g.innerHTML='<p class="hint">Todavía no agregaste fotos propias. Elegí un servicio arriba y usá “+ Agregar fotos”. <br><span style="color:var(--dim)">(Las fotos base del sitio no se listan acá; sí se muestran en la web.)</span></p>'; return; }
+  let html='';
+  GAL_CATS.forEach(cat=>{
+    const list=imgs.filter(i=>i.cat===cat.slug); if(!list.length) return;
+    html+=`<h4 style="margin:24px 0 12px;font-size:13px;font-weight:600;color:var(--muted)">${cat.name} <span style="color:var(--dim)">· ${list.length}</span></h4><div class="grid imgrid">`;
+    list.forEach(it=>{ html+=`<div class="imgcard"><div class="thumb" style="background-image:url('/${it.src}')"></div><div class="body" style="display:flex;justify-content:flex-end"><button class="btn ghost sm danger" onclick="galDel('${cat.slug}','${it.id}')">Eliminar</button></div></div>`; });
+    html+='</div>';
+  });
+  g.innerHTML=html;
 }
 function galAdd(){
+  const cat=document.getElementById('galCat').value;
   const inp=document.createElement('input'); inp.type='file'; inp.accept='image/jpeg,image/png,image/webp'; inp.multiple=true;
-  inp.onchange=()=>{ const files=[...(inp.files||[])]; if(files.length) galUploadSeq(files, files.length); };
+  inp.onchange=()=>{ const files=[...(inp.files||[])]; if(files.length) galUploadSeq(cat, files, files.length); };
   inp.click();
 }
-function galUploadSeq(files,total){
+function galUploadSeq(cat,files,total){
   const st=document.getElementById('galStatus');
   if(!files.length){ if(st){st.style.color='var(--ok)';st.textContent='✓ Listo';} toast('✓ Fotos agregadas'); galLoad(); return; }
   const done=total-files.length+1;
-  if(st){ st.style.color='var(--muted)'; st.textContent=`Subiendo ${done}/${total}…`; }
+  if(st){ st.style.color='var(--muted)'; st.textContent=`Subiendo ${done}/${total} a ${galCatName(cat)}…`; }
   const file=files.shift();
-  if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>8*1024*1024){ galUploadSeq(files,total); return; }
-  const fd=new FormData(); fd.append('token',UPLOAD_TOKEN); fd.append('action','gallery-add'); fd.append('image',file);
-  fetch(UPLOAD_URL,{method:'POST',body:fd}).then(r=>r.json()).then(()=>galUploadSeq(files,total)).catch(()=>galUploadSeq(files,total));
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>8*1024*1024){ galUploadSeq(cat,files,total); return; }
+  const fd=new FormData(); fd.append('token',UPLOAD_TOKEN); fd.append('action','svcgal-add'); fd.append('cat',cat); fd.append('image',file);
+  fetch(UPLOAD_URL,{method:'POST',body:fd}).then(r=>r.json()).then(()=>galUploadSeq(cat,files,total)).catch(()=>galUploadSeq(cat,files,total));
 }
-function galDel(id){
+function galDel(cat,id){
   if(!confirm('¿Eliminar esta foto de la galería?'))return;
-  const fd=new FormData(); fd.append('token',UPLOAD_TOKEN); fd.append('action','gallery-del'); fd.append('id',id);
+  const fd=new FormData(); fd.append('token',UPLOAD_TOKEN); fd.append('action','svcgal-del'); fd.append('cat',cat); fd.append('id',id);
   fetch(UPLOAD_URL,{method:'POST',body:fd}).then(r=>r.json())
-    .then(res=>{ galRender(res&&res.gallery?res.gallery:[]); toast('Foto eliminada'); })
+    .then(res=>{ galRender(res&&res.svcgallery?res.svcgallery:{categories:[],images:[]}); toast('Foto eliminada'); })
     .catch(()=>toast('Error al eliminar'));
 }
 function inputFor(f,path,val){
