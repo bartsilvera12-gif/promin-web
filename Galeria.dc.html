@@ -27,6 +27,14 @@
   .promin-galgroup-head .kick { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #DE694E; letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-bottom: 8px; }
   .promin-galgroup-head h2 { font-size: clamp(22px,3vw,34px); font-weight: 700; letter-spacing: -.6px; color: #F4F6F8; margin: 0; line-height: 1.15; }
   .promin-galgroup-head .cnt { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6E7681; white-space: nowrap; }
+  /* filtros de categoría */
+  .promin-gal-filters { display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 16px; margin: 0 0 30px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .promin-gal-filters::-webkit-scrollbar { height: 6px; }
+  .promin-gal-filters::-webkit-scrollbar-thumb { background: rgba(222,105,78,.4); border-radius: 99px; }
+  .promin-gal-fbtn { flex: none; white-space: nowrap; background: #171D24; border: 1px solid rgba(217,220,224,.12); color: #C9CDD2; font-family: inherit; font-size: 13.5px; font-weight: 500; padding: 9px 16px; border-radius: 999px; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
+  .promin-gal-fbtn:hover { border-color: rgba(222,105,78,.5); color: #EDEFF2; }
+  .promin-gal-fbtn.on { background: #DE694E; border-color: #DE694E; color: #151A1F; font-weight: 600; }
+  .promin-gal-fbtn .n { opacity: .6; font-size: 11px; margin-left: 5px; font-family: 'JetBrains Mono', monospace; }
   /* masonry grid */
   .promin-gal-grid { columns: 4; column-gap: 14px; }
   .promin-gal-item { break-inside: avoid; margin: 0 0 14px; position: relative; border-radius: 14px; overflow: hidden; cursor: zoom-in; display: block; width: 100%; padding: 0; border: 0; background: #0E1317; line-height: 0; }
@@ -69,6 +77,7 @@
 
   <!-- GRUPOS POR CATEGORÍA (poblados por JS) -->
   <section style="padding:clamp(30px,5vw,64px) clamp(20px,5vw,64px) clamp(60px,8vw,110px);max-width:1280px;margin:0 auto;width:100%;overflow:hidden;flex:1">
+    <div class="promin-gal-filters" data-gal-filters></div>
     <div data-gal-groups></div>
     <div data-gal-empty style="display:none;color:#6E7681;font-size:15px;padding:40px 0">{{ L.empty }}</div>
   </section>
@@ -128,6 +137,7 @@ class Component extends DCLogic {
           if (!list.length) return;
           const group = document.createElement('div');
           group.className = 'promin-galgroup';
+          group.dataset.cat = c.slug;
           const head = document.createElement('div');
           head.className = 'promin-galgroup-head';
           head.innerHTML = '<div><span class="kick">// ' + String(ci + 1).padStart(2, '0') + '</span><h2>' + label(c.slug) + '</h2></div>'
@@ -149,6 +159,27 @@ class Component extends DCLogic {
           group.appendChild(grid);
           wrap.appendChild(group);
         });
+
+        // Filtros de categoría (arriba): "Todas" + una por carpeta
+        const filtersEl = document.querySelector('[data-gal-filters]');
+        if (filtersEl) {
+          const allLabel = lang === 'es' ? 'Todas' : 'Todas';
+          const filters = [{ slug: 'all', count: imgs.length, name: allLabel }]
+            .concat(cats.map(c => ({ slug: c.slug, count: c.count, name: label(c.slug) })));
+          const applyFilter = (slug, btn) => {
+            filtersEl.querySelectorAll('.promin-gal-fbtn').forEach(x => x.classList.remove('on'));
+            btn.classList.add('on');
+            wrap.querySelectorAll('.promin-galgroup').forEach(g => { g.style.display = (slug === 'all' || g.dataset.cat === slug) ? '' : 'none'; });
+            window.scrollTo({ top: filtersEl.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
+          };
+          filters.forEach((f, i) => {
+            const b = document.createElement('button');
+            b.className = 'promin-gal-fbtn' + (i === 0 ? ' on' : '');
+            b.innerHTML = f.name + '<span class="n">' + f.count + '</span>';
+            b.addEventListener('click', () => applyFilter(f.slug, b));
+            filtersEl.appendChild(b);
+          });
+        }
       }).catch(() => { if (emptyEl) emptyEl.style.display = 'block'; });
     }, 80);
   }
