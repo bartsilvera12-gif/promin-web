@@ -99,12 +99,12 @@ class Component extends DCLogic {
   renderVals() {
     const lang = this.lang();
     const dict = {
-      pt: { cta: 'Fale conosco', items: ['Início', 'Sobre', 'Serviços', 'Contato'] },
-      es: { cta: 'Contáctanos', items: ['Inicio', 'Nosotros', 'Servicios', 'Contacto'] },
+      pt: { cta: 'Fale conosco', items: ['Início', 'Sobre', 'Serviços', 'Galeria', 'Contato'] },
+      es: { cta: 'Contáctanos', items: ['Inicio', 'Nosotros', 'Servicios', 'Galería', 'Contacto'] },
     };
     const L = dict[lang];
-    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Contato.dc.html'];
-    const keys = ['inicio', 'sobre', 'servicos', 'contato'];
+    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Galeria.dc.html', 'Contato.dc.html'];
+    const keys = ['inicio', 'sobre', 'servicos', 'galeria', 'contato'];
     const active = this.props.active || 'inicio';
     const base = "font-family:'Sora',sans-serif;font-size:15px;font-weight:500;letter-spacing:.2px;color:#C9CDD2;transition:color .25s ease;display:inline-flex;align-items:center";
     const links = L.items.map((label, i) => ({

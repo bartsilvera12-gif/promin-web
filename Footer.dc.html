@@ -94,7 +94,7 @@ class Component extends DCLogic {
         waBR: 'WhatsApp Brasil', waPY: 'WhatsApp Paraguay',
         rights: 'Todos os direitos reservados',
         dev: 'Desenvolvido por',
-        items: ['Início', 'Sobre', 'Serviços', 'Contato', 'Política de Privacidade'],
+        items: ['Início', 'Sobre', 'Serviços', 'Galeria', 'Contato', 'Política de Privacidade'],
       },
       es: {
         tagline: 'Mayor disponibilidad. Mayor producción. Menores costos operativos.',
@@ -104,11 +104,11 @@ class Component extends DCLogic {
         waBR: 'WhatsApp Brasil', waPY: 'WhatsApp Paraguay',
         rights: 'Todos los derechos reservados',
         dev: 'Desarrollado por',
-        items: ['Inicio', 'Nosotros', 'Servicios', 'Contacto', 'Política de Privacidad'],
+        items: ['Inicio', 'Nosotros', 'Servicios', 'Galería', 'Contacto', 'Política de Privacidad'],
       },
     };
     const L = dict[lang];
-    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Contato.dc.html', 'privacidad.dc.html'];
+    const hrefs = ['Inicio.dc.html', 'Sobre.dc.html', 'Servicos.dc.html', 'Galeria.dc.html', 'Contato.dc.html', 'privacidad.dc.html'];
     const links = L.items.map((label, i) => ({ label, href: hrefs[i] }));
     return { L, links, stripe: Array.from({ length: 24 }) };
   }
