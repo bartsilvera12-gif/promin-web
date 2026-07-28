@@ -39,7 +39,38 @@
     [data-svc-grid], [data-chal-grid], [data-story-grid], [data-why-grid], [data-mv-grid] { grid-template-columns: 1fr !important; }
     [data-story-grid] > * { position: static !important; top: auto !important; }
   }
-  @media (prefers-reduced-motion: reduce) { .promin-glow-word { animation: none; } }
+  /* ===== Galería "Nuestros servicios en acción" ===== */
+  .promin-gal-filters { display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 14px; margin: 0 0 26px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .promin-gal-filters::-webkit-scrollbar { height: 6px; }
+  .promin-gal-filters::-webkit-scrollbar-thumb { background: rgba(222,105,78,.4); border-radius: 99px; }
+  .promin-gal-fbtn { flex: none; white-space: nowrap; background: #171D24; border: 1px solid rgba(217,220,224,.12); color: #C9CDD2; font-family: inherit; font-size: 13.5px; font-weight: 500; padding: 9px 16px; border-radius: 999px; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
+  .promin-gal-fbtn:hover { border-color: rgba(222,105,78,.5); color: #EDEFF2; }
+  .promin-gal-fbtn.on { background: #DE694E; border-color: #DE694E; color: #151A1F; font-weight: 600; }
+  .promin-gal-fbtn .n { opacity: .6; font-size: 11px; margin-left: 5px; font-family: 'JetBrains Mono', monospace; }
+  .promin-gal-grid { columns: 4; column-gap: 14px; transition: opacity .35s ease; }
+  .promin-gal-grid.fade { opacity: 0; }
+  .promin-gal-item { break-inside: avoid; margin: 0 0 14px; position: relative; border-radius: 14px; overflow: hidden; cursor: zoom-in; display: block; width: 100%; padding: 0; border: 0; background: #0E1317; line-height: 0; }
+  .promin-gal-item img { width: 100%; height: auto; display: block; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .promin-gal-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(18,23,28,.85)); opacity: 0; transition: opacity .3s ease; }
+  .promin-gal-item .cap { position: absolute; left: 14px; right: 14px; bottom: 12px; color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .2px; opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .3s ease; z-index: 2; line-height: 1.3; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+  .promin-gal-item:hover img { transform: scale(1.06); }
+  .promin-gal-item:hover::after { opacity: 1; }
+  .promin-gal-item:hover .cap { opacity: 1; transform: none; }
+  @media (max-width: 1100px) { .promin-gal-grid { columns: 3; } }
+  @media (max-width: 768px) { .promin-gal-grid { columns: 2; } }
+  @media (max-width: 520px) { .promin-gal-grid { columns: 1; } }
+  .promin-lb { position: fixed; inset: 0; z-index: 9999; background: rgba(9,12,15,.95); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 30px; }
+  .promin-lb.open { display: flex; }
+  .promin-lb img { max-width: 94vw; max-height: 84vh; object-fit: contain; border-radius: 8px; box-shadow: 0 30px 90px rgba(0,0,0,.6); }
+  .promin-lb-close { position: absolute; top: 16px; right: 20px; background: none; border: 0; color: #EDEFF2; font-size: 34px; line-height: 1; cursor: pointer; z-index: 3; }
+  .promin-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(18,23,28,.5); border: 1px solid rgba(237,239,242,.25); color: #EDEFF2; width: 48px; height: 48px; border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s, color .2s; z-index: 3; }
+  .promin-lb-nav:hover { background: #DE694E; border-color: #DE694E; color: #151A1F; }
+  .promin-lb-prev { left: 16px; } .promin-lb-next { right: 16px; }
+  .promin-lb-meta { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: #C6CCD2; z-index: 3; padding: 0 20px; }
+  .promin-lb-meta .cat { color: #DE694E; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .promin-lb-meta .pos { font-size: 13px; }
+  @media (max-width: 560px) { .promin-lb-nav { width: 42px; height: 42px; } .promin-lb img { max-height: 76vh; } }
+  @media (prefers-reduced-motion: reduce) { .promin-glow-word { animation: none; } .promin-gal-item img, .promin-gal-grid { transition: none; } }
 </style>
 </helmet>
 
@@ -139,6 +170,26 @@
     </div>
   </section>
 
+  <!-- ===================== 4b · NUESTROS SERVICIOS EN ACCIÓN ===================== -->
+  <section id="servicios-en-accion" style="background:#1A2026;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);overflow:hidden">
+    <div style="max-width:1280px;margin:0 auto">
+      <div data-reveal="up" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#DE694E;margin-bottom:16px">// {{ L.galKicker }}</div>
+      <h2 data-reveal="up" data-reveal-delay="60" style="font-size:clamp(27px,4vw,46px);font-weight:700;letter-spacing:-1px;margin:0 0 12px;color:#F4F6F8">{{ L.galTitle }}</h2>
+      <p data-reveal="up" data-reveal-delay="110" style="font-size:16px;line-height:1.65;color:#A9B0B8;margin:0 0 34px;max-width:64ch">{{ L.galLede }}</p>
+      <div class="promin-gal-filters" data-gal-filters></div>
+      <div class="promin-gal-grid" data-gal-grid></div>
+    </div>
+  </section>
+
+  <!-- Lightbox de la galería -->
+  <div class="promin-lb" data-gal-lb role="dialog" aria-modal="true" aria-label="Galería de servicios">
+    <button class="promin-lb-close" data-lb-close aria-label="Cerrar">×</button>
+    <button class="promin-lb-nav promin-lb-prev" data-lb-prev aria-label="Anterior">‹</button>
+    <img alt="" />
+    <button class="promin-lb-nav promin-lb-next" data-lb-next aria-label="Siguiente">›</button>
+    <div class="promin-lb-meta"><span class="cat" data-lb-cat></span><span class="pos" data-lb-pos></span></div>
+  </div>
+
   <!-- ===================== 5 · POR QUE ESCOLHER A PROMIN ===================== -->
   <section style="position:relative;padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px);overflow:hidden;background:#1A2026">
     <img data-parallax="0.12" src="tech-monitors.jpg" data-slot="tech-monitors" alt="" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;opacity:.16" />
@@ -222,7 +273,86 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 class Component extends DCLogic {
   lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
-  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+  componentDidMount() {
+    import('./site.js').then(m => m.initMotion()).catch(() => {});
+    this.initGallery();
+  }
+
+  initGallery() {
+    const lang = this.lang();
+    setTimeout(() => {
+      const grid = document.querySelector('[data-gal-grid]');
+      const filtersEl = document.querySelector('[data-gal-filters]');
+      const lb = document.querySelector('[data-gal-lb]');
+      if (!grid || !filtersEl || this._galInit) return;
+      const hideSection = () => { const s = document.getElementById('servicios-en-accion'); if (s) s.style.display = 'none'; };
+      fetch('servicios/gallery.json').then(r => r.json()).then(data => {
+        const cats = (data.categories || []).filter(c => c.count > 0);
+        const imgs = data.images || [];
+        if (!imgs.length) { hideSection(); return; }
+        this._galInit = true;
+        const label = (slug) => { if (slug === 'all') return lang === 'es' ? 'Todos' : 'Todos'; const c = cats.find(x => x.slug === slug); return c ? (lang === 'es' ? c.es : c.pt) : slug; };
+        const alt = (im) => lang === 'es' ? im.altEs : im.altPt;
+
+        // Filtros
+        const filters = [{ slug: 'all', count: imgs.length }].concat(cats.map(c => ({ slug: c.slug, count: c.count })));
+        filtersEl.innerHTML = '';
+        filters.forEach((f, i) => {
+          const b = document.createElement('button');
+          b.className = 'promin-gal-fbtn' + (i === 0 ? ' on' : '');
+          b.innerHTML = label(f.slug) + '<span class="n">' + f.count + '</span>';
+          b.addEventListener('click', () => setFilter(f.slug, b));
+          filtersEl.appendChild(b);
+        });
+
+        let current = [];
+        const listFor = (slug) => {
+          if (slug !== 'all') return imgs.filter(im => im.cat === slug);
+          // "Todos": selección equilibrada, hasta 4 por categoría, intercaladas
+          const per = {}; cats.forEach(c => { per[c.slug] = imgs.filter(im => im.cat === c.slug).slice(0, 4); });
+          const out = [];
+          for (let k = 0; k < 4; k++) cats.forEach(c => { if (per[c.slug][k]) out.push(per[c.slug][k]); });
+          return out;
+        };
+        const render = (slug) => {
+          current = listFor(slug);
+          grid.classList.add('fade');
+          setTimeout(() => {
+            grid.innerHTML = '';
+            current.forEach((im, idx) => {
+              const b = document.createElement('button'); b.type = 'button'; b.className = 'promin-gal-item';
+              const img = document.createElement('img');
+              img.src = im.base + '-480.webp';
+              img.srcset = im.base + '-480.webp 480w, ' + im.base + '-900.webp 900w';
+              img.sizes = '(max-width:520px) 100vw, (max-width:768px) 50vw, (max-width:1100px) 33vw, 25vw';
+              img.width = im.w; img.height = im.h; img.loading = 'lazy'; img.decoding = 'async'; img.alt = alt(im);
+              const cap = document.createElement('span'); cap.className = 'cap'; cap.textContent = label(im.cat);
+              b.appendChild(img); b.appendChild(cap);
+              b.addEventListener('click', () => openLB(idx));
+              grid.appendChild(b);
+            });
+            grid.classList.remove('fade');
+          }, 200);
+        };
+        const setFilter = (slug, btn) => { filtersEl.querySelectorAll('.promin-gal-fbtn').forEach(x => x.classList.remove('on')); btn.classList.add('on'); render(slug); };
+
+        // Lightbox
+        let lbi = 0;
+        const lbImg = lb.querySelector('img'), lbPos = lb.querySelector('[data-lb-pos]'), lbCat = lb.querySelector('[data-lb-cat]');
+        const showLB = () => { const im = current[lbi]; lbImg.src = im.base + '-1600.webp'; lbImg.alt = alt(im); lbPos.textContent = (lbi + 1) + ' / ' + current.length; lbCat.textContent = label(im.cat); };
+        const openLB = (i) => { lbi = i; showLB(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
+        const closeLB = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+        const nav = (d) => { lbi = (lbi + d + current.length) % current.length; showLB(); };
+        lb.querySelector('[data-lb-close]').addEventListener('click', closeLB);
+        lb.querySelector('[data-lb-prev]').addEventListener('click', (e) => { e.stopPropagation(); nav(-1); });
+        lb.querySelector('[data-lb-next]').addEventListener('click', (e) => { e.stopPropagation(); nav(1); });
+        lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+        document.addEventListener('keydown', (e) => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLB(); else if (e.key === 'ArrowRight') nav(1); else if (e.key === 'ArrowLeft') nav(-1); });
+
+        render('all');
+      }).catch(() => hideSection());
+    }, 80);
+  }
 
   renderVals() {
     const lang = this.lang();
@@ -258,6 +388,9 @@ class Component extends DCLogic {
       svcKicker: 'Nossos Serviços',
       svcTitle: 'Soluções técnicas para cada etapa da operação.',
       svcLede: 'Do projeto da planta à manutenção, da otimização da produção à compra de equipamentos — atuamos onde o resultado é gerado.',
+      galKicker: 'Serviços em ação',
+      galTitle: 'Nossos serviços em ação',
+      galLede: 'Registros reais de campo: manutenção, britagem, reformas e capacitação — a experiência ProMin aplicada na sua operação. Toque em qualquer foto para ampliá-la.',
       services: [
         { title: 'Projetos de Plantas de Britagem', desc: 'Projetamos plantas novas ou otimizamos instalações existentes, buscando o melhor equilíbrio entre investimento, capacidade produtiva e custo operacional.', items: ['Estudos de viabilidade', 'Layout da planta', 'Balanço de massas', 'Projetos executivos', 'Acompanhamento da implantação'] },
         { title: 'Manutenção Preventiva', desc: 'Estruturamos programas de manutenção para reduzir falhas e aumentar a disponibilidade dos equipamentos.', items: ['Cadastro de ativos', 'Planos preventivos', 'Indicadores de manutenção', 'Redução de paradas inesperadas'] },
@@ -327,6 +460,9 @@ class Component extends DCLogic {
       svcKicker: 'Nuestros Servicios',
       svcTitle: 'Soluciones técnicas para cada etapa de la operación.',
       svcLede: 'Del diseño de la planta al mantenimiento, de la optimización de la producción a la compra de equipos — actuamos donde se genera el resultado.',
+      galKicker: 'Servicios en acción',
+      galTitle: 'Nuestros servicios en acción',
+      galLede: 'Registros reales de campo: mantenimiento, trituración, reparaciones y capacitación — la experiencia ProMin aplicada a tu operación. Toca cualquier foto para ampliarla.',
       services: [
         { title: 'Diseño e Ingeniería de Plantas de Trituración', desc: 'Diseñamos nuevas plantas u optimizamos instalaciones existentes, buscando el mejor equilibrio entre inversión, capacidad de producción y costos operativos.', items: ['Estudios de viabilidad', 'Diseño del layout de la planta', 'Balance de masas', 'Ingeniería de detalle', 'Supervisión de la implementación'] },
         { title: 'Mantenimiento Preventivo', desc: 'Implementamos programas de mantenimiento para reducir fallas y aumentar la disponibilidad de los equipos.', items: ['Registro de activos', 'Planes de mantenimiento preventivo', 'Indicadores de mantenimiento', 'Reducción de paradas no programadas'] },
