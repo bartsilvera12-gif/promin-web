@@ -13,3 +13,16 @@ RewriteRule ^admin(/.*)?$ admin.html [L]
 
 # Favicon
 RewriteRule ^favicon\.ico$ symbol.png [L]
+
+# --- Caché: el HTML/JS/JSON NO se cachea (los cambios aparecen al instante);
+#     las imágenes SÍ se cachean (rendimiento). ---
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|js|json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+  <FilesMatch "\.(webp|jpe?g|png|gif|svg|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
