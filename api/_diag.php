@@ -9,6 +9,8 @@ $o = [
 ];
 try {
   $db = an_db();
+  // Reinicio con token (limpia las visitas de prueba). Endpoint temporal.
+  if (($_GET['reset'] ?? '') === 'promin-reset-9f3a') { $db->exec('DELETE FROM page_visits'); $o['reset'] = 'done'; }
   $today = date('Y-m-d') . ' 00:00:00';
   $o['sqlite']         = true;
   $o['page_views']     = (int)$db->query('SELECT COUNT(*) FROM page_visits')->fetchColumn();
