@@ -85,5 +85,5 @@ try {
     'top_pages'       => $top,
   ]);
 } catch (Throwable $e) {
-  vs_out(['ok' => false, 'error' => 'stats', 'detail' => $e->getMessage()]);
+  vs_out(['ok' => false, 'error' => 'stats']);
 }
