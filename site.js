@@ -102,8 +102,10 @@ export function trackVisit() {
         }).catch(() => {});
       } catch (e) {}
     };
-    if ('requestIdleCallback' in window) requestIdleCallback(send, { timeout: 2000 });
-    else setTimeout(send, 800);
+    // No bloquear la carga: se dispara poco después de 'load'. Compatible con
+    // todos los navegadores (Safari no soporta requestIdleCallback).
+    if (document.readyState === 'complete') setTimeout(send, 300);
+    else window.addEventListener('load', () => setTimeout(send, 300), { once: true });
   } catch (e) {}
 }
 
