@@ -17,7 +17,7 @@ header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
 const PM_TOKEN = 'pm_up_9Fk27Rd4Qz';                 // <-- debe coincidir con admin.html
-const MAX_BYTES = 8 * 1024 * 1024;                    // 8 MB
+const MAX_BYTES = 25 * 1024 * 1024;                   // 25 MB (fotos de celular grandes)
 $ALLOWED = ['hero-cover','face','hero-machinery','tech-monitors','aerial-right','logo-full'];
 $EXT_BY_MIME = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
 
