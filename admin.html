@@ -134,6 +134,15 @@
   .imgcard .st.ok{color:var(--ok)} .imgcard .st.err{color:var(--err)} .imgcard .st.busy{color:var(--muted)}
   .imgcard.up .thumb::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.55)}
   .imgbadge{position:absolute;top:8px;left:8px;font-size:10.5px;font-weight:700;letter-spacing:.4px;padding:3px 8px;border-radius:999px;background:rgba(20,27,45,.72);color:#fff}
+  .galcard{transition:box-shadow .15s,opacity .15s}
+  .galcard[draggable=true]{cursor:grab}
+  .galcard.dragging{opacity:.4;outline:2px dashed var(--brand);outline-offset:2px}
+  .galcard.hidden .thumb{filter:grayscale(1) opacity(.6)}
+  .galcard .galf{width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--txt)}
+  .galcard .galf:focus{outline:none;border-color:var(--brand)}
+  .galcard textarea.galf{min-height:52px;resize:vertical}
+  .galcard .galchk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
+  .galrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .menutoggle{display:none}
   @media (max-width:820px){
     .app{grid-template-columns:1fr}
@@ -230,18 +239,32 @@
 </div>
 
 <script>
-/* ============================ AUTH (cosmético — no es seguridad real) ============================ */
-const CREDS = { email: 'admin@promin.com', pass: 'Promin2026!' };
+/* ============================ AUTH (sesión real en el servidor: api/gallery.php) ============================
+   La contraseña NO vive en el JavaScript: se valida en el servidor y ahí queda la sesión
+   que autoriza las escrituras de la galería (subir/editar/reordenar/eliminar). */
+const GAL_API = '/api/gallery.php';
 function doLogin(){
-  const em = document.getElementById('email').value.trim().toLowerCase();
-  const pw = document.getElementById('pass').value;
-  if(em===CREDS.email.toLowerCase() && pw===CREDS.pass){
-    sessionStorage.setItem('promin_admin_ok','1'); showApp();
-  } else {
-    document.getElementById('loginErr').textContent = 'Email o contraseña incorrectos.';
-  }
+  const err = document.getElementById('loginErr');
+  const em  = document.getElementById('email').value.trim();
+  const pw  = document.getElementById('pass').value;
+  err.textContent = '';
+  if(!em || !pw){ err.textContent = 'Ingresá tu email y contraseña.'; return; }
+  const btn = document.querySelector('#login .btn.primary'); if(btn){ btn.disabled=true; btn.dataset.t=btn.textContent; btn.textContent='Ingresando…'; }
+  const fd = new FormData(); fd.append('action','login'); fd.append('pass',pw);
+  fetch(GAL_API, { method:'POST', body:fd, credentials:'same-origin' })
+    .then(r=>r.json())
+    .then(res=>{
+      if(res && res.ok){ sessionStorage.setItem('promin_admin_ok','1'); showApp(); }
+      else { err.textContent = 'Email o contraseña incorrectos.'; }
+    })
+    .catch(()=>{ err.textContent = 'No se pudo conectar con el servidor. Reintentá en unos segundos.'; })
+    .finally(()=>{ if(btn){ btn.disabled=false; btn.textContent=btn.dataset.t||'Ingresar'; } });
 }
-function logout(){ sessionStorage.removeItem('promin_admin_ok'); location.reload(); }
+function logout(){
+  sessionStorage.removeItem('promin_admin_ok');
+  const fd=new FormData(); fd.append('action','logout');
+  fetch(GAL_API,{method:'POST',body:fd,credentials:'same-origin'}).catch(()=>{}).finally(()=>location.reload());
+}
 function showApp(){
   document.getElementById('login').style.display='none';
   document.getElementById('app').style.display='grid';
@@ -474,80 +497,194 @@ function imgUpload(slot,file){
     }
   }).catch(()=>{ card.classList.remove('up'); st.className='st err'; st.textContent='No se pudo conectar con upload.php (¿ya está en el servidor?).'; });
 }
-/* ============================ GALERÍA DE SERVICIOS (por categoría) ============================ */
-const GAL_CATS = [
-  { slug:'capacitacion-tecnica',        name:'Capacitación Técnica' },
-  { slug:'consultoria-compras',         name:'Consultoría en Compras' },
-  { slug:'diseno-plantas-trituracion',  name:'Diseño de Plantas de Trituración' },
-  { slug:'gestion-costos-inventario',   name:'Gestión de Costos e Inventario' },
-  { slug:'mantenimiento-correctivo',    name:'Mantenimiento Correctivo' },
-  { slug:'mantenimiento-preventivo',    name:'Mantenimiento Preventivo' },
-  { slug:'reparacion-comercializacion', name:'Reparación y Comercialización de Equipos' },
-];
-function galCatName(slug){ const c=GAL_CATS.find(x=>x.slug===slug); return c?c.name:slug; }
+/* ============================ GALERÍA — fuente única: api/gallery.php ============================
+   Lista TODAS las imágenes (base + subidas), editá título/descripción/alt/categoría,
+   mostrá u ocultá, reordená arrastrando y eliminá. Lo mismo que ve la web pública. */
+let galData   = { categories: [], images: [] };
+let galFilter = 'all';
+let galQuery  = '';
+let galDrag   = null;
+
+function galCatName(slug){ const c=(galData.categories||[]).find(x=>x.slug===slug); return c?(c.es||c.slug):slug; }
+function galStatus(msg,isErr){ const s=document.getElementById('galStatus'); if(s){ s.style.color=isErr?'var(--err)':'var(--muted)'; s.textContent=msg||''; } }
+
 function renderGallery(c){
   c.innerHTML = `<div class="card" style="border-color:rgba(222,105,78,.3);background:#FCF3F0">
-      <h3>▤ Galería de servicios</h3>
-      <p class="hint" style="margin:0 0 14px;line-height:1.6;color:var(--muted)">Elegí el <b>servicio</b> y agregá tus fotos. Aparecen en la sección <b>Galería</b> del inicio y en la página <b>Galería</b>, junto a las fotos base. Se redimensionan y optimizan solas. JPG, PNG o WEBP · máx. 8 MB.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-        <select id="galCat" style="max-width:340px">${GAL_CATS.map(x=>`<option value="${x.slug}">${x.name}</option>`).join('')}</select>
-        <button class="btn accent" onclick="galAdd()">+ Agregar fotos</button>
+      <h3>▤ Galería del sitio</h3>
+      <p class="hint" style="margin:0 0 14px;line-height:1.6;color:var(--muted)">Esta es <b>la misma galería</b> que se ve en el inicio y en la página <b>Galería</b>. Acá ves <b>todas</b> las fotos (las base y las que subís), podés <b>editarlas</b>, <b>ocultarlas</b>, <b>reordenarlas</b> y <b>eliminarlas</b>. Los cambios aparecen en la web al instante. JPG, PNG, WEBP o AVIF · máx. 25 MB.</p>
+      <div class="galrow">
+        <select id="galUpCat" style="max-width:320px"></select>
+        <button class="btn accent" onclick="galAddPick()">+ Agregar fotos</button>
         <span id="galStatus" class="hint"></span>
       </div>
+      <div class="galrow" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(222,105,78,.25)">
+        <input id="galSearch" type="text" placeholder="Buscar por título, descripción o texto alternativo…" style="max-width:340px;flex:1" oninput="galQuery=this.value.trim().toLowerCase();galRenderGrid()">
+        <select id="galFilter" style="max-width:280px" onchange="galFilter=this.value;galRenderGrid()"></select>
+        <span id="galCount" class="hint"></span>
+      </div>
+      <p id="galReorderHint" class="hint" style="margin:10px 0 0;color:var(--dim)">↕ Arrastrá las fotos para cambiar el orden. El reordenamiento está disponible cuando no hay filtro ni búsqueda activa.</p>
     </div>
-    <div id="galgrid"><p class="hint">Cargando…</p></div>`;
+    <div id="galgrid"><p class="hint">Cargando galería…</p></div>`;
   galLoad();
 }
+
 function galLoad(){
-  fetch(UPLOAD_URL,{cache:'no-store'}).then(r=>r.json())
-    .then(res=>galRender(res&&res.svcgallery?res.svcgallery:{categories:[],images:[]}))
-    .catch(()=>{ document.getElementById('galgrid').innerHTML='<p class="hint" style="color:var(--err)">No se pudo conectar con upload.php (¿ya está en el servidor?).</p>'; });
+  const bust = '?t=' + Date.now();
+  const readFallback = () =>
+    fetch('/data/gallery.json' + bust, { cache:'no-store' }).then(r=>{ if(!r.ok) throw 0; return r.json(); })
+      .catch(()=> fetch('/data/gallery.seed.json' + bust, { cache:'no-store' }).then(r=>r.json()));
+  fetch(GAL_API + bust, { cache:'no-store', credentials:'same-origin' })
+    .then(r=>{ if(!r.ok) throw 0; return r.json(); })
+    .catch(readFallback)
+    .then(d=>{
+      galData = { categories:(d&&d.categories)||[], images:(d&&d.images)||[] };
+      galFillSelects();
+      galRenderGrid();
+    })
+    .catch(()=>{ const g=document.getElementById('galgrid'); if(g) g.innerHTML='<p class="hint" style="color:var(--err)">No se pudo cargar la galería. Verificá que el servidor esté disponible.</p>'; });
 }
-function galRender(data){
-  const g=document.getElementById('galgrid'); if(!g) return;
-  const imgs=(data&&data.images)||[];
-  if(!imgs.length){ g.innerHTML='<p class="hint">Todavía no agregaste fotos propias. Elegí un servicio arriba y usá “+ Agregar fotos”. <br><span style="color:var(--dim)">(Las fotos base del sitio no se listan acá; sí se muestran en la web.)</span></p>'; return; }
-  let html='';
-  GAL_CATS.forEach(cat=>{
-    const list=imgs.filter(i=>i.cat===cat.slug); if(!list.length) return;
-    html+=`<h4 style="margin:24px 0 12px;font-size:13px;font-weight:600;color:var(--muted)">${cat.name} <span style="color:var(--dim)">· ${list.length}</span></h4><div class="grid imgrid">`;
-    list.forEach(it=>{ html+=`<div class="imgcard"><div class="thumb" style="background-image:url('/${it.src}')"></div><div class="body" style="display:flex;justify-content:flex-end"><button class="btn ghost sm danger" onclick="galDel('${cat.slug}','${it.id}')">Eliminar</button></div></div>`; });
-    html+='</div>';
-  });
-  g.innerHTML=html;
+
+function galFillSelects(){
+  const cats = galData.categories || [];
+  const up = document.getElementById('galUpCat');
+  if(up) up.innerHTML = cats.map(x=>`<option value="${esc(x.slug)}">${esc(x.es||x.slug)}</option>`).join('') || '<option value="">(sin categorías)</option>';
+  const fl = document.getElementById('galFilter');
+  if(fl){ fl.innerHTML = '<option value="all">Todas las categorías</option>' + cats.map(x=>`<option value="${esc(x.slug)}">${esc(x.es||x.slug)}</option>`).join(''); fl.value = galFilter; }
 }
-function galAdd(){
-  const cat=document.getElementById('galCat').value;
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/jpeg,image/png,image/webp'; inp.multiple=true;
+
+function galRenderGrid(){
+  const g = document.getElementById('galgrid'); if(!g) return;
+  let imgs = (galData.images||[]).slice().sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
+  const total = imgs.length;
+  if(galFilter!=='all') imgs = imgs.filter(i=>i.category===galFilter);
+  if(galQuery) imgs = imgs.filter(i=>((i.title||'')+' '+(i.alt||'')+' '+(i.description||'')+' '+(i.id||'')).toLowerCase().includes(galQuery));
+  const cnt = document.getElementById('galCount'); if(cnt) cnt.textContent = imgs.length + (imgs.length===total?'':(' de '+total)) + ' foto(s)';
+  const reorder = (galFilter==='all' && !galQuery);
+  const hint = document.getElementById('galReorderHint'); if(hint) hint.style.opacity = reorder ? '1' : '.4';
+  if(!imgs.length){ g.innerHTML = '<p class="hint">No hay fotos que coincidan con la búsqueda o el filtro.</p>'; return; }
+  g.innerHTML = '<div class="grid imgrid" id="galinner"></div>';
+  const inner = document.getElementById('galinner');
+  inner.innerHTML = imgs.map(im=>galCard(im,reorder)).join('');
+  if(reorder) galBindDnd(inner);
+}
+
+function galCard(im,reorder){
+  const id = esc(im.id||'');
+  const thumb = esc(im.thumbnail || im.src || '');
+  const active = im.active !== false;
+  const opts = (galData.categories||[]).map(x=>`<option value="${esc(x.slug)}"${x.slug===im.category?' selected':''}>${esc(x.es||x.slug)}</option>`).join('');
+  return `<div class="imgcard galcard${active?'':' hidden'}" data-id="${id}"${reorder?' draggable="true"':''}>
+    <div class="thumb" style="background-image:url('/${thumb}')" title="${id}">
+      ${im.protected?'<span class="imgbadge">Base</span>':''}
+      ${active?'':'<span class="imgbadge" style="left:auto;right:8px;background:var(--err)">Oculta</span>'}
+    </div>
+    <div class="body">
+      <input class="galf" value="${esc(im.title||'')}" placeholder="Título" onchange="galSave('${id}','title',this.value)">
+      <div class="galrow" style="gap:8px;margin-top:6px;flex-wrap:nowrap">
+        <select class="galf" style="flex:1;min-width:0" onchange="galSave('${id}','category',this.value,true)">${opts}</select>
+        <label class="galchk"><input type="checkbox"${active?' checked':''} onchange="galSave('${id}','active',this.checked?'1':'0',true)"> Visible</label>
+      </div>
+      <div class="galedit" style="display:none;margin-top:8px">
+        <textarea class="galf" placeholder="Descripción" onchange="galSave('${id}','description',this.value)">${esc(im.description||'')}</textarea>
+        <input class="galf" style="margin-top:6px" placeholder="Texto alternativo (alt)" value="${esc(im.alt||'')}" onchange="galSave('${id}','alt',this.value)">
+      </div>
+      <div class="galrow" style="justify-content:space-between;margin-top:8px">
+        <button class="btn ghost sm" onclick="galToggleEdit(this)">✎ Textos</button>
+        <button class="btn ghost sm danger" onclick="galDelete('${id}')">Eliminar</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function galToggleEdit(btn){ const p=btn.closest('.body').querySelector('.galedit'); if(p) p.style.display = (p.style.display==='none'?'':'none'); }
+
+function galSave(id, field, value, reRender){
+  galStatus('Guardando…');
+  const fd=new FormData(); fd.append('action','update'); fd.append('id',id); fd.append(field,value);
+  fetch(GAL_API,{method:'POST',body:fd,credentials:'same-origin'}).then(r=>r.json()).then(res=>{
+    if(res && res.ok){
+      galData={ categories:res.categories||galData.categories, images:res.images||galData.images };
+      galStatus('✓ Cambios guardados');
+      if(reRender) galRenderGrid();
+    } else if(res && res.error==='auth'){ galStatus('Tu sesión expiró. Cerrá sesión y volvé a entrar.', true); }
+    else galStatus('No se pudo guardar: '+((res&&res.error)||'error desconocido'), true);
+  }).catch(()=>galStatus('Sin conexión con el servidor.', true));
+}
+
+function galAddPick(){
+  const sel=document.getElementById('galUpCat'); const cat=sel?sel.value:'';
+  if(!cat){ galStatus('No hay categoría seleccionada.', true); return; }
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/jpeg,image/png,image/webp,image/avif'; inp.multiple=true;
   inp.onchange=()=>{ const files=[...(inp.files||[])]; if(files.length) galUploadSeq(cat, files, files.length); };
   inp.click();
 }
 function galUploadSeq(cat,files,total,res){
   res=res||{ok:0,skip:0,err:0,msg:''};
-  const st=document.getElementById('galStatus');
   if(!files.length){
     let m='✓ '+res.ok+' foto(s) subida(s)';
-    if(res.skip) m+=' · '+res.skip+' omitida(s) (no es imagen o pesa más de 25 MB)';
-    if(res.err) m+=' · '+res.err+' con error'+(res.msg?(': '+res.msg):'');
-    if(st){ st.style.color=(res.err||res.skip)?'var(--err)':'var(--ok)'; st.textContent=m; }
+    if(res.skip) m+=' · '+res.skip+' omitida(s) (no es imagen válida o pesa más de 25 MB)';
+    if(res.err)  m+=' · '+res.err+' con error'+(res.msg?(': '+res.msg):'');
+    galStatus(m, !res.ok && (res.err>0||res.skip>0));
     toast(res.ok?('✓ '+res.ok+' foto(s) agregada(s)'):'⚠ No se agregó ninguna foto');
     galLoad(); return;
   }
   const done=total-files.length+1;
-  if(st){ st.style.color='var(--muted)'; st.textContent=`Subiendo ${done}/${total} a ${galCatName(cat)}…`; }
+  galStatus('Subiendo '+done+'/'+total+' a “'+galCatName(cat)+'”…');
   const file=files.shift();
-  if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>25*1024*1024){ res.skip++; galUploadSeq(cat,files,total,res); return; }
-  const fd=new FormData(); fd.append('token',UPLOAD_TOKEN); fd.append('action','svcgal-add'); fd.append('cat',cat); fd.append('image',file);
-  fetch(UPLOAD_URL,{method:'POST',body:fd}).then(r=>r.json())
-    .then(j=>{ if(j&&j.ok) res.ok++; else { res.err++; res.msg=(j&&j.error)||'rechazado'; } galUploadSeq(cat,files,total,res); })
-    .catch(()=>{ res.err++; res.msg='sin conexión con upload.php'; galUploadSeq(cat,files,total,res); });
+  if(!/^image\/(jpeg|png|webp|avif)$/.test(file.type) || file.size>25*1024*1024){ res.skip++; galUploadSeq(cat,files,total,res); return; }
+  const fd=new FormData(); fd.append('action','upload'); fd.append('category',cat); fd.append('image',file);
+  fetch(GAL_API,{method:'POST',body:fd,credentials:'same-origin'}).then(r=>r.json())
+    .then(j=>{ if(j&&j.ok) res.ok++; else { res.err++; res.msg=(j&&j.error==='auth')?'sesión expirada':((j&&j.error)||'rechazado'); } galUploadSeq(cat,files,total,res); })
+    .catch(()=>{ res.err++; res.msg='sin conexión'; galUploadSeq(cat,files,total,res); });
 }
-function galDel(cat,id){
-  if(!confirm('¿Eliminar esta foto de la galería?'))return;
-  const fd=new FormData(); fd.append('token',UPLOAD_TOKEN); fd.append('action','svcgal-del'); fd.append('cat',cat); fd.append('id',id);
-  fetch(UPLOAD_URL,{method:'POST',body:fd}).then(r=>r.json())
-    .then(res=>{ galRender(res&&res.svcgallery?res.svcgallery:{categories:[],images:[]}); toast('Foto eliminada'); })
-    .catch(()=>toast('Error al eliminar'));
+
+function galDelete(id){
+  const im=(galData.images||[]).find(x=>x.id===id);
+  const nm=im&&im.title?('“'+im.title+'”'):'esta foto';
+  if(!confirm('¿Eliminar '+nm+' de la galería?\nEsta acción no se puede deshacer.')) return;
+  galStatus('Eliminando…');
+  const fd=new FormData(); fd.append('action','delete'); fd.append('id',id);
+  fetch(GAL_API,{method:'POST',body:fd,credentials:'same-origin'}).then(r=>r.json()).then(res=>{
+    if(res && res.ok){
+      galData={ categories:res.categories||galData.categories, images:res.images||galData.images };
+      galRenderGrid(); galStatus('✓ Foto eliminada'); toast('✓ Foto eliminada');
+    } else if(res && res.error==='auth'){ galStatus('Tu sesión expiró. Cerrá sesión y volvé a entrar.', true); }
+    else galStatus('No se pudo eliminar: '+((res&&res.error)||'error desconocido'), true);
+  }).catch(()=>galStatus('Sin conexión con el servidor.', true));
+}
+
+/* ---- Reordenar arrastrando (drag & drop) ---- */
+function galBindDnd(grid){
+  grid.querySelectorAll('.galcard').forEach(card=>{
+    card.addEventListener('dragstart',()=>{ galDrag=card; card.classList.add('dragging'); });
+    card.addEventListener('dragend',()=>{ card.classList.remove('dragging'); galDrag=null; galCommitOrder(); });
+  });
+  grid.addEventListener('dragover',e=>{
+    e.preventDefault(); if(!galDrag) return;
+    const after=galGetAfter(grid,e.clientX,e.clientY);
+    if(after==null) grid.appendChild(galDrag); else grid.insertBefore(galDrag,after);
+  });
+}
+function galGetAfter(grid,x,y){
+  const els=[...grid.querySelectorAll('.galcard:not(.dragging)')];
+  let closest={off:Number.NEGATIVE_INFINITY, el:null};
+  for(const el of els){
+    const b=el.getBoundingClientRect();
+    const off=(y-(b.top+b.height/2))*1e6 + (x-(b.left+b.width/2)); // row-major: <0 si el puntero está antes del centro
+    if(off<0 && off>closest.off) closest={off, el};
+  }
+  return closest.el;
+}
+function galCommitOrder(){
+  const inner=document.getElementById('galinner'); if(!inner) return;
+  const ids=[...inner.querySelectorAll('.galcard')].map(el=>el.dataset.id);
+  galStatus('Guardando el nuevo orden…');
+  const fd=new FormData(); fd.append('action','reorder'); fd.append('order',JSON.stringify(ids));
+  fetch(GAL_API,{method:'POST',body:fd,credentials:'same-origin'}).then(r=>r.json()).then(res=>{
+    if(res && res.ok){ galData={ categories:res.categories||galData.categories, images:res.images||galData.images }; galStatus('✓ Orden guardado'); }
+    else if(res && res.error==='auth'){ galStatus('Tu sesión expiró. Cerrá sesión y volvé a entrar.', true); }
+    else galStatus('No se pudo guardar el orden: '+((res&&res.error)||'error'), true);
+  }).catch(()=>galStatus('Sin conexión con el servidor.', true));
 }
 function inputFor(f,path,val){
   const flag=f.i18n?`<span class="flag mono">${lang.toUpperCase()}</span>`:'';

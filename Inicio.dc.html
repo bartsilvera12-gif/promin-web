@@ -307,16 +307,17 @@ class Component extends DCLogic {
       const lb = document.querySelector('[data-gal-lb]');
       if (!track || !filtersEl || this._galInit) return;
       const hideSection = () => { const s = document.getElementById('servicios-en-accion'); if (s) s.style.display = 'none'; };
-      Promise.all([
-        fetch('servicios/gallery.json').then(r => r.json()).catch(() => ({ categories: [], images: [] })),
-        fetch('uploads/gallery/manifest.json?v=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
-      ]).then(([base, admin]) => {
-        const catMeta = {}; (base.categories || []).forEach(c => catMeta[c.slug] = { es: c.es, pt: c.pt });
-        const imgs = [];
-        (base.images || []).forEach(im => imgs.push({ cat: im.cat, w: im.w, h: im.h, g480: im.base + '-480.webp', g900: im.base + '-900.webp', full: im.base + '-1600.webp', srcset: im.base + '-480.webp 480w, ' + im.base + '-900.webp 900w', altEs: im.altEs, altPt: im.altPt }));
-        if (admin && admin.images) admin.images.forEach(im => { const m = catMeta[im.cat] || {}; imgs.push({ cat: im.cat, w: im.w, h: im.h, g480: im.src, g900: im.src, full: im.src, srcset: '', altEs: m.es || im.cat, altPt: m.pt || im.cat }); });
+      const loadGallery = () =>
+        fetch('api/gallery.php?t=' + Date.now(), { cache: 'no-store' }).then(r => r.json()).catch(() =>
+          fetch('data/gallery.json?t=' + Date.now()).then(r => { if (!r.ok) throw 0; return r.json(); }).catch(() =>
+            fetch('data/gallery.seed.json?t=' + Date.now()).then(r => r.json())));
+      loadGallery().then(data => {
+        const imgs = (data.images || [])
+          .filter(im => im.active !== false)
+          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+          .map(im => ({ cat: im.category, w: im.w, h: im.h, g480: im.thumbnail || im.src, g900: im.thumbnail || im.src, full: im.src, srcset: im.srcset || '', altEs: im.alt || '', altPt: im.alt_pt || im.alt || '' }));
         if (!imgs.length) { hideSection(); return; }
-        const cats = (base.categories || []).map(c => ({ slug: c.slug, es: c.es, pt: c.pt, count: imgs.filter(i => i.cat === c.slug).length })).filter(c => c.count > 0);
+        const cats = (data.categories || []).map(c => ({ slug: c.slug, es: c.es, pt: c.pt, count: imgs.filter(i => i.cat === c.slug).length })).filter(c => c.count > 0);
         this._galInit = true;
         const label = (slug) => { if (slug === 'all') return lang === 'es' ? 'Todos' : 'Todos'; const c = cats.find(x => x.slug === slug); return c ? (lang === 'es' ? c.es : c.pt) : slug; };
         const alt = (im) => lang === 'es' ? im.altEs : im.altPt;

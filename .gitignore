@@ -13,3 +13,7 @@ Thumbs.db
 # no deben ser versionadas ni pisadas por el deploy de GitHub)
 /uploads/site/
 /uploads/gallery/
+
+# Galería: la fuente VIVA la escribe el servidor (api/gallery.php); no versionar.
+# La semilla data/gallery.seed.json SÍ se versiona (es el respaldo/base).
+/data/gallery.json
