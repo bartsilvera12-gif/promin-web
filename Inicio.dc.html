@@ -293,7 +293,7 @@
 class Component extends DCLogic {
   lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
   componentDidMount() {
-    import('./site.js').then(m => m.initMotion()).catch(() => {});
+    import('./site.js?v=2').then(m => m.initMotion()).catch(() => {});
     this.initGallery();
   }
 

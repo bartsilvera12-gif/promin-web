@@ -91,21 +91,23 @@ export function trackVisit() {
   try {
     const path = location.pathname || '/';
     if (/admin/i.test(path)) return;                 // no rastrear el panel
-    const send = () => {
-      try {
-        fetch('/api/track-visit.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ page: path, referrer: document.referrer || '' }),
-          keepalive: true,
-          cache: 'no-store',
-        }).catch(() => {});
-      } catch (e) {}
-    };
-    // No bloquear la carga: se dispara poco después de 'load'. Compatible con
-    // todos los navegadores (Safari no soporta requestIdleCallback).
-    if (document.readyState === 'complete') setTimeout(send, 300);
-    else window.addEventListener('load', () => setTimeout(send, 300), { once: true });
+    const payload = JSON.stringify({ page: path, referrer: document.referrer || '' });
+    // sendBeacon no bloquea la carga y sobrevive al cierre de la pestaña.
+    // Fallback a fetch keepalive si el navegador no lo soporta.
+    let ok = false;
+    try {
+      if (navigator.sendBeacon)
+        ok = navigator.sendBeacon('/api/track-visit.php', new Blob([payload], { type: 'application/json' }));
+    } catch (e) {}
+    if (!ok) {
+      fetch('/api/track-visit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true,
+        cache: 'no-store',
+      }).catch(() => {});
+    }
   } catch (e) {}
 }
 

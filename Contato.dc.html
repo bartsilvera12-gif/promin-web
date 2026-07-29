@@ -105,7 +105,7 @@
 class Component extends DCLogic {
   state = { name: '', phone: '', email: '', msg: '', sent: false };
   lang() { try { return localStorage.getItem('promin_lang') === 'es' ? 'es' : 'pt'; } catch (e) { return 'pt'; } }
-  componentDidMount() { import('./site.js').then(m => m.initMotion()).catch(() => {}); }
+  componentDidMount() { import('./site.js?v=2').then(m => m.initMotion()).catch(() => {}); }
 
   submit(e) {
     e.preventDefault();
