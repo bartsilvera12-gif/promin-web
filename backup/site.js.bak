@@ -81,38 +81,11 @@ export function initGallery() {
     .catch(() => { sec.style.display = 'none'; });
 }
 
-// ---- Analítica de visitas (privacidad: sin IP completa, sin datos personales) ----
-// Se registra una vez por carga de página, en reposo y sin bloquear. Si el
-// endpoint falla, la página no se ve afectada. El panel admin nunca se rastrea.
-let __visitTracked = false;
-export function trackVisit() {
-  if (__visitTracked) return;
-  __visitTracked = true;
-  try {
-    const path = location.pathname || '/';
-    if (/admin/i.test(path)) return;                 // no rastrear el panel
-    const send = () => {
-      try {
-        fetch('/api/track-visit.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ page: path, referrer: document.referrer || '' }),
-          keepalive: true,
-          cache: 'no-store',
-        }).catch(() => {});
-      } catch (e) {}
-    };
-    if ('requestIdleCallback' in window) requestIdleCallback(send, { timeout: 2000 });
-    else setTimeout(send, 800);
-  } catch (e) {}
-}
-
 export function initMotion(root) {
   const scope = root || document;
   injectAdaptiveCSS();
   initImages(scope);
   initGallery();
-  trackVisit();
 
   // ---- Responsive grid collapse (inline-style DCs have no media queries) --
   const GRID_SEL = ['[data-hero-grid]', '[data-story-grid]', '[data-svc-grid]',

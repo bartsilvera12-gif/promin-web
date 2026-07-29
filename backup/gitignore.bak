@@ -17,8 +17,3 @@ Thumbs.db
 # Galería: la fuente VIVA la escribe el servidor (api/gallery.php); no versionar.
 # La semilla data/gallery.seed.json SÍ se versiona (es el respaldo/base).
 /data/gallery.json
-
-# Analítica: base SQLite + sal secreta (las escribe el servidor). NO versionar.
-# Sí se versiona data/private/.htaccess (protección), por eso el patrón excluye ese archivo.
-/data/private/*
-!/data/private/.htaccess

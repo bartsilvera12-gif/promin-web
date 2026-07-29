@@ -143,26 +143,6 @@
   .galcard textarea.galf{min-height:52px;resize:vertical}
   .galcard .galchk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
   .galrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  /* --- Analítica de visitas (Dashboard) --- */
-  .an-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
-  .an-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .an-range{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
-  .an-range button{border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
-  .an-range button.on{background:var(--card);color:var(--brand);box-shadow:0 1px 2px rgba(20,27,45,.08)}
-  .an-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
-  .an-stat{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-  .an-stat .v{font-size:26px;font-weight:800;color:var(--txt);line-height:1.1}
-  .an-stat .k{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--dim);margin-top:6px}
-  .an-chart{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--card);margin-bottom:6px}
-  .an-chart svg{display:block;width:100%;height:auto}
-  .an-legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-bottom:8px}
-  .an-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-  .an-table{width:100%;border-collapse:collapse;font-size:13px}
-  .an-table th{text-align:left;color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;padding:8px 10px;border-bottom:1px solid var(--line)}
-  .an-table td{padding:9px 10px;border-bottom:1px solid var(--line2);color:var(--txt)}
-  .an-table td .bar{height:6px;border-radius:4px;background:var(--brand);min-width:2px}
-  @media (max-width:1000px){ .an-stats{grid-template-columns:repeat(3,1fr)} }
-  @media (max-width:560px){ .an-stats{grid-template-columns:repeat(2,1fr)} .an-stat .v{font-size:22px} }
   .menutoggle{display:none}
   @media (max-width:820px){
     .app{grid-template-columns:1fr}
@@ -440,21 +420,6 @@ function renderDashboard(c){
   let html=`<div class="grid stats" style="margin-bottom:22px">`;
   tiles.forEach(t=>html+=`<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="d">${t.d}</div></div>`);
   html+=`</div>`;
-  html+=`<div class="card" id="analyticsCard" style="margin-bottom:22px">
-    <div class="an-head">
-      <div><h3 style="margin:0">Estadísticas de visitas</h3><p class="hint" style="margin:3px 0 0">Datos reales del sitio · visibles desde cualquier dispositivo</p></div>
-      <div class="an-controls">
-        <div class="an-range" id="anRange">
-          <button data-r="today">Hoy</button>
-          <button data-r="7">7 días</button>
-          <button data-r="30" class="on">30 días</button>
-          <button data-r="all">Todo</button>
-        </div>
-        <button class="btn sm" id="anRefresh">↻ Actualizar</button>
-      </div>
-    </div>
-    <div id="anBody"><p class="hint" style="padding:6px 0">Cargando estadísticas…</p></div>
-  </div>`;
   html+=`<div class="card"><h3>Acciones rápidas</h3><p class="hint">Empieza a editar cualquier sección o gestiona el contenido.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn accent" onclick="go('hero')">Editar portada</button>
@@ -468,79 +433,6 @@ function renderDashboard(c){
   html+=`<div class="card" style="border-color:rgba(222,105,78,.3);background:#FCF3F0"><h3>ℹ Cómo se guardan los cambios</h3>
     <p class="hint" style="margin:0;line-height:1.6;color:var(--muted)">Todo lo que edites se guarda en <b>este navegador</b>. Para publicarlo, usa <b>Exportar JSON</b> o pídele a Neura que conecte las páginas al contenido. Ver <a href="#" onclick="openPublish();return false">Cómo publicar</a>.</p></div>`;
   c.innerHTML=html;
-  initVisitStats();
-}
-
-/* ============================ ESTADÍSTICAS DE VISITAS ============================ */
-let anRange = '30';
-function initVisitStats(){
-  const rangeBox=document.getElementById('anRange');
-  if(rangeBox){ rangeBox.addEventListener('click',e=>{ const b=e.target.closest('button[data-r]'); if(!b) return; anRange=b.dataset.r; [...rangeBox.children].forEach(x=>x.classList.toggle('on',x===b)); loadVisitStats(); }); }
-  const rb=document.getElementById('anRefresh'); if(rb) rb.addEventListener('click',()=>loadVisitStats(true));
-  loadVisitStats();
-}
-function loadVisitStats(manual){
-  const body=document.getElementById('anBody'); if(!body) return;
-  if(manual){ body.style.opacity='.45'; }
-  fetch('/api/admin/visit-stats.php?range='+encodeURIComponent(anRange)+'&t='+Date.now(),{cache:'no-store',credentials:'same-origin'})
-    .then(r=>r.json().then(j=>({status:r.status,j})).catch(()=>({status:r.status,j:null})))
-    .then(({status,j})=>{
-      body.style.opacity='';
-      if(status===401 || (j&&j.error==='auth')){ body.innerHTML='<p class="hint" style="color:var(--err);padding:6px 0">Tu sesión expiró. Cerrá sesión y volvé a entrar para ver las estadísticas.</p>'; return; }
-      if(!j || !j.ok){ body.innerHTML='<p class="hint" style="color:var(--err);padding:6px 0">No se pudieron cargar las estadísticas'+((j&&j.detail)?(' ('+esc(j.detail)+')'):'')+'.</p>'; return; }
-      renderVisitStats(body,j);
-    })
-    .catch(()=>{ body.style.opacity=''; body.innerHTML='<p class="hint" style="color:var(--err);padding:6px 0">Sin conexión con el servidor de estadísticas.</p>'; });
-}
-function fmtNum(n){ n=+n||0; try{ return n.toLocaleString('es'); }catch(e){ return String(n); } }
-function renderVisitStats(body,d){
-  const cards=[
-    {k:'Visitas de hoy',v:d.today},
-    {k:'Últimos 7 días',v:d.last_7_days},
-    {k:'Últimos 30 días',v:d.last_30_days},
-    {k:'Visitas totales',v:d.total_visits},
-    {k:'Visitantes únicos',v:d.unique_visitors},
-    {k:'Páginas vistas',v:d.page_views},
-  ];
-  let h='<div class="an-stats">'+cards.map(c=>`<div class="an-stat"><div class="v">${fmtNum(c.v)}</div><div class="k">${c.k}</div></div>`).join('')+'</div>';
-  h+=anChart(d.daily||[]);
-  h+=anTopTable(d.top_pages||[]);
-  body.innerHTML=h;
-}
-function anChart(daily){
-  if(!daily.length) return '<div class="an-chart"><p class="hint" style="margin:0">Sin datos en este período.</p></div>';
-  const W=720,H=220,pl=34,pr=12,pt=14,pb=26,n=daily.length;
-  const maxV=Math.max(1,...daily.map(x=>Math.max(x.visits||0,x.page_views||0)));
-  const X=i=> pl + (n<=1 ? (W-pl-pr)/2 : i*(W-pl-pr)/(n-1));
-  const Y=v=> pt + (H-pt-pb)*(1 - (v||0)/maxV);
-  const path=key=> daily.map((x,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(x[key]).toFixed(1)}`).join('');
-  const area=key=> `${path(key)}L${X(n-1).toFixed(1)},${(H-pb).toFixed(1)}L${X(0).toFixed(1)},${(H-pb).toFixed(1)}Z`;
-  let grid='';
-  for(let g=0;g<=4;g++){ const y=(pt+(H-pt-pb)*g/4).toFixed(1); const val=Math.round(maxV*(1-g/4)); grid+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#E4E8EE" stroke-width="1"/><text x="${pl-6}" y="${(+y+3).toFixed(1)}" text-anchor="end" font-size="9" fill="#9AA3AF">${val}</text>`; }
-  const dfmt=s=>{ const p=String(s).split('-'); return p.length===3?(p[2]+'/'+p[1]):s; };
-  const idxs=[...new Set([0,Math.floor((n-1)/2),n-1])];
-  const xlab=idxs.map(i=>`<text x="${X(i).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="#9AA3AF">${dfmt(daily[i].date)}</text>`).join('');
-  const dots= n<=31 ? daily.map((x,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(x.visits).toFixed(1)}" r="2.5" fill="#DE694E"/>`).join('') : '';
-  return `<div class="an-chart">
-    <div class="an-legend"><span><i style="background:#DE694E"></i>Visitas</span><span><i style="background:#9AA3AF"></i>Páginas vistas</span></div>
-    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución diaria de visitas">
-      ${grid}
-      <path d="${area('visits')}" fill="rgba(222,105,78,.10)" stroke="none"/>
-      <path d="${path('page_views')}" fill="none" stroke="#9AA3AF" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.85"/>
-      <path d="${path('visits')}" fill="none" stroke="#DE694E" stroke-width="2.2"/>
-      ${dots}${xlab}
-    </svg>
-  </div>`;
-}
-function anTopTable(top){
-  if(!top.length) return '<p class="hint" style="margin:14px 0 0">Sin páginas registradas en este período.</p>';
-  const totalViews=top.reduce((s,x)=>s+(+x.views||0),0)||1;
-  const maxViews=Math.max(...top.map(x=>+x.views||0))||1;
-  const rows=top.map(x=>{ const pct=(x.views/totalViews)*100, w=Math.max(2,(x.views/maxViews)*100);
-    return `<tr><td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(x.page)}</td><td style="width:80px">${fmtNum(x.views)}</td><td style="width:170px"><div style="display:flex;align-items:center;gap:8px"><div class="bar" style="width:${w.toFixed(0)}%"></div><span style="color:var(--muted);font-size:12px">${pct.toFixed(1)}%</span></div></td></tr>`;
-  }).join('');
-  return `<h3 style="margin:20px 0 10px;font-size:14px">Páginas más vistas</h3>
-    <div style="overflow-x:auto"><table class="an-table"><thead><tr><th>Página</th><th>Vistas</th><th>% del total</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 /* ============================ IMÁGENES (subida real vía upload.php) ============================ */
 const UPLOAD_URL = '/upload.php';

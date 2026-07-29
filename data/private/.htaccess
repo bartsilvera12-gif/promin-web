@@ -1,0 +1,6 @@
+# Carpeta privada de la analítica: sin acceso web directo a la base SQLite ni a la sal.
+Require all denied
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>
